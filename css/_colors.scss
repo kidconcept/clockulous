@@ -1,0 +1,9 @@
+$background: #222;
+$displayType: #fff;
+
+body,
+.time,
+.local,
+.gmt {
+  color: $displayType;
+}

@@ -1,0 +1,42 @@
+body {
+  background-color: $background;
+  padding: 15rem;
+  margin: 0;
+}
+
+#clocksBox {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}
+
+.clock {
+  border: 1px dotted $displayType;
+  padding: 5rem;
+  margin-top: -1px;
+  margin-left: -1px;
+}
+
+/* one item */
+.clock:first-child:nth-last-child(1) {
+    width: 100%;
+}
+
+/* two items */
+.clock:first-child:nth-last-child(2),
+.clock:first-child:nth-last-child(2) ~ .clock {
+    width: 50%;
+}
+
+/* three items */
+.clock:first-child:nth-last-child(3),
+.clock:first-child:nth-last-child(3) ~ .clock {
+    width: 33.3333%;
+}
+
+/* four items */
+.clock:first-child:nth-last-child(4),
+.clock:first-child:nth-last-child(4) ~ .clock {
+    width: 25%;
+}

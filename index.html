@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Synchronous Time Zones</title>
+    <link rel="stylesheet" href="/css/app.css">
+  </head>
+  <body>
+
+  <div id="clocksBox">
+  </div>
+
+  <script id="template" type="text/template">
+    <div class="clock">
+     <input class="local"></input>
+     <div class="time"></div>
+     <div class="meta">
+       <span class="gmt">UTC <input class="gmt-display" type="number" min="-12" max="12" step="any"></input></span>
+       <span class="date"></span>
+     </meta>
+     <button class="remove">-</button>
+    </div>
+  </script>
+  <script type="text/javascript" src="script.js"></script>
+
+  </body>
+</html>

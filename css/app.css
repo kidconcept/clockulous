@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css?family=Comfortaa");
+body,
+.time,
+.local,
+.gmt {
+  color: #fff; }
+
+body {
+  font-family: 'Comfortaa', sans; }
+
+.time {
+  font-size: 3rem; }
+
+.local {
+  font-size: 2rem; }
+
+.gmt-display {
+  font-size: 1.2rem; }
+
+.local {
+  background: none;
+  border: none; }
+
+.gmt-display {
+  background: none;
+  border: none;
+  color: white;
+  width: 4rem;
+  display: inline; }
+
+body {
+  background-color: #222;
+  padding: 15rem;
+  margin: 0; }
+
+#clocksBox {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center; }
+
+.clock {
+  border: 1px dotted #fff;
+  padding: 5rem;
+  margin-top: -1px;
+  margin-left: -1px; }
+
+/* one item */
+.clock:first-child:nth-last-child(1) {
+  width: 100%; }
+
+/* two items */
+.clock:first-child:nth-last-child(2),
+.clock:first-child:nth-last-child(2) ~ .clock {
+  width: 50%; }
+
+/* three items */
+.clock:first-child:nth-last-child(3),
+.clock:first-child:nth-last-child(3) ~ .clock {
+  width: 33.3333%; }
+
+/* four items */
+.clock:first-child:nth-last-child(4),
+.clock:first-child:nth-last-child(4) ~ .clock {
+  width: 25%; }
+
+/*# sourceMappingURL=app.css.map */
