@@ -9,3 +9,15 @@
   width: 4rem;
   display: inline;
 }
+#addButton {
+  margin: 0 auto;
+  display: block;
+  border: none;
+  background-color: $displayType;
+  color: $background;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-size: 3rem;
+  line-height: 0;
+}

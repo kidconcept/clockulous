@@ -1,7 +1,16 @@
+// Responsive States
+$pt: "(orientation: portrait)";
+
+// Carry on
+body,
+html {
+  padding: 0;
+  margin: 0;
+}
+
 body {
   background-color: $background;
-  padding: 15rem;
-  margin: 0;
+  padding: 10%;
 }
 
 #clocksBox {
@@ -13,30 +22,74 @@ body {
 
 .clock {
   border: 1px dotted $displayType;
+  box-sizing: border-box;
   padding: 5rem;
-  margin-top: -1px;
-  margin-left: -1px;
 }
 
 /* one item */
 .clock:first-child:nth-last-child(1) {
+  width: 50%;
+  @media #{$pt} {
     width: 100%;
+  }
 }
 
 /* two items */
 .clock:first-child:nth-last-child(2),
 .clock:first-child:nth-last-child(2) ~ .clock {
     width: 50%;
+    @media #{$pt} {
+      width: 100%;
+    }
 }
 
 /* three items */
 .clock:first-child:nth-last-child(3),
 .clock:first-child:nth-last-child(3) ~ .clock {
-    width: 33.3333%;
+    width: 33%;
+    @media #{$pt} {
+      width: 100%;
+    }
 }
 
 /* four items */
 .clock:first-child:nth-last-child(4),
 .clock:first-child:nth-last-child(4) ~ .clock {
+    width: 50%;
+}
+
+/* five items */
+.clock:first-child:nth-last-child(5),
+.clock:first-child:nth-last-child(5) ~ .clock {
+    width: 33%;
+    @media #{$pt} {
+      width: 50%;
+    }
+}
+
+/* six items */
+.clock:first-child:nth-last-child(6),
+.clock:first-child:nth-last-child(6) ~ .clock {
+    width: 33%;
+    @media #{$pt} {
+      width: 50%;
+    }
+}
+
+/* seven items */
+.clock:first-child:nth-last-child(7),
+.clock:first-child:nth-last-child(7) ~ .clock {
     width: 25%;
+    @media #{$pt} {
+      width: 50%;
+    }
+}
+
+/* eight items */
+.clock:first-child:nth-last-child(8),
+.clock:first-child:nth-last-child(8) ~ .clock {
+    width: 25%;
+    @media #{$pt} {
+      width: 50%;
+    }
 }

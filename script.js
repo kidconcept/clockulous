@@ -12,11 +12,10 @@ var clockulous = (function() {
     let userTime = new Date();
     let ZONES = [];
     let clocksBox = document.getElementById("clocksBox");
-    let addButton = document.createElement("button");
-    addButton.setAttribute('id', 'addButton');
+    let addButton = document.getElementById("addButton");
 
     //Event Listeners
-    addButton.addEventListener('click', addClock);
+    this.addButton.addEventListener('click', addClock);
 
     //template
     let clockTemplateHtml = document.getElementById("template").innerHTML;
@@ -68,7 +67,6 @@ var clockulous = (function() {
       for(let i=0; i < ZONES.length; i++) {
         clocksBox.insertAdjacentHTML('beforeend', clockTemplateHtml);
       }
-      clocksBox.appendChild(addButton);
       clocksTemplate.time = clocksBox.getElementsByClassName('time');
       clocksTemplate.gmtDisplay = clocksBox.getElementsByClassName('gmt-display');
       clocksTemplate.local = clocksBox.getElementsByClassName('local');
@@ -109,7 +107,7 @@ var clockulous = (function() {
 
     function addClock() {
       ZONES.push( new LocalizeZones(userTime.getTimezoneOffset()*60, 'Select Time Zone') );
-      if(ZONES.length >= 6) {
+      if(ZONES.length >= 8) {
         addButton.style.display = "none";
       }
       editTemplates();

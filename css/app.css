@@ -28,10 +28,26 @@ body {
   width: 4rem;
   display: inline; }
 
+#addButton {
+  margin: 0 auto;
+  display: block;
+  border: none;
+  background-color: #fff;
+  color: #222;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-size: 3rem;
+  line-height: 0; }
+
+body,
+html {
+  padding: 0;
+  margin: 0; }
+
 body {
   background-color: #222;
-  padding: 15rem;
-  margin: 0; }
+  padding: 10%; }
 
 #clocksBox {
   display: flex;
@@ -41,27 +57,73 @@ body {
 
 .clock {
   border: 1px dotted #fff;
-  padding: 5rem;
-  margin-top: -1px;
-  margin-left: -1px; }
+  box-sizing: border-box;
+  padding: 5rem; }
 
 /* one item */
 .clock:first-child:nth-last-child(1) {
-  width: 100%; }
+  width: 50%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(1) {
+      width: 100%; } }
 
 /* two items */
 .clock:first-child:nth-last-child(2),
 .clock:first-child:nth-last-child(2) ~ .clock {
   width: 50%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(2),
+    .clock:first-child:nth-last-child(2) ~ .clock {
+      width: 100%; } }
 
 /* three items */
 .clock:first-child:nth-last-child(3),
 .clock:first-child:nth-last-child(3) ~ .clock {
-  width: 33.3333%; }
+  width: 33%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(3),
+    .clock:first-child:nth-last-child(3) ~ .clock {
+      width: 100%; } }
 
 /* four items */
 .clock:first-child:nth-last-child(4),
 .clock:first-child:nth-last-child(4) ~ .clock {
+  width: 50%; }
+
+/* five items */
+.clock:first-child:nth-last-child(5),
+.clock:first-child:nth-last-child(5) ~ .clock {
+  width: 33%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(5),
+    .clock:first-child:nth-last-child(5) ~ .clock {
+      width: 50%; } }
+
+/* six items */
+.clock:first-child:nth-last-child(6),
+.clock:first-child:nth-last-child(6) ~ .clock {
+  width: 33%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(6),
+    .clock:first-child:nth-last-child(6) ~ .clock {
+      width: 50%; } }
+
+/* seven items */
+.clock:first-child:nth-last-child(7),
+.clock:first-child:nth-last-child(7) ~ .clock {
   width: 25%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(7),
+    .clock:first-child:nth-last-child(7) ~ .clock {
+      width: 50%; } }
+
+/* eight items */
+.clock:first-child:nth-last-child(8),
+.clock:first-child:nth-last-child(8) ~ .clock {
+  width: 25%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(8),
+    .clock:first-child:nth-last-child(8) ~ .clock {
+      width: 50%; } }
 
 /*# sourceMappingURL=app.css.map */
