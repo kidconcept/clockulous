@@ -12,7 +12,7 @@ var clockulous = (function() {
     let userTime = new Date();
     let ZONES = [];
     let clocksBox = document.getElementById("clocksBox");
-    let addButton = document.getElementById("addButton");
+    let addButton = document.getElementById("addWrapper");
 
     //Event Listeners
     this.addButton.addEventListener('click', addClock);
@@ -38,7 +38,7 @@ var clockulous = (function() {
         hours: zoneTime.getUTCHours(),
         minutes: String( "0" + zoneTime.getUTCMinutes() ).slice(-2)
       };
-      dateTime.push(zoneTime.getDate()+'/'+zoneTime.getMonth()+1+'/'+zoneTime.getFullYear());
+      dateTime.push(zoneTime.getDate()+'/'+zoneTime.getMonth()+1);
       dateTime.push(time.hours+':'+time.minutes);
       return dateTime;
     }
@@ -64,8 +64,9 @@ var clockulous = (function() {
     //Draw the templates to the DOM
     function editTemplates() {
       clocksBox.innerHTML = '';
+      clocksBox.appendChild(addButton);
       for(let i=0; i < ZONES.length; i++) {
-        clocksBox.insertAdjacentHTML('beforeend', clockTemplateHtml);
+        clocksBox.insertAdjacentHTML('afterbegin', clockTemplateHtml);
       }
       clocksTemplate.time = clocksBox.getElementsByClassName('time');
       clocksTemplate.gmtDisplay = clocksBox.getElementsByClassName('gmt-display');

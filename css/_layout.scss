@@ -6,11 +6,13 @@ body,
 html {
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 
 body {
   background-color: $background;
-  padding: 10%;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 #clocksBox {
@@ -18,34 +20,55 @@ body {
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
+  height: 100%;
 }
 
 .clock {
-  border: 1px dotted $displayType;
-  box-sizing: border-box;
-  padding: 5rem;
+  .inner {
+    padding: 3rem 2rem 5rem 2rem;
+    box-shadow: 0px 13px 12px -5px darken( $background, 1%);
+    background-color: lighten( $background, .5% );
+    border-top: 1px solid;
+    border-color: $displayType;
+    margin: 2rem;
+    &:hover {
+      border-color: $highlight;
+    }
+  }
 }
 
+.meta {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: nowrap;
+}
+
+.time {
+  margin-top: .8vw;
+}
 /* one item */
-.clock:first-child:nth-last-child(1) {
-  width: 50%;
+.clock:first-child:nth-last-child(2) {
+  width: 40%;
+  font-size: 160%;
   @media #{$pt} {
     width: 100%;
   }
 }
 
 /* two items */
-.clock:first-child:nth-last-child(2),
-.clock:first-child:nth-last-child(2) ~ .clock {
-    width: 50%;
+.clock:first-child:nth-last-child(3),
+.clock:first-child:nth-last-child(3) ~ .clock {
+    width: 30%;
+    font-size: 120%;
     @media #{$pt} {
       width: 100%;
     }
 }
 
 /* three items */
-.clock:first-child:nth-last-child(3),
-.clock:first-child:nth-last-child(3) ~ .clock {
+.clock:first-child:nth-last-child(4),
+.clock:first-child:nth-last-child(4) ~ .clock {
     width: 33%;
     @media #{$pt} {
       width: 100%;
@@ -53,21 +76,19 @@ body {
 }
 
 /* four items */
-.clock:first-child:nth-last-child(4),
-.clock:first-child:nth-last-child(4) ~ .clock {
-    width: 50%;
-}
-
-/* five items */
 .clock:first-child:nth-last-child(5),
 .clock:first-child:nth-last-child(5) ~ .clock {
     width: 33%;
-    @media #{$pt} {
-      width: 50%;
+    &:nth-child(2n) {
+      margin-right: 10%;
+    }
+    &:nth-child(2n+1) {
+      margin-left: 10%;
     }
 }
 
-/* six items */
+
+/* five items */
 .clock:first-child:nth-last-child(6),
 .clock:first-child:nth-last-child(6) ~ .clock {
     width: 33%;
@@ -76,9 +97,18 @@ body {
     }
 }
 
-/* seven items */
+/* six items */
 .clock:first-child:nth-last-child(7),
 .clock:first-child:nth-last-child(7) ~ .clock {
+    width: 33%;
+    @media #{$pt} {
+      width: 50%;
+    }
+}
+
+/* seven items */
+.clock:first-child:nth-last-child(8),
+.clock:first-child:nth-last-child(8) ~ .clock {
     width: 25%;
     @media #{$pt} {
       width: 50%;
@@ -86,8 +116,8 @@ body {
 }
 
 /* eight items */
-.clock:first-child:nth-last-child(8),
-.clock:first-child:nth-last-child(8) ~ .clock {
+.clock:first-child:nth-last-child(9),
+.clock:first-child:nth-last-child(9) ~ .clock {
     width: 25%;
     @media #{$pt} {
       width: 50%;

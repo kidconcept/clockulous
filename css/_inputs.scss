@@ -1,11 +1,15 @@
+button,
+input {
+  cursor: pointer;
+}
 .local {
   background: none;
   border: none;
+  width: 100%;
 }
 .gmt-display {
   background: none;
   border: none;
-  color: white;
   width: 4rem;
   display: inline;
 }
@@ -20,4 +24,16 @@
   border-radius: 50%;
   font-size: 3rem;
   line-height: 0;
+}
+#addWrapper {
+  width: 100%;
+}
+.remove {
+  border: none;
+  color: $background;
+  width: 1.8vw;
+  height: 1.8vw;
+  border-radius: 50%;
+  font-size: 1.8vw;
+  margin-left: 2vw;
 }

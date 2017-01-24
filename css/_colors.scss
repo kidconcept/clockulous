@@ -1,9 +1,19 @@
 $background: #222;
 $displayType: #fff;
+$highlight: #a50047;
 
 body,
-.time,
-.local,
-.gmt {
+.time {
   color: $displayType;
+}
+
+.local,
+.gmt,
+.gmt-display,
+.date {
+  color: $highlight;
+}
+
+.remove {
+  background-color: $highlight;
 }
