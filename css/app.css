@@ -12,6 +12,9 @@ body,
 .remove {
   background-color: #a50047; }
 
+ul {
+  color: #222; }
+
 body {
   font-family: 'Comfortaa', sans; }
 

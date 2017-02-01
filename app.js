@@ -1,6 +1,6 @@
 var clockulous = (function() {
 
-  var my = {}
+  var global = {}
 
   //synchronous.global.site, clock.party, circadian, rhythm, clockulous, rotation,
 
@@ -19,7 +19,7 @@ var clockulous = (function() {
 
     //template
     let clockTemplateHtml = document.getElementById("template").innerHTML;
-    let clocksTemplate = [];
+    global.clocksTemplate = [];
 
    // ===================================
    // TIME ZONE OBJECTS
@@ -68,37 +68,43 @@ var clockulous = (function() {
       for(let i=0; i < ZONES.length; i++) {
         clocksBox.insertAdjacentHTML('afterbegin', clockTemplateHtml);
       }
-      clocksTemplate.time = clocksBox.getElementsByClassName('time');
-      clocksTemplate.gmtDisplay = clocksBox.getElementsByClassName('gmt-display');
-      clocksTemplate.local = clocksBox.getElementsByClassName('local');
-      clocksTemplate.clock = clocksBox.getElementsByClassName('clock');
-      clocksTemplate.date = clocksBox.getElementsByClassName('date');
-      clocksTemplate.remove = clocksBox.getElementsByClassName('remove');
+      global.clocksTemplate.time = clocksBox.getElementsByClassName('time');
+      global.clocksTemplate.gmtDisplay = clocksBox.getElementsByClassName('gmt-display');
+      global.clocksTemplate.local = clocksBox.getElementsByClassName('local');
+      global.clocksTemplate.clock = clocksBox.getElementsByClassName('clock');
+      global.clocksTemplate.date = clocksBox.getElementsByClassName('date');
+      global.clocksTemplate.remove = clocksBox.getElementsByClassName('remove');
 
       //draw the clock immediatly
       stoppedClock();
 
       //add data indexes to each clock
       for(let i=0; i < ZONES.length; i++) {
-        clocksTemplate.clock[i].setAttribute('data-index', i);
-        clocksTemplate.local[i].setAttribute('data-index', i);
-        clocksTemplate.remove[i].setAttribute('data-index', i);
-        clocksTemplate.gmtDisplay[i].setAttribute('data-index', i);
+        global.clocksTemplate.clock[i].setAttribute('data-index', i);
+        global.clocksTemplate.local[i].setAttribute('data-index', i);
+        global.clocksTemplate.remove[i].setAttribute('data-index', i);
+        global.clocksTemplate.gmtDisplay[i].setAttribute('data-index', i);
       }
 
       //add event listeners to the template actions
       for(let i=0; i < ZONES.length; i++) {
-        clocksTemplate.remove[i].addEventListener('click', removeClock);
-        clocksTemplate.gmtDisplay[i].addEventListener('input', editGmt);
-        clocksTemplate.local[i].addEventListener('input', editLocal);
+        global.clocksTemplate.remove[i].addEventListener('click', removeClock);
+        global.clocksTemplate.gmtDisplay[i].addEventListener('input', editGmt);
+        //global.clocksTemplate.local[i].addEventListener('input', editLocal);
       }
+    }
+
+    //Clock Objects
+    function newClock(gmtOffset, name) {
+      //Create Node
+      
     }
 
     //Fill metadata to the templates
     function updateMeta() {
       for(let i=0; i < ZONES.length; i++) {
-        clocksTemplate.local[i].value = ZONES[i].local; //update clock name
-        clocksTemplate.gmtDisplay[i].value = ZONES[i].gmt/60/60; //update GMT value
+        global.clocksTemplate.local[i].value = ZONES[i].local; //update clock name
+        global.clocksTemplate.gmtDisplay[i].value = ZONES[i].gmt/60/60; //update GMT value
       }
     }
 
@@ -158,14 +164,14 @@ var clockulous = (function() {
     stoppedClock = function() {
       for(let i=0; i < ZONES.length; i++){
         let dateTime = displayTime(ZONES[i].gmt);
-        clocksTemplate.time[i].innerHTML = dateTime[1];
-        clocksTemplate.date[i].innerHTML = dateTime[0]
+        global.clocksTemplate.time[i].innerHTML = dateTime[1];
+        global.clocksTemplate.date[i].innerHTML = dateTime[0]
       };
     }
 
-    initialize(),
-    heartBeat()
+    initialize();
+    heartBeat();
 
-    return my;
+    return global;
 
 })();
