@@ -1,34 +1,21 @@
 @import url("https://fonts.googleapis.com/css?family=Comfortaa|Bitter");
-body,
-.time {
-  color: #fff; }
-
-.local,
-.gmt,
-.gmt-display,
-.date {
-  color: #a50047; }
-
-.remove {
-  background-color: #a50047; }
-
-ul {
-  color: #222; }
-
 body {
-  font-family: 'Comfortaa', sans; }
+  font-family: 'Comfortaa', sans;
+  color: #fff; }
 
 .time {
   font-size: 7vw;
+  color: #fff;
   text-align: center; }
 
 .local {
   font-size: 2vw;
   text-align: center;
-  font-family: Bitter, 'serif'; }
+  font-family: Bitter, 'serif';
+  color: #a50047; }
 
 .meta,
-.gmt-display {
+.rawOffset {
   font-size: 1.5vw;
   font-family: Bitter, 'serif'; }
 
@@ -41,35 +28,41 @@ input {
   border: none;
   width: 100%; }
 
-.gmt-display {
+.rawOffset {
   background: none;
   border: none;
   width: 4rem;
-  display: inline; }
+  display: inline;
+  color: #a50047; }
 
-#addButton {
-  margin: 0 auto;
-  display: block;
-  border: none;
-  background-color: #fff;
-  color: #222;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  font-size: 3rem;
-  line-height: 0; }
-
-#addWrapper {
+#addClockElement {
   width: 100%; }
+  #addClockElement button {
+    margin: 0 auto;
+    display: block;
+    border: none;
+    background-color: #fff;
+    color: #222;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    font-size: 3rem;
+    line-height: 0; }
+  #addClockElement.disabled {
+    display: none; }
 
-.remove {
+.removeBtn {
   border: none;
   color: #222;
   width: 1.8vw;
   height: 1.8vw;
   border-radius: 50%;
   font-size: 1.8vw;
-  margin-left: 2vw; }
+  margin-left: 2vw;
+  background-color: #a50047; }
+
+#template {
+  display: none; }
 
 body,
 html {
@@ -82,12 +75,22 @@ body {
   padding: 2rem;
   box-sizing: border-box; }
 
+.wrapper {
+  height: 100%; }
+
+#app {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 100%; }
+
 #clocksBox {
   display: flex;
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
-  height: 100%; }
+  width: 100%; }
 
 .clock .inner {
   padding: 3rem 2rem 5rem 2rem;
@@ -109,44 +112,53 @@ body {
   margin-top: .8vw; }
 
 /* one item */
-.clock:first-child:nth-last-child(2) {
+.clock:first-child:nth-last-child(1) {
   width: 40%;
   font-size: 160%; }
   @media (orientation: portrait) {
-    .clock:first-child:nth-last-child(2) {
+    .clock:first-child:nth-last-child(1) {
       width: 100%; } }
 
 /* two items */
-.clock:first-child:nth-last-child(3),
-.clock:first-child:nth-last-child(3) ~ .clock {
+.clock:first-child:nth-last-child(2),
+.clock:first-child:nth-last-child(2) ~ .clock {
   width: 30%;
   font-size: 120%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(2),
+    .clock:first-child:nth-last-child(2) ~ .clock {
+      width: 100%; } }
+
+/* three items */
+.clock:first-child:nth-last-child(3),
+.clock:first-child:nth-last-child(3) ~ .clock {
+  width: 33%; }
   @media (orientation: portrait) {
     .clock:first-child:nth-last-child(3),
     .clock:first-child:nth-last-child(3) ~ .clock {
       width: 100%; } }
 
-/* three items */
+/* four items */
 .clock:first-child:nth-last-child(4),
 .clock:first-child:nth-last-child(4) ~ .clock {
   width: 33%; }
-  @media (orientation: portrait) {
-    .clock:first-child:nth-last-child(4),
-    .clock:first-child:nth-last-child(4) ~ .clock {
-      width: 100%; } }
-
-/* four items */
-.clock:first-child:nth-last-child(5),
-.clock:first-child:nth-last-child(5) ~ .clock {
-  width: 33%; }
-  .clock:first-child:nth-last-child(5):nth-child(2n),
-  .clock:first-child:nth-last-child(5) ~ .clock:nth-child(2n) {
+  .clock:first-child:nth-last-child(4):nth-child(2n),
+  .clock:first-child:nth-last-child(4) ~ .clock:nth-child(2n) {
     margin-right: 10%; }
-  .clock:first-child:nth-last-child(5):nth-child(2n+1),
-  .clock:first-child:nth-last-child(5) ~ .clock:nth-child(2n+1) {
+  .clock:first-child:nth-last-child(4):nth-child(2n+1),
+  .clock:first-child:nth-last-child(4) ~ .clock:nth-child(2n+1) {
     margin-left: 10%; }
 
 /* five items */
+.clock:first-child:nth-last-child(5),
+.clock:first-child:nth-last-child(5) ~ .clock {
+  width: 33%; }
+  @media (orientation: portrait) {
+    .clock:first-child:nth-last-child(5),
+    .clock:first-child:nth-last-child(5) ~ .clock {
+      width: 50%; } }
+
+/* six items */
 .clock:first-child:nth-last-child(6),
 .clock:first-child:nth-last-child(6) ~ .clock {
   width: 33%; }
@@ -155,31 +167,22 @@ body {
     .clock:first-child:nth-last-child(6) ~ .clock {
       width: 50%; } }
 
-/* six items */
+/* seven items */
 .clock:first-child:nth-last-child(7),
 .clock:first-child:nth-last-child(7) ~ .clock {
-  width: 33%; }
+  width: 25%; }
   @media (orientation: portrait) {
     .clock:first-child:nth-last-child(7),
     .clock:first-child:nth-last-child(7) ~ .clock {
       width: 50%; } }
 
-/* seven items */
+/* eight items */
 .clock:first-child:nth-last-child(8),
 .clock:first-child:nth-last-child(8) ~ .clock {
   width: 25%; }
   @media (orientation: portrait) {
     .clock:first-child:nth-last-child(8),
     .clock:first-child:nth-last-child(8) ~ .clock {
-      width: 50%; } }
-
-/* eight items */
-.clock:first-child:nth-last-child(9),
-.clock:first-child:nth-last-child(9) ~ .clock {
-  width: 25%; }
-  @media (orientation: portrait) {
-    .clock:first-child:nth-last-child(9),
-    .clock:first-child:nth-last-child(9) ~ .clock {
       width: 50%; } }
 
 /*# sourceMappingURL=app.css.map */

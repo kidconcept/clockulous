@@ -7,26 +7,27 @@
   </head>
   <body>
 
-  <input type="text" name="wut" class="wut" value="">
-
-  <div id="clocksBox">
-    <div id="addWrapper"><button type="button" id="addButton" style="">+</button></div>
+  <div id="app">
+    <div id="clocksBox"></div>
+    <div id="addClockElement"><button type="button" style="">+</button></div>
   </div>
 
-  <script id="template" type="text/template">
-    <div class="clock">
-     <div class="inner">
-       <input class="local" name='local'></input>
-       <div class="time"></div>
-       <div class="meta">
-         <span class="gmt">UTC <input class="gmt-display" type="number" min="-12" max="12" step="any"></input></span>
-         <span class="date"></span>
-         <button class="remove">-</button>
-       </meta>
+  <div class="clock" id="template">
+   <div class="inner">
+     <input class="local" name='local' placeholder="Location"></input>
+     <div class="time"></div>
+     <div class="meta">
+       <span class="gmt">UTC <input class="rawOffset" type="number" min="-12" max="12" step="any"></input></span>
+       <span class="dst">DST <input class="dstOffset" type="checkbox"></input></span> 
+       <span class="date"></span>
+       <button class="removeBtn">-</button>
      </div>
-    </div>
-  </script>
+   </div>
+  </div>
+
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSKOzSS4QIenGIAeMpYMecNUn9pyDUb54&libraries=places"></script>
   <script type="text/javascript" src="./dataservice.js"></script>
   <script type="text/javascript" src="./app.js"></script>
+
   </body>
 </html>

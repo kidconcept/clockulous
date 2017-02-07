@@ -1,7 +1,8 @@
-var dataservice = (function() {
+var gmaps = (function() {
 
-  var global = {}
+  var global = {};
 
+  /// Utility Function for getting XML Requests
   function get(url){
     return new Promise(function(resolve, reject){
       var xhttp = new XMLHttpRequest();
@@ -12,33 +13,67 @@ var dataservice = (function() {
         } else{
           reject(xhttp.statusText)
         }
-      }
+      };
       xhttp.onerror = function(){
         reject(xhttp.statusText);
-      }
+      };
       xhttp.send();
     });
   }
 
-  // assign the returned promise to a variable
-  var codesCountries = get('./zonedata/country.csv');
-  // use the then mehtod of hte promise to log the resolution.
-  codesCountries.then(function(countries){
-    global.country = Papa.parse(countries);
-    return get('./zonedata/zone.csv')
-  }).then(function(zone){
-    global.zone = Papa.parse(zone, {dynamicTyping: true} );
-    global.autoComplete = [];
-    for (i=0;i<global.zone.data.length;i++)
-      if (global.zone.data[i] != '')
-        global.autoComplete.push( [global.zone.data[i][2], global.zone.data[i][0]] )
-    initAutoComplete();
-  }).catch(function(error){
-    console.log(error);
-  });
+  /// Generate google Autocomplete for Timezone Search Box
+  var mapOptions = {};
 
-  //convert the promise to an object.
-  global = [];
+  var defaultBounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(-90, -180),
+    new google.maps.LatLng(90, 180)
+  );
+
+  var options = {
+    bounds: defaultBounds,
+    types: ['(regions)']
+  };
+
+  global.addAutoCompletes = function(index) {
+    nthChild = index+1;
+    var input = document.querySelector('.clock:nth-child('+nthChild+') .local');
+    var autocomplete = new google.maps.places.Autocomplete(input, options);
+    /// On Init of New clock
+    
+
+    /// On User Search
+    if(autocomplete) {
+      autocomplete.addListener('place_changed', function() {
+        /// Request new Google TimezoneId
+        var place = autocomplete.getPlace();
+
+        if(place.geometry) {
+          // Request TimeZone
+          var latLng = place.geometry.location.lat() + "," + place.geometry.location.lng();
+          var timestamp = Date.now()/60;
+          var zoneRequestURL = "https://maps.googleapis.com/maps/api/timezone/json?location="+latLng+"&timestamp="+timestamp+"&key=AIzaSyBSKOzSS4QIenGIAeMpYMecNUn9pyDUb54"
+          var timeZone = get(zoneRequestURL);
+
+          timeZone.then(function(zoneString){
+            zoneObject = JSON.parse(zoneString);
+            if(zoneObject.status ="OK") clockulous.editGmtGmaps(zoneObject.rawOffset, zoneObject.dstOffset, index)
+            else clockulous.editGmtGmaps(index);
+          }).catch(function(error){
+            clockulous.editGmtGmaps(index);
+            console.log(error)
+          })
+        }
+
+        // Save Name
+        clockulous.editLocal(place.name, index);
+      });
+    } else {
+      clockulous.editGmtGmaps(index);
+    };
+    return autocomplete;
+  };
+
 
   return global;
+
 })();

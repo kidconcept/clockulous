@@ -7,28 +7,32 @@ input {
   border: none;
   width: 100%;
 }
-.gmt-display {
+.rawOffset{
   background: none;
   border: none;
   width: 4rem;
   display: inline;
+  color: $highlight;
 }
-#addButton {
-  margin: 0 auto;
-  display: block;
-  border: none;
-  background-color: $displayType;
-  color: $background;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  font-size: 3rem;
-  line-height: 0;
-}
-#addWrapper {
+#addClockElement {
   width: 100%;
+  button {
+    margin: 0 auto;
+    display: block;
+    border: none;
+    background-color: $displayType;
+    color: $background;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    font-size: 3rem;
+    line-height: 0;
+  }
+  &.disabled {
+      display: none;
+  }
 }
-.remove {
+.removeBtn {
   border: none;
   color: $background;
   width: 1.8vw;
@@ -36,4 +40,5 @@ input {
   border-radius: 50%;
   font-size: 1.8vw;
   margin-left: 2vw;
+  background-color: $highlight;
 }
