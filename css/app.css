@@ -1,23 +1,33 @@
 @import url("https://fonts.googleapis.com/css?family=Comfortaa|Bitter");
 body {
-  font-family: 'Comfortaa', sans;
+  font-family: "Comfortaa", sans;
   color: #fff; }
-
-.time {
-  font-size: 7vw;
-  color: #fff;
-  text-align: center; }
 
 .local {
   font-size: 2vw;
   text-align: center;
-  font-family: Bitter, 'serif';
+  font-family: Bitter, "serif";
   color: #a50047; }
 
 .meta,
 .rawOffset {
   font-size: 1.5vw;
-  font-family: Bitter, 'serif'; }
+  font-family: Bitter, "serif"; }
+
+.noSelect *,
+.time {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.noSelect * {
+  pointer-events: none; }
+  .noSelect * .time {
+    pointer-events: all; }
+
+.time.traveling {
+  text-shadow: 1px 1px 1px #a50047; }
 
 button,
 input {
@@ -31,13 +41,12 @@ input {
 .rawOffset {
   background: none;
   border: none;
-  width: 4rem;
   display: inline;
   color: #a50047; }
 
-#addClockElement {
+.addclock-button-wrapper {
   width: 100%; }
-  #addClockElement button {
+  .addclock-button-wrapper button {
     margin: 0 auto;
     display: block;
     border: none;
@@ -48,8 +57,8 @@ input {
     border-radius: 50%;
     font-size: 3rem;
     line-height: 0; }
-  #addClockElement.disabled {
-    display: none; }
+    .addclock-button-wrapper button.hidden {
+      display: none; }
 
 .removeBtn {
   border: none;
@@ -60,6 +69,16 @@ input {
   font-size: 1.8vw;
   margin-left: 2vw;
   background-color: #a50047; }
+
+.time,
+.timeInput {
+  font-size: 7vw;
+  font-family: "Comfortaa", sans;
+  color: #fff;
+  text-align: center;
+  background: none;
+  border: none;
+  width: 80%; }
 
 #template {
   display: none; }
@@ -74,6 +93,9 @@ body {
   background-color: #222;
   padding: 2rem;
   box-sizing: border-box; }
+
+.hidden {
+  display: none; }
 
 .wrapper {
   height: 100%; }
@@ -92,6 +114,12 @@ body {
   justify-content: center;
   width: 100%; }
 
+.clockFace {
+  width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center; }
+
 .clock .inner {
   padding: 3rem 2rem 5rem 2rem;
   box-shadow: 0px 13px 12px -5px #1f1f1f;
@@ -109,7 +137,25 @@ body {
   flex-wrap: nowrap; }
 
 .time {
-  margin-top: .8vw; }
+  width: 80%; }
+  .time span:first-child {
+    display: inline-block;
+    width: 40%;
+    text-align: right; }
+  .time span:nth-child(2) {
+    display: inline-block;
+    width: 10%;
+    vertical-align: middle; }
+  .time span:last-child {
+    display: inline-block;
+    width: 50%;
+    text-align: left; }
+
+.timeMeta {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; }
 
 /* one item */
 .clock:first-child:nth-last-child(1) {
@@ -184,5 +230,32 @@ body {
     .clock:first-child:nth-last-child(8),
     .clock:first-child:nth-last-child(8) ~ .clock {
       width: 50%; } }
+
+#menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  background: #222;
+  border: 1px solid #fff;
+  margin: 10%;
+  padding: 10%; }
+  #menu.open {
+    display: block; }
+
+.menu-button-wrapper {
+  width: 100%;
+  position: relative;
+  z-index: 100; }
+  .menu-button-wrapper button {
+    margin: 0 auto;
+    display: block;
+    border: none;
+    background-color: #fff;
+    color: #222;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    font-size: 3rem;
+    line-height: 0; }
 
 /*# sourceMappingURL=app.css.map */

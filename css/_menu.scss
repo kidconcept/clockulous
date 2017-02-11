@@ -1,0 +1,30 @@
+#menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  background: $background;
+  border: 1px solid $displayType;
+  margin: 10%;
+  padding: 10%;
+  &.open{
+    display: block;
+  }
+}
+
+.menu-button-wrapper {
+  width: 100%;
+  position: relative;
+  z-index: 100;
+  button {
+    margin: 0 auto;
+    display: block;
+    border: none;
+    background-color: $displayType;
+    color: $background;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    font-size: 3rem;
+    line-height: 0;
+  }
+}

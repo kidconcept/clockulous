@@ -1,25 +1,41 @@
 @import url('https://fonts.googleapis.com/css?family=Comfortaa|Bitter');
 
-body {
-  font-family: 'Comfortaa', sans;
-  color: $displayType;
-}
+$font-numbers: 'Comfortaa', sans;
+$font-text: Bitter, 'serif';
 
-.time {
-  font-size: 7vw;
+body {
+  font-family: $font-numbers;
   color: $displayType;
-  text-align: center;
 }
 
 .local {
   font-size: 2vw;
   text-align: center;
-  font-family: Bitter, 'serif';
+  font-family: $font-text;
   color: $highlight;
 }
 
 .meta,
 .rawOffset {
   font-size: 1.5vw;
-  font-family: Bitter, 'serif';
+  font-family: $font-text;
+}
+
+.noSelect *,
+.time {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.noSelect * {
+  pointer-events: none;
+  & .time {
+    pointer-events: all;
+  }
+}
+
+.time.traveling {
+  text-shadow: 1px 1px 1px $highlight;
 }

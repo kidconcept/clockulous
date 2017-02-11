@@ -19,6 +19,10 @@ body {
   box-sizing: border-box;
 }
 
+.hidden {
+  display: none;
+}
+
 .wrapper {
   height: 100%;
 }
@@ -37,6 +41,13 @@ body {
   align-content: center;
   justify-content: center;
   width: 100%;
+}
+
+.clockFace {
+  width: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
 }
 
 .clock {
@@ -61,7 +72,28 @@ body {
 }
 
 .time {
-  margin-top: .8vw;
+  width: 80%;
+  & span:first-child {
+    display: inline-block;
+    width: 40%;
+    text-align: right;
+  }
+  & span:nth-child(2) {
+    display: inline-block;
+    width: 10%;
+    vertical-align: middle;
+  }
+  & span:last-child {
+    display: inline-block;
+    width: 50%;
+    text-align: left;
+  }
+}
+.timeMeta {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 /* one item */
 .clock:first-child:nth-last-child(1) {
