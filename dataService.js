@@ -39,7 +39,7 @@ var gmaps = (function() {
     var input = document.querySelector('.clock:nth-child('+nthChild+') .local');
     var autocomplete = new google.maps.places.Autocomplete(input, options);
     /// On Init of New clock
-    
+
 
     /// On User Search
     if(autocomplete) {
@@ -50,13 +50,15 @@ var gmaps = (function() {
         if(place.geometry) {
           // Request TimeZone
           var latLng = place.geometry.location.lat() + "," + place.geometry.location.lng();
-          var timestamp = Date.now()/60;
+          var timestamp = Math.floor(Date.now()/1000)
           var zoneRequestURL = "https://maps.googleapis.com/maps/api/timezone/json?location="+latLng+"&timestamp="+timestamp+"&key=AIzaSyBSKOzSS4QIenGIAeMpYMecNUn9pyDUb54"
           var timeZone = get(zoneRequestURL);
 
           timeZone.then(function(zoneString){
             zoneObject = JSON.parse(zoneString);
-            if(zoneObject.status ="OK") clockulous.editGmtGmaps(zoneObject.rawOffset, zoneObject.dstOffset, index)
+            if(zoneObject.status ="OK") {
+              clockulous.editGmtGmaps(zoneObject.rawOffset, zoneObject.dstOffset, index)
+            }
             else clockulous.editGmtGmaps(index);
           }).catch(function(error){
             clockulous.editGmtGmaps(index);

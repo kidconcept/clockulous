@@ -16,7 +16,13 @@ var clockulous = (function() {
   SETTINGS.amPm = true; //12 Hour Clock by default
   SETTINGS.timeTravel = false; // Display Time Travel Offset
   SETTINGS.timeTravelOffset = 0;
-  let isMenuOpen = false
+  let isMenuOpen = false;
+  let modes = {};
+  modes.amPmMeta = "display";
+  modes.timeTravelAmPm = "AM";
+  modes.dstMeta = "display";
+  modes.timeTravelMeta = "off";
+
 
   //The Clocks Blocks
   let clocksBox = document.getElementById("clocksBox");
@@ -36,7 +42,8 @@ var clockulous = (function() {
   function addEventListeners(index) {
     clocksTemplate.removeBtn.item(index).addEventListener('click', removeClock);
     clocksTemplate.rawOffset.item(index).addEventListener('input', editGmt);
-    clocksTemplate.time.item(index).addEventListener('mousedown', timeTravel);
+    clocksTemplate.time.item(index).addEventListener('click', timeTravel);
+    clocksTemplate.time.item(index).addEventListener('mousedown', timeTravelMouse);
     clocksTemplate.local.item(index).addEventListener('click', function() { this.select() });
     clocksTemplate.timeTravelMeta.item(index).addEventListener('click', timeTravelMeta);
     clocksTemplate.dstMeta.item(index).addEventListener('click', dstMeta);
@@ -106,8 +113,8 @@ var clockulous = (function() {
     } else dateTime.push('<span>'+time.hours+'</span>'+'<span>:</span>'+'<span>'+time.minutes+'</span>'); // 24 Hour
     function amPm() { // 12 Hour
       let amPm = "";
-      time.hours < 12 ? amPm = "AM" : amPm = "PM";
-      clocksTemplate.amPmMeta.item(index).innerHTML = amPm;
+      time.hours < 12 ? clockAmPm = "AM" : clockAmPm = "PM";
+      amPmMeta(modes.amPmMeta, index, clockAmPm);
     }
 
     return dateTime;
@@ -187,17 +194,43 @@ var clockulous = (function() {
 // TIME META BUTTON FUNCTIONS (timeTravel, DST, AM/PM)
 // ===================================
 
-function timeTravelMeta() {
+  function timeTravelMeta() {
+    if(modes.timeTravelMeta === "off") {
+      modes.timeTravelMeta = "submit";
+      timeTravel(event);
+      console.log("off")
+    } else if (modes.timeTravelMeta === "submit") {
+      modes.timeTravelMeta = "cancel";
+      index = event.target.getAttribute('data-index');
+      ele = clocksTemplate.timeInput.item(index);
+      global.submitTimeFilter(ele, index);
+      console.log("submit")
+    } else if (modes.timeTravelMeta === "cancel") {
+      modes.timeTravelMeta = "off";
+      global.noTimeTravel();
+      console.log("cancel")
+    }
+  }
 
-}
+  function dstMeta(mode, index) {
+    if(mode.type === 'click') {
+      index = event.target.getAttribute('data-index');
+      editDst();
+    } else if (mode === "display") { }
+    ZONES[index].dstOffset ? clocksTemplate.dstMeta.item(index).classList.add('isDayLightSavings') : clocksTemplate.dstMeta.item(index).classList.remove('isDayLightSavings');
+    //clocksTemplate.dstMeta.item(index).classList.add(modes.dstMeta);
+  }
 
-function dstMeta() {
-
-}
-
-function amPmMeta() {
-
-}
+  function amPmMeta(mode, index, clockAmPm) {
+    if(mode.type === 'click') {
+      index = event.target.getAttribute('data-index');
+      modes.timeTravelAmPm === "AM" ? modes.timeTravelAmPm = "PM" : modes.timeTravelAmPm = "AM";
+      clocksTemplate.amPmMeta.item(index).innerHTML = modes.timeTravelAmPm;
+    } else if (mode === "display") {
+      clocksTemplate.amPmMeta.item(index).innerHTML = clockAmPm;
+    }
+    //clocksTemplate.amPmMeta.item(index).classList.add(modes.amPmMeta);
+  }
 
 // ===================================
 // Add, edit, remove data
@@ -219,7 +252,6 @@ function amPmMeta() {
     gmaps.addAutoCompletes(index);
     addEventListeners(index);
     setIndex();
-    updateMeta();
   }
 
   function removeClock() {
@@ -227,7 +259,6 @@ function amPmMeta() {
     ZONES.splice( index, 1 );
     clocksBox.removeChild(clocksBox.childNodes[index]);
     setIndex();
-    updateMeta();
     save();
   }
 
@@ -253,14 +284,14 @@ function amPmMeta() {
   }
 
   function editDst() {
-    let index = this.getAttribute('data-index');
+    let index = event.target.getAttribute('data-index');
     if(ZONES[index].dstOffset == "0"){
       ZONES[index].dstOffset = 3600;
     } else {
       ZONES[index].dstOffset = 0;
     }
     stoppedClock();
-    // save();
+    save();
   }
 
   global.editLocal = function(local, index) {
@@ -277,16 +308,17 @@ function amPmMeta() {
 // Time Travel Features
 // ===================================
 
-  function timeTravel() {
-
-    index = this.getAttribute('data-index');
-    clocksTemplate.time.item(index).addEventListener('mouseup', initInputTime);
-
-    if(SETTINGS.timeTravel === false) {
-      toggleSetting(SETTINGS.timeTravel);
-      for(let i=0;i<clocksTemplate.time.length;i++) clocksTemplate.time.item(i).classList.add("traveling");
-    }
+  function timeTravel(event) {
+    index = event.target.getAttribute('data-index');
     SETTINGS.timeTravel = true;
+    modes.timeTravelMeta = "submit";
+    for(let i=0;i<clocksTemplate.time.length;i++) clocksTemplate.time.item(i).classList.add("traveling");
+    initInputTime(event);
+  }
+
+  function timeTravelMouse() {
+    SETTINGS.timeTravel = true;
+    modes.timeTravelMeta = "submit";
     originX = event.clientX;
     originY = event.clientY;
     document.getElementsByTagName("body").item(0).classList.add("noSelect");
@@ -298,19 +330,34 @@ function amPmMeta() {
       stoppedClock();
     }
     window.addEventListener('mouseup', function() {
-      clocksTemplate.time.item(index).removeEventListener('mouseup', initInputTime);
       window.removeEventListener('mousemove', trackTime);
       document.getElementsByTagName("body").item(0).classList.remove("noSelect");
     });
   }
 
-  function initTimeFilter(e) {
-    timeFilter.filter(e, this, SETTINGS.amPm)
-  }
-
   function initInputTime(event) {
     index = event.target.getAttribute('data-index');
     showInputClock(index);
+  }
+
+  function showInputClock(index) {
+    let input = clocksTemplate.timeInput.item(index);
+    let time = clocksTemplate.time.item(index);
+    input.addEventListener('keydown', initTimeFilter);
+    //DST Control
+    if(SETTINGS.amPm) {
+      modes.amPmMeta = "timeTravel";
+      clocksTemplate.amPmMeta.item(index).classList.add('active');
+      clocksTemplate.amPmMeta.item(index).addEventListener('click', amPmMeta);
+    }
+    //Show Input Hide clock
+    input.classList.remove('hidden');
+    time.classList.add('hidden');
+    input.select();
+  }
+
+  function initTimeFilter(e) {
+    timeFilter.filter(e, this, SETTINGS.amPm)
   }
 
   global.submitTimeFilter = function(ele, index) {
@@ -319,37 +366,29 @@ function amPmMeta() {
     hideInputClock(index);
   }
 
-  function showInputClock(index) {
-    let input = clocksTemplate.timeInput.item(index);
-    let time = clocksTemplate.time.item(index);
-    input.addEventListener('keydown', initTimeFilter);
-
-    //Show Input Hide clock
-    input.classList.remove('hidden');
-    time.classList.add('hidden');
-    input.select();
+  global.noTimeTravel = function(index) {
+    for(let i=0;i<clocksTemplate.time.length;i++) clocksTemplate.time.item(i).classList.remove("traveling");
+    hideInputClock(index)
+    SETTINGS.timeTravel = false;
+    SETTINGS.timeTravelOffset = 0;
+    stoppedClock();
   }
 
   function hideInputClock(index) {
     let input = clocksTemplate.timeInput.item(index);
     let time = clocksTemplate.time.item(index);
     input.removeEventListener('keydown', initTimeFilter);
-
+    clocksTemplate.time.item(index).removeEventListener('mouseup', initInputTime);
+    //DST Control
+    if(SETTINGS.amPM) {
+      modes.amPmMeta = "display";
+      clocksTemplate.amPmMeta.item(index).classList.remove('active');
+      clocksTemplate.amPm.item(index).removeEventListener('click', amPmMeta);
+    }
     //Show Input Hide clock
     time.classList.remove('hidden');
     input.classList.add('hidden');
     input.value = "";
-  }
-
-  global.noTimeTravel = function(index) {
-    showHide("timeTravel", clocksTemplate.timeTravelMeta);
-    for(let i=0;i<clocksTemplate.time.length;i++) clocksTemplate.time.item(i).classList.remove("traveling");
-
-    hideInputClock(index)
-
-    SETTINGS.timeTravel = false;
-    SETTINGS.timeTravelOffset = 0;
-    stoppedClock();
   }
 
 //==================================
@@ -376,7 +415,7 @@ function amPmMeta() {
     for(let i=0;i<clocksBox.children.length;i++) {
       clocksTemplate.local[i].value = ZONES[i].local; //update clock name
       clocksTemplate.rawOffset[i].value = ZONES[i].rawOffset; //update GMT value
-      if(ZONES[i].dstOffset != 0) clocksTemplate.dstMeta[i].checked = true;
+      dstMeta(modes.dstMeta, i);
     }
   }
 
