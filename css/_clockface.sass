@@ -1,0 +1,127 @@
+.inner
+	height: 100%
+	padding-left: 2.1rem
+	padding-right: 2.3rem
+
+///////////////////////////////////////////////////////////////////////////
+// Remove Clock Button
+.removeBtn
+	border: none
+	color: $cn-ground
+	width: 1.3rem
+	height: 1.3rem
+	border-radius: 50%
+	background-color: $cn-choice
+	position: relative
+	top: 7.2rem
+	left: 100%
+
+///////////////////////////////////////////////////////////////////////////
+// The time display
+.clockFace
+	margin-top: 0
+	width: 100%
+	display: flex
+	align-content: center
+	justify-content: flex-start
+	position: relative
+	padding: .9rem 0 1.4rem 0
+	&.traveling
+		background-color: rgba($cn-type, .1)
+
+.time, .timeInput
+	font-size: 5rem
+	font-family: $font-numbers
+	color: $cn-type
+	background: none
+	border: none
+	width: auto
+	line-height: 0
+	height: 4.2rem
+	margin-right: .5rem
+	//trick to set baseline of clock face within it's box.
+	&::after
+		display: inline-block
+		content: ""
+		height: 4.2rem
+
+.time
+	span:first-child
+		display: inline-block
+		position: relative
+	span:nth-child(2)
+		display: inline-block
+		vertical-align: middle
+		position: relative
+		top: -.8rem
+		padding: 0 .2rem 0 .3rem
+		font-size: 5rem
+	span:last-child
+		display: inline-block
+
+.timeInput
+	width: 13.6rem
+	padding-top: 6px
+	margin-bottom: -7px
+	&:focus
+		border: none
+		box-sizing: none
+		outline: none
+	@include placeholder
+		//??
+
+
+///////////////////////////////////////////////////////////////////////////
+// Icons to the right of the time display
+.timeMeta
+	width: auto
+	display: flex
+	flex-direction: column
+	justify-content: flex-start
+	font-family: $font-text
+	.timeTravelMeta
+		color: rgba( $cn-type, .1 )
+	.dstMeta
+		color: rgba( $cn-type, .1 )
+	&.isDayLightSavings
+		color: $cn-type
+
+.traveling .timeTravelMeta
+	color: $cn-type
+	&.submit
+		background-color: springgreen
+	&.cancel
+		background-color: tomato
+
+///////////////////////////////////////////////////////////////////////////
+// Location field
+.local
+	font-size: 1.7rem
+	color: $cn-choice
+	background: none
+	border: none
+	width: 100%
+	padding-left: .2rem
+
+///////////////////////////////////////////////////////////////////////////
+// Below the Location search input
+.zoneMeta
+	display: flex
+	justify-content: flex-start
+	align-items: baseline
+	flex-wrap: nowrap
+	.date,
+	.rawOffset
+		font-size: 1.1rem
+		color: $cn-choice
+		background: none
+		border: none
+		display: inline
+		font-family: $font-numbers
+		margin-right: 0.9rem
+
+.clock hr
+	border: none
+	border-top: 2px solid $cn-choice
+	height: 0
+	margin: 0 0 .6rem 0

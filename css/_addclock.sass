@@ -1,0 +1,19 @@
+///////////////////////////////////////////////////////////////////////////
+// To prevent text selection while using the timeTravelMouse feature
+
+.addclock-button-wrapper
+	width: 100%
+	text-align: center
+	button
+		margin: 0 auto
+		border: none
+		background-color: $cn-type
+		color: $cn-ground
+		width: 3rem
+		height: 3rem
+		border-radius: 50%
+		font-size: 3rem
+		line-height: 0
+	@media #{$med}
+		.eight &
+			display: none

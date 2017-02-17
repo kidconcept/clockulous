@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css?family=Asap:400,400i,500,500i,700,700i|Hind+Madurai:300,400,500,600,700|Merriweather:300,300i,400,400i,700,700i,900,900i')
+@import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,700')
+
+$font-numbers: Comfortaa, sans
+$font-text: 'Hind Madurai', serif
+
+// Colors Night
+$cn-ground: #222
+$cn-type: whitesmoke
+$cn-choice: darkcyan
+
+// Colors Day
+$cd-ground: whitesmoke
+$cd-type: whitesmoke
+$cd-choice: darkcyan
+
+// Responsive States
+$pt: "(orientation: portrait)"
+$med: "(max-width: 1280px)"
+$sml: "(max-width: 667px)"
+
+///////////////////////////////////////////////////////////////////////////
+// Utilities
+@mixin placeholder
+	&::-webkit-input-placeholder
+		@content
+	&:-moz-placeholder
+		@content
+	&::-moz-placeholder
+		@content
+	&:-ms-input-placeholder
+		@content

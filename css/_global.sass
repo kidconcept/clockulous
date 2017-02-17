@@ -1,0 +1,36 @@
+body, html
+	padding: 0
+	margin: 0
+	height: 100%
+
+body
+	font-family: $font-text
+	color: $cn-type
+	box-sizing: border-box
+	padding: 0 10vw
+
+///////////////////////////////////////////////////////////////////////////
+// Global Selectors
+button,
+input
+	cursor: pointer
+
+#template
+	display: none
+
+.hidden
+	display: none
+
+///////////////////////////////////////////////////////////////////////////
+// To prevent text selection while using the timeTravelMouse feature
+.noSelect *,
+.time
+	-webkit-user-select: none
+	-moz-user-select: none
+	-ms-user-select: none
+	user-select: none
+
+.noSelect *
+	pointer-events: none
+	& .time
+		pointer-events: all

@@ -22,24 +22,28 @@ var gmaps = (function() {
   }
 
   /// Generate google Autocomplete for Timezone Search Box
-  var mapOptions = {};
+  var options = {};
 
-  var defaultBounds = new google.maps.LatLngBounds(
-    new google.maps.LatLng(-90, -180),
-    new google.maps.LatLng(90, 180)
-  );
+  function gmapOption() {
+    var defaultBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(-90, -180),
+      new google.maps.LatLng(90, 180)
+    );
 
-  var options = {
-    bounds: defaultBounds,
-    types: ['(regions)']
-  };
+    options = {
+      bounds: defaultBounds,
+      types: ['(regions)']
+    };
+  }
+  gmapOption();
+
 
   global.addAutoCompletes = function(index) {
     nthChild = index+1;
     var input = document.querySelector('.clock:nth-child('+nthChild+') .local');
-    var autocomplete = new google.maps.places.Autocomplete(input, options);
-    /// On Init of New clock
 
+    /// On Init of New clock
+    var autocomplete = new google.maps.places.Autocomplete(input, options);
 
     /// On User Search
     if(autocomplete) {
@@ -68,13 +72,13 @@ var gmaps = (function() {
 
         // Save Name
         clockulous.editLocal(place.name, index);
+        
       });
     } else {
       clockulous.editGmtGmaps(index);
     };
     return autocomplete;
   };
-
 
   return global;
 

@@ -1,98 +1,134 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Synchronous Time Zones</title>
-    <link rel="stylesheet" href="./css/app.css">
-  </head>
-  <body>
+	<head>
+		<meta charset="utf-8">
+		<title>Synchronous Time Zones</title>
+		<link rel="stylesheet" href="./css/app.css">
+	</head>
+	<body id="body">
+		<div id="app">
+			<div class="menu-button-wrapper"><button id="menu-button" type="button" style="">=</button></div>
+			<div id="menu">
+				<section id="preamble">
+				<h1>Even a stopped Clock</h1>
+				<p>Clockblock.me is a small javascript application that helps you keep time on your friends, relations, or collegues around the world. It's open source, and the code is free to use for non comercial, with attribution projects. Please check out the code on github <a href="https://github.com/kidconcept/clockulous">clockulous</a>. Copyright <a href="">Creative Commons.</a>
+				</section>
+				<section id="settings">
+				<h1>Settings</h1>
+				<div class="daynight-wrapper">
+				  <label><span>12 Hour Clock</span><input id="amPmSetting" type="checkbox"><span>24 Hour Clock</span></label>
+				  <hr>
+				  <label><span>Day Theme</span><input id="themeSetting" type="checkbox"><span>Night Theme</span></label>
+				</div>
+				</section>
+				<section id="features">
+				<h1>How to Use Clockblock</h1>
+				<table>
+				  <tr>
+				    <th>Feature</th>
+				    <th>Description</th>
+				  </tr>
+				  <tr>
+				    <td>Add Clock</td>
+				    <td>To add a new clock, click the Add Button. <img src=""></img></td>
+				  </tr>
+				  <tr>
+				    <td>Remove Clock</td>
+				    <td>To remove a clock, click the Remove Button. <img src=""></img></td>
+				  </tr>
+				  <tr>
+				    <td>Time Travel</td>
+				    <td>To check what time it will be click on a clock time, or on a time travel icon <img src=""></img>. Then type the time and press <span class="keycommand">Return</span> or click the submit time-travel icon  <img src=""></img> To return to the current time, press <span class="keycommand">Esc</span> or click on the cancel time-travel icon. <img src=""></img></td>
+				  </tr>
+				  <tr>
+				    <td>Search Time Zones</td>
+				    <td>To search for a time zone type in the search field above the clock time. Select your time zone from the results list, and the clock should show the time for that region. Keep in mind countries may have more than one time zone.</td>
+				  </tr>
+				  <tr>
+				    <td>Rename Time Zones</td>
+				    <td>To rename a time zone, type in the search field above the clock time and press <span class="keycommand">Enter</span>. Don't select a time zone from the drop down.</td>
+				  </tr>
+				  <tr>
+				    <td>Daylight Savings Time</td>
+				    <td>If a time zone is currently within Daylight Savings Time (DST), the <img src=""></img> icon will light. Please note that currently the app only checks for DST when you first search for a time zone. If you pass into or out of DST after searching it won't update. To manually enable DST click the <img src=""></img></td>
+				  </tr>
+				  <tr>
+				    <td>Save</td>
+				    <td>Clock Block me should save to your browsers Local Storage automatically. If you aren't seeing the same settings when you come back to Clock Block using the same Browser, check to see if you have Local Storage disabled.</td>
+				  </tr>
+				</table>
+				</section>
+			</div>
+			<div id="wrapper"><div id="clocksBox"></div></div>
+			<div class="addclock-button-wrapper"><button id="addClockElement" type="button" style="">+</button></div>
+		</div>
 
-  <div id="app">
-    <div class="menu-button-wrapper"><button id="menu-button" type="button" style="">=</button></div>
-    <div id="menu">
-      <div id="preamble">
-        <h1>Even a stopped Clock</h1>
-        <p>Welcome to Clock Monster. This simple app hopes to help you keep track of your friends, relations, or collegues around the world. It's open source, please check out the code on github <a href="https://github.com/kidconcept/clockulous">clockulous</a>. By Dan Vallentyne. <a href="http://danvallentyne.com">danvallentyne.com</a></p>
-      </div>
-      <div id="settings">
-        <h1>Settings</h1>
-        <div class="daynight-wrapper">
-          <label>12 Hour Clock <input id="amPmSetting" type="checkbox"> 24 Hour Clock</label>
-        </div>
-      </div>
-    </div>
-
-    <div id="clocksBox"></div>
-    <div class="addclock-button-wrapper"><button id="addClockElement" type="button" style="">+</button></div>
-  </div>
-
-  <div class="clock" id="template">
-   <div class="inner">
-     <button class="removeBtn">-</button>
-     <input class="local" name='local' placeholder="Search for Location" data-tip="Search for a timezone by City, Country, or Region.">
-     <div class="clockFace">
-      <div class="time" data-tip="Click, or click and drag to time-travel"></div>
-       <input class="timeInput hidden" type="text" placeholder="00:00" minlength="4" maxlength="5" pattern="[0-2][0-4]:[0-6]\d" name="ChangeTime" title="eg 12:42">
-       <div class="timeMeta">
-         <span class="timeTravelMeta">tt</span>
-         <span class="dstMeta">dst</span>
-         <span class="amPmMeta"></span>
-       </div>
-     </div>
-     <div class="meta">
-       <span class="gmt">
-         <select id="rawOffset" class="rawOffset">
-           <option value="-43200">UTC−12:00</option>
-           <option value="-39600">UTC−11:00</option>
-           <option value="-36000">UTC−10:00</option>
-           <option value="-34200">UTC−09:30</option>
-           <option value="-32400">UTC−09:00</option>
-           <option value="-28800">UTC−08:00</option>
-           <option value="-25200">UTC−07:00</option>
-           <option value="-21600">UTC−06:00</option>
-           <option value="-18000">UTC−05:00</option>
-           <option value="-14400">UTC−04:00</option>
-           <option value="-12600">UTC−03:30</option>
-           <option value="-10800">UTC−03:00</option>
-           <option value="-7200">UTC−02:00</option>
-           <option value="-3600">UTC−01:00</option>
-           <option value="0">UTC±00:00</option>
-           <option value="3600">UTC+01:00</option>
-           <option value="7200">UTC+02:00</option>
-           <option value="10800">UTC+03:00</option>
-           <option value="12600">UTC+03:30</option>
-           <option value="14400">UTC+04:00</option>
-           <option value="16200">UTC+04:30</option>
-           <option value="18000">UTC+05:00</option>
-           <option value="19800">UTC+05:30</option>
-           <option value="20700">UTC+05:45</option>
-           <option value="21600">UTC+06:00</option>
-           <option value="23400">UTC+06:30</option>
-           <option value="25200">UTC+07:00</option>
-           <option value="28800">UTC+08:00</option>
-           <option value="30600">UTC+08:30</option>
-           <option value="31500">UTC+08:45</option>
-           <option value="32400">UTC+09:00</option>
-           <option value="34200">UTC+09:30</option>
-           <option value="36000">UTC+10:00</option>
-           <option value="37800">UTC+10:30</option>
-           <option value="39600">UTC+11:00</option>
-           <option value="43200">UTC+12:00</option>
-           <option value="45900">UTC+12:45</option>
-           <option value="46800">UTC+13:00</option>
-           <option value="49500">UTC+13:45</option>
-           <option value="50400">UTC+14:00</option>
-          </select>
-       </span>
-       <span class="date"></span>
-     </div>
-   </div>
-  </div>
-
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSKOzSS4QIenGIAeMpYMecNUn9pyDUb54&libraries=places"></script>
-  <script type="text/javascript" src="./dataservice.js"></script>
-  <script type="text/javascript" src="./timeFilter.js"></script>
-  <script type="text/javascript" src="./app.js"></script>
-
-  </body>
+		<div class="clock" id="template">
+		 <div class="inner">
+		   <button class="removeBtn">-</button>
+		   <div class="clockFace">
+		     <div class="time" data-tip="Click, or click and drag to time-travel"></div>
+		     <input class="timeInput hidden" type="text" placeholder="00:00" minlength="4" maxlength="5" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" name="ChangeTime" title="eg 12:42">
+		     <div class="timeMeta">
+		       <span class="amPmMeta"></span>
+		       <span class="timeTravelMeta">tt</span>
+		       <span class="dstMeta">dst</span>
+		     </div>
+		   </div>
+		   <hr>
+		   <input class="local" name='local' placeholder="Search for Location" data-tip="Search for a timezone by City, Country, or Region.">
+		   <div class="zoneMeta">
+		     <span class="gmt">
+		       <select id="rawOffset" class="rawOffset">
+		         <option value="-43200">UTC−12:00</option>
+		         <option value="-39600">UTC−11:00</option>
+		         <option value="-36000">UTC−10:00</option>
+		         <option value="-34200">UTC−09:30</option>
+		         <option value="-32400">UTC−09:00</option>
+		         <option value="-28800">UTC−08:00</option>
+		         <option value="-25200">UTC−07:00</option>
+		         <option value="-21600">UTC−06:00</option>
+		         <option value="-18000">UTC−05:00</option>
+		         <option value="-14400">UTC−04:00</option>
+		         <option value="-12600">UTC−03:30</option>
+		         <option value="-10800">UTC−03:00</option>
+		         <option value="-7200">UTC−02:00</option>
+		         <option value="-3600">UTC−01:00</option>
+		         <option value="0">UTC±00:00</option>
+		         <option value="3600">UTC+01:00</option>
+		         <option value="7200">UTC+02:00</option>
+		         <option value="10800">UTC+03:00</option>
+		         <option value="12600">UTC+03:30</option>
+		         <option value="14400">UTC+04:00</option>
+		         <option value="16200">UTC+04:30</option>
+		         <option value="18000">UTC+05:00</option>
+		         <option value="19800">UTC+05:30</option>
+		         <option value="20700">UTC+05:45</option>
+		         <option value="21600">UTC+06:00</option>
+		         <option value="23400">UTC+06:30</option>
+		         <option value="25200">UTC+07:00</option>
+		         <option value="28800">UTC+08:00</option>
+		         <option value="30600">UTC+08:30</option>
+		         <option value="31500">UTC+08:45</option>
+		         <option value="32400">UTC+09:00</option>
+		         <option value="34200">UTC+09:30</option>
+		         <option value="36000">UTC+10:00</option>
+		         <option value="37800">UTC+10:30</option>
+		         <option value="39600">UTC+11:00</option>
+		         <option value="43200">UTC+12:00</option>
+		         <option value="45900">UTC+12:45</option>
+		         <option value="46800">UTC+13:00</option>
+		         <option value="49500">UTC+13:45</option>
+		         <option value="50400">UTC+14:00</option>
+		        </select>
+		     </span>
+		     <span class="date"></span>
+		   </div>
+		 </div>
+		</div>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSKOzSS4QIenGIAeMpYMecNUn9pyDUb54&libraries=places"></script>
+		<script type="text/javascript" src="./dataservice.js"></script>
+		<script type="text/javascript" src="./timeFilter.js"></script>
+		<script type="text/javascript" src="./app.js"></script>
+	</body>
 </html>

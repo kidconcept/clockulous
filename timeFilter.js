@@ -1,26 +1,24 @@
 var timeFilter = (function() {
 
   let global = {};
-  global.submitInput = function(ele, clockType) {
-    let minutes, hours;
-    if (!ele.value) {
+  global.submitInput = function(ele, clockType, amPm) {
+    let minutes = 0, hours = 0;
+    if (ele.value === "") {
       clockulous.noTimeTravel();
-      return;
+      return false;
     }
-    if (!ele.value.match(/[:]/)) { // in the event they typed 3 numbers and left out the ":"
-      hours = parseInt(ele.value.slice(0, -2));
-      minutes = parseInt(ele.value.slice(-2));
+    if (!ele.value.match(/[:]/)) { // in the event they left out the ":"
+      if (ele.value.length<3) { hours = parseInt(ele.value) }
+      else {
+        hours = parseInt(ele.value.slice(0, -2));
+        minutes = parseInt(ele.value.slice(-2)); }
     } else if(ele.value.match(/:/)) {  // in the event they got a ":"
       splitStr = ele.value.split(":");
       hours = parseInt(splitStr[0]);
       minutes = parseInt(splitStr[1]);
     }
-    if ( clockType ) {
-
-    } else {
-      return hours*60*60+minutes*60
-    }
-
+    if (clockType && amPm === "PM") hours += 12;
+    return hours*60*60+minutes*60;
   }
 
   global.filter = function(evt, ele, clockType) {
@@ -28,8 +26,7 @@ var timeFilter = (function() {
     let key; key = evt.key;
     index = ele.getAttribute('data-index');
     if (key === "Enter") { clockulous.submitTimeFilter(ele, index) }
-    if (key === "Escape") { clockulous.noTimeTravel(ele) }
-
+    
     /////// Exclude non number characteres. I avoided a [^] match to leave operational keys enabled. //////
     if (key.length === 1) {
       if(key.match(/[A-Za-z\s\.\\\+\*\?\^\$\[\]\{\}\(\)\|\/\-&~!@#%`="><_',;]|Decimal|Multiply|Add|Divide|Subtract|Seperator/)) evt.preventDefault();
