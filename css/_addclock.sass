@@ -7,13 +7,43 @@
 	button
 		margin: 0 auto
 		border: none
-		background-color: $cn-type
-		color: $cn-ground
-		width: 3rem
-		height: 3rem
+		width: 4rem
+		height: 4rem
 		border-radius: 50%
 		font-size: 3rem
 		line-height: 0
-	@media #{$med}
-		.eight &
-			display: none
+		svg
+			width: 73%
+		@media #{$med}
+			.eight &
+				display: none
+
+.day .addclock-button-wrapper button
+	box-shadow: 0 .25rem 0 0 darken($cd-ground, 20%), inset 0 .1rem 0 0 lighten($cd-ground, 5%)
+	background-color: lighten($cd-ground, 1%)
+	svg
+		filter: drop-shadow(0 .1rem 0 darken($cd-ground, 20%))
+	svg path
+		fill: lighten($cd-ground, 20%)
+	&:active
+		box-shadow: inset 0 .25rem 0 0 darken($cd-ground, 20%), 0 .1rem 0 0 lighten($cd-ground, 5%)
+		background-color: darken($cd-ground, 10%)
+	&:focus
+		background-color: darken($cd-ground, 10%)
+		svg path
+			fill: lighten($cd-ground, 5%)
+
+.night .addclock-button-wrapper button
+	box-shadow: 0 .2rem 0 0 darken($cn-ground, 30%), inset 0 .1rem 0 0 lighten($cn-ground, 5%)
+	background-color: lighten($cn-ground, 1%)
+	svg
+		filter: drop-shadow(0 .2rem 0 darken($cn-ground, 50%))
+	svg path
+		fill: lighten($cn-ground, 20%)
+	&:active
+		box-shadow: inset 0 .2rem 0 0 darken($cn-ground, 50%), 0 .1rem 0 0 lighten($cn-ground, 5%)
+		background-color: darken($cn-ground, 5%)
+	&:focus
+		background-color: $cn-ground
+		svg path
+			fill: lighten($cn-ground, 30%)

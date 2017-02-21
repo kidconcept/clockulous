@@ -2,19 +2,31 @@
 	height: 100%
 	padding-left: 2.1rem
 	padding-right: 2.3rem
+	.day &
+		background-color: $cd-clock
+		border-radius: 2rem
+		padding-left: 2.7rem
+		padding-right: 3rem
 
 ///////////////////////////////////////////////////////////////////////////
 // Remove Clock Button
 .removeBtn
 	border: none
-	color: $cn-ground
-	width: 1.3rem
-	height: 1.3rem
-	border-radius: 50%
-	background-color: $cn-choice
+	width: 1.7rem
+	height: 1.7rem
 	position: relative
-	top: 7.2rem
-	left: 100%
+	margin-left: -.1rem
+	background-size: contain
+	background-repeat: no-repeat
+	.day &
+		left: -1.5rem
+		top: 0.7rem
+		background-color: transparent
+		background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxNSAxNyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3BhY2U9InByZXNlcnZlIiBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjEuNDE0MjE7Ij48cGF0aCBkPSJNMC4wMzMsOC4xNjFjLTAuMDIyLC0wLjIzMSAtMC4wMzMsLTAuNDY2IC0wLjAzMywtMC43MDNjMCwtNC4xMTYgMy4zNDIsLTcuNDU4IDcuNDU4LC03LjQ1OGM0LjExNiwwIDcuNDU4LDMuMzQyIDcuNDU4LDcuNDU4YzAsMC4yMzcgLTAuMDExLDAuNDcyIC0wLjAzMiwwLjcwM2MtMC4zNTUsLTMuNzg3IC0zLjU0NiwtNi43NTYgLTcuNDI2LC02Ljc1NmMtMy44NzksMCAtNy4wNzEsMi45NjkgLTcuNDI1LDYuNzU2WiIgc3R5bGU9ImZpbGw6I2UyZTFkYTsiLz48Y2lyY2xlIGN4PSI3LjQ1OCIgY3k9IjguODY0IiByPSI3LjQ1OCIgc3R5bGU9ImZpbGw6I2ZkZmFmMDsiLz48cGF0aCBkPSJNNy40NTgsNy45ODFsMi4wOTIsLTIuMDkyYzAuMjQ0LC0wLjI0NCAwLjYzOSwtMC4yNDQgMC44ODMsMGMwLDAgMCwwIDAsMGMwLjI0NCwwLjI0NCAwLjI0NCwwLjYzOSAwLDAuODgybC0yLjA5MiwyLjA5M2wyLjA5MiwyLjA5MmMwLjI0NCwwLjI0MyAwLjI0NCwwLjYzOSAwLDAuODgyYzAsMCAwLDAuMDAxIDAsMC4wMDFjLTAuMjQ0LDAuMjQzIC0wLjYzOSwwLjI0MyAtMC44ODMsMGwtMi4wOTIsLTIuMDkybC0yLjA5MiwyLjA5MmMtMC4yNDQsMC4yNDMgLTAuNjM5LDAuMjQzIC0wLjg4MiwwYy0wLjAwMSwwIC0wLjAwMSwtMC4wMDEgLTAuMDAxLC0wLjAwMWMtMC4yNDQsLTAuMjQzIC0wLjI0NCwtMC42MzkgMCwtMC44ODJsMi4wOTIsLTIuMDkybC0yLjA5MiwtMi4wOTNjLTAuMjQ0LC0wLjI0MyAtMC4yNDQsLTAuNjM4IDAsLTAuODgyYzAsMCAwLDAgMC4wMDEsMGMwLjI0MywtMC4yNDQgMC42MzgsLTAuMjQ0IDAuODgyLDBsMi4wOTIsMi4wOTJaIiBzdHlsZT0iZmlsbDojZTJlMWRhOyIvPjwvc3ZnPg==")
+	.night &
+		top: 7.6rem
+		left: 100%
+		background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxNSAxNSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3BhY2U9InByZXNlcnZlIiBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjEuNDE0MjE7Ij48cGF0aCBkPSJNMTMuOTQzLDEyLjc5MWMtMC4xMzQsMC40OTggLTAuNDY0LDAuOTIyIC0wLjkxNCwxLjE3NWMtMS4wODEsMC42MDQgLTIuMzI2LDAuOTUgLTMuNjUxLDAuOTVjLTQuMTE2LDAgLTkuMzc4LC02LjkyIC05LjM3OCwtNy40NThjMCwtMC41MzggNS4yNjIsLTcuNDU4IDkuMzc4LC03LjQ1OGMxLjM1MSwwIDIuNjE5LDAuMzYgMy43MTIsMC45ODljMC40MTUsMC4yMzkgMC43MjYsMC42MjUgMC44NzEsMS4wODFjMS4wMzQsMy4zMTggMSw2Ljg5OSAtMC4wMTgsMTAuNzIxWm0tNS4zMTksLTYuMjE2bDIuMDkyLC0yLjA5MmMwLjI0NCwtMC4yNDQgMC42MzksLTAuMjQ0IDAuODgzLDBjMCwwIDAsMCAwLDAuMDAxYzAuMjQ0LDAuMjQzIDAuMjQ0LDAuNjM4IDAsMC44ODJsLTIuMDkyLDIuMDkybDIuMDkyLDIuMDkyYzAuMjQ0LDAuMjQ0IDAuMjQ0LDAuNjM5IDAsMC44ODNjMCwwIDAsMCAwLDBjLTAuMjQ0LDAuMjQ0IC0wLjYzOSwwLjI0NCAtMC44ODMsMGwtMi4wOTIsLTIuMDkybC0yLjA5MiwyLjA5MmMtMC4yNDQsMC4yNDQgLTAuNjM5LDAuMjQ0IC0wLjg4MiwwYzAsMCAtMC4wMDEsMCAtMC4wMDEsMGMtMC4yNDMsLTAuMjQ0IC0wLjI0MywtMC42MzkgMCwtMC44ODNsMi4wOTIsLTIuMDkybC0yLjA5MiwtMi4wOTJjLTAuMjQzLC0wLjI0NCAtMC4yNDMsLTAuNjM5IDAsLTAuODgyYzAsLTAuMDAxIDAuMDAxLC0wLjAwMSAwLjAwMSwtMC4wMDFjMC4yNDMsLTAuMjQ0IDAuNjM4LC0wLjI0NCAwLjg4MiwwbDIuMDkyLDIuMDkyWiIgc3R5bGU9ImZpbGw6IzAwOGI4YjsiLz48L3N2Zz4=")
 
 ///////////////////////////////////////////////////////////////////////////
 // The time display
@@ -26,24 +38,31 @@
 	justify-content: flex-start
 	position: relative
 	padding: .9rem 0 1.4rem 0
-	&.traveling
-		background-color: rgba($cn-type, .1)
 
 .time, .timeInput
-	font-size: 5rem
+	@extend .type-color
 	font-family: $font-numbers
-	color: $cn-type
+	font-weight: 400
 	background: none
 	border: none
 	width: auto
 	line-height: 0
-	height: 4.2rem
 	margin-right: .5rem
 	//trick to set baseline of clock face within it's box.
 	&::after
 		display: inline-block
 		content: ""
+
+.night .time, .night .timeInput
+	font-size: 5rem
+	height: 4.2rem
+	&::after
 		height: 4.2rem
+.day .time, .day .timeInput
+	font-size: 4.3rem
+	height: 3.6rem
+	&::after
+		height: 3.6rem
 
 .time
 	span:first-child
@@ -63,6 +82,8 @@
 	width: 13.6rem
 	padding-top: 6px
 	margin-bottom: -7px
+	.day &
+		width: 11.6rem
 	&:focus
 		border: none
 		box-sizing: none
@@ -77,51 +98,99 @@
 	width: auto
 	display: flex
 	flex-direction: column
-	justify-content: flex-start
+	justify-content: space-between
+	padding-top: 0.2rem
+	margin-left: 0.4rem
 	font-family: $font-text
-	.timeTravelMeta
-		color: rgba( $cn-type, .1 )
-	.dstMeta
-		color: rgba( $cn-type, .1 )
-	&.isDayLightSavings
-		color: $cn-type
 
-.traveling .timeTravelMeta
-	color: $cn-type
-	&.submit
-		background-color: springgreen
-	&.cancel
-		background-color: tomato
+.amPmMeta
+	div, button
+		background-size: contain
+		background-repeat: no-repeat
+		.day &
+			width: 2.2rem
+			height: 1.2rem
+		.night &
+			width: 2.4rem
+			height: 1.6rem
+	.switch
+		@include theme(background-color, $cd-choice, $cn-choice)
+
+.timeTravelMeta
+	background-size: contain
+	background-repeat: no-repeat
+	.day &
+		width: 2.58rem
+		height: 1.6rem
+	.night &
+		width: 2.88rem
+		height: 1.8rem
 
 ///////////////////////////////////////////////////////////////////////////
 // Location field
 .local
-	font-size: 1.7rem
-	color: $cn-choice
+	@extend .choice-color
+	@include selection
+		background-color: $cd-choice
+		color: $cd-clock
+	@include theme(font-size, 1.6rem, 1.7rem)
+	font-family: $font-text
+	font-weight: 500
+	font-style: italic
 	background: none
 	border: none
 	width: 100%
 	padding-left: .2rem
+	&:focus
+		border: none
+		outline: none
+		box-shadow: none
 
 ///////////////////////////////////////////////////////////////////////////
 // Below the Location search input
 .zoneMeta
 	display: flex
-	justify-content: flex-start
-	align-items: baseline
+	justify-content: space-between
+	align-items: flex-end
 	flex-wrap: nowrap
-	.date,
-	.rawOffset
-		font-size: 1.1rem
-		color: $cn-choice
-		background: none
-		border: none
-		display: inline
+	margin-top: 0.3rem
+	padding-left: 0.2rem
+	.date
+		@extend .choice-color
 		font-family: $font-numbers
+		font-weight: 400
+		font-size: 1rem
+		background: none
+		display: inline
 		margin-right: 0.9rem
+	.gmt
+		@extend .choice-background-color
+		border-radius: 0.4rem
+	.rawOffset
+		@include theme(color, $cd-clock, $cd-ground)
+		font-size: 0.8rem
+		cursor: pointer
+		padding: 0.2rem 0.6rem
+		background: transparent
+		border: none
+		-webkit-user-select: none
+		-moz-user-select: -moz-none
+		-ms-user-select: none
+		user-select: none
+		-webkit-appearance: none
+		-moz-appearance: radio-container
+		appearance: none
+.dstMeta
+	color: rgba( $cn-type, .1 )
+	width: 1.28rem
+	height: 1.06rem
+	svg
+		width: 100%
 
 .clock hr
+	@include theme(border-color, $cd-choice, $cn-choice)
 	border: none
-	border-top: 2px solid $cn-choice
+	border-top-width: 2px
+	border-top-style: solid
 	height: 0
 	margin: 0 0 .6rem 0

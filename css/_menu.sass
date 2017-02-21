@@ -1,12 +1,12 @@
 #menu
-	display: none
 	position: absolute
+	bottom: 100%
 	z-index: 10
-	border: 1px solid $cn-type
-	margin: 10%
-	padding: 10%
+	margin-bottom: -3rem
+	.background
+		background-color: $cd-clock
 	&.open
-		display: block
+		bottom: auto
 
 .menu-button-wrapper
 	width: 100%
@@ -15,11 +15,17 @@
 	button
 		margin: 0 auto
 		display: block
-		border: none
-		background-color: $cn-type
-		color: $cn-ground
-		width: 3rem
+		border-bottom-left-radius: 1rem
+		border-bottom-right-radius: 1rem
 		height: 3rem
-		border-radius: 50%
-		font-size: 3rem
+		padding: 1.5rem 2.5rem
 		line-height: 0
+		font-size: 1.3rem
+		@include theme(color, $cd-choice, darken($cn-type, 45%))
+		@include theme(background-color, $cd-clock, lighten($cn-ground, 5%))
+		& span
+			border-bottom-width: 1px
+			border-bottom-style: solid
+			@include theme(border-color, $cd-choice, darken($cn-type, 45%))
+		.night &
+			border: .5rem solid darken($cn-ground, 3%)

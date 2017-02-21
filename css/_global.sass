@@ -5,15 +5,31 @@ body, html
 
 body
 	font-family: $font-text
+	font-weight: $font-weight-text
 	color: $cn-type
 	box-sizing: border-box
 	padding: 0 10vw
+	&.day
+		background-color: $cd-ground
+	&.night
+		background-color: $cn-ground
+
+#app
+	@extend .type-color
 
 ///////////////////////////////////////////////////////////////////////////
 // Global Selectors
 button,
 input
 	cursor: pointer
+
+button
+	border: none
+	background: none
+	padding: 0
+	margin: 0
+	&:active, &:focus
+		outline: none
 
 #template
 	display: none

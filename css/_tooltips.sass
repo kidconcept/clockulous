@@ -1,0 +1,27 @@
+///////////////////////////////////////////////////////////////////////////
+// Global Selectors
+.tool-tip
+	color: darken(mix($cd-tooltip, $cd-type, 40%), 15%)
+	background-color: $cd-tooltip
+	box-shadow: 0px 6px 19px -6px rgba(darken($cd-ground, 75%), .3)
+	position: absolute
+	font-style: italic
+	padding: 1.2rem 1.7rem
+	border-radius: 0.5rem
+	z-index: 10
+	&.locations
+		left: 39px
+		top: 5.6rem
+	&.time-travel
+	&::after
+		display: block
+		content: ""
+		width: 0
+		height: 0
+		border-left: .8rem solid transparent
+		border-right: .8rem solid transparent
+		border-top: .8rem solid $cd-tooltip
+		box-shadow: 0px 6px 19px -6px rgba(darken($cd-ground, 75%), .3)
+		position: absolute
+		top: 3.5rem
+		left: 1.4rem

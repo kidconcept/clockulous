@@ -1,18 +1,24 @@
-@import url('https://fonts.googleapis.com/css?family=Asap:400,400i,500,500i,700,700i|Hind+Madurai:300,400,500,600,700|Merriweather:300,300i,400,400i,700,700i,900,900i')
-@import url('https://fonts.googleapis.com/css?family=Comfortaa:300,400,700')
+@import url('https://fonts.googleapis.com/css?family=Asap:400,500i|Comfortaa:400')
 
 $font-numbers: Comfortaa, sans
-$font-text: 'Hind Madurai', serif
+$font-text: 'Asap', serif
+$font-weight-text: 500
 
 // Colors Night
 $cn-ground: #222
 $cn-type: whitesmoke
 $cn-choice: darkcyan
+$cn-disabled: #363636
+$cn-dst: #FDAE00
 
 // Colors Day
-$cd-ground: whitesmoke
-$cd-type: whitesmoke
-$cd-choice: darkcyan
+$cd-ground: #f7ecb8
+$cd-clock: #fffdf6
+$cd-type: #403d2d
+$cd-choice: #2ca2d2
+$cd-tooltip: #add9ea
+$cd-disabled: #EFEDE7
+$cd-dst: #FDAE00
 
 // Responsive States
 $pt: "(orientation: portrait)"
@@ -29,4 +35,10 @@ $sml: "(max-width: 667px)"
 	&::-moz-placeholder
 		@content
 	&:-ms-input-placeholder
+		@content
+
+@mixin selection
+	&::-moz-selection
+		@content
+	&::selection
 		@content
