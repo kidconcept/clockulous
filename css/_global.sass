@@ -11,8 +11,12 @@ body
 	padding: 0 10vw
 	&.day
 		background-color: $cd-ground
+		@media #{$sml}
+			padding: 0
 	&.night
 		background-color: $cn-ground
+	@media #{$med}
+		padding: 0 6.4vw
 
 #app
 	@extend .type-color
@@ -20,7 +24,8 @@ body
 ///////////////////////////////////////////////////////////////////////////
 // Global Selectors
 button,
-input
+input,
+label
 	cursor: pointer
 
 button
@@ -36,6 +41,13 @@ button
 
 .hidden
 	display: none
+
+.keycommand
+	@include theme(background-color, $cd-disabled, lighten($cn-disabled, 10%))
+	border-radius: 0.3rem
+	padding: 0.2rem 0.6rem
+	margin: 0.2rem
+	font-family: monospace
 
 ///////////////////////////////////////////////////////////////////////////
 // To prevent text selection while using the timeTravelMouse feature

@@ -1,0 +1,71 @@
+.pac-container
+	@include theme(background-color, $cd-clock, $cn-ground)
+	font-family: $font-text
+	border-top: none
+	margin-top: .5rem
+	overflow: visible
+	transform-origin: top left
+	.day &
+		box-shadow: 0 .2rem 0 0 rgba(0, 0, 0, 0.2)
+		padding: 0 3rem 0 2.7rem
+		border-bottom-right-radius: 01rem
+		border-bottom-left-radius: 1rem
+		border-bottom: .2rem solid lighten($cd-clock, 50%)
+		border-right: .2rem solid lighten($cd-clock, 50%)
+		border-left: .2rem solid lighten($cd-clock, 50%)
+	.night &
+		box-shadow: none
+		padding: 0
+
+.pac-item
+	@include theme(color, lighten($cd-type, 50%), darken($cn-type,25%))
+	font-size: .6rem
+	.day &
+		border-top: none
+		padding: .1rem 0
+		border-bottom-width: .06rem
+		border-bottom-style: solid
+		&:hover
+			background-color: darken($cd-clock, 2.5%)
+		&.pac-item-selected
+			background-color: darken($cd-clock, 4%)
+	.night &
+		padding: 0
+		border-top: .06rem solid $cn-ground
+		border-bottom: .06rem solid $cn-ground
+		&:last-child
+			border-bottom: .06rem solid darken($cn-ground, 25%)
+			padding-bottom: .2rem
+			margin-bottom: .3rem
+		&:hover
+			border-top: .06rem solid $cn-choice
+			border-bottom: .06rem solid $cn-choice
+			background-color: transparent
+		&.pac-item-selected
+			position: relative
+			overflow: visible
+			&::before
+				background-color: $cn-choice
+				content: ''
+				width: .6rem
+				height: .2rem
+				border-radius: .2rem
+				display: block
+				position: absolute
+				left: -1.1rem
+				margin-top: -.15rem
+				top: 50%
+			background-color: transparent
+
+.pac-item-query
+	font-size: .8rem
+	//font-weight: bold
+	@include theme(color, desaturate(lighten($cd-type, 50%), 20%), darken($cn-type,25%))
+
+.pac-matched
+	font-size: .8rem
+	//font-weight: bold
+	@include theme(color, darken($cd-type, 50%), $cn-choice)
+
+.pac-icon
+	display: none

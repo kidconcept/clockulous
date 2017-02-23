@@ -7,6 +7,8 @@
 	flex-wrap: wrap
 	height: 100%
 	position: relative
+	@media #{$sml}
+		height: auto
 
 #wrapper
 	width: 100%
@@ -37,7 +39,7 @@ $ch: 50rem
 
 @media #{$med}
 	#clocksBox
-		width: 56rem
+		width: ($cw*2/3)
 		.one &, .two &
 			height: ($ch*1/3)
 		.three & .four &
@@ -63,3 +65,5 @@ $ch: 50rem
 	@media #{$med}
 		&:nth-child(9)
 			display: none
+	@media #{$sml}
+		padding: .9rem 0

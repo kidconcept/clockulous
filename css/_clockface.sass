@@ -1,12 +1,16 @@
 .inner
 	height: 100%
-	padding-left: 2.1rem
-	padding-right: 2.3rem
+	.night &
+		padding: 0 2.3rem 0 2.1rem
+		@media #{$sml}
+			padding-left: 0 0 0 .5rem
 	.day &
 		background-color: $cd-clock
 		border-radius: 2rem
-		padding-left: 2.7rem
-		padding-right: 3rem
+		padding: 0
+		@media #{$sml}
+			padding: 0 2rem
+			border-radius: 0
 
 ///////////////////////////////////////////////////////////////////////////
 // Remove Clock Button
@@ -19,8 +23,9 @@
 	background-size: contain
 	background-repeat: no-repeat
 	.day &
-		left: -1.5rem
-		top: 0.7rem
+		left: 100%
+		top: 0.9rem
+		margin-left: -2.5rem
 		background-color: transparent
 		background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxNSAxNyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3BhY2U9InByZXNlcnZlIiBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjEuNDE0MjE7Ij48cGF0aCBkPSJNMC4wMzMsOC4xNjFjLTAuMDIyLC0wLjIzMSAtMC4wMzMsLTAuNDY2IC0wLjAzMywtMC43MDNjMCwtNC4xMTYgMy4zNDIsLTcuNDU4IDcuNDU4LC03LjQ1OGM0LjExNiwwIDcuNDU4LDMuMzQyIDcuNDU4LDcuNDU4YzAsMC4yMzcgLTAuMDExLDAuNDcyIC0wLjAzMiwwLjcwM2MtMC4zNTUsLTMuNzg3IC0zLjU0NiwtNi43NTYgLTcuNDI2LC02Ljc1NmMtMy44NzksMCAtNy4wNzEsMi45NjkgLTcuNDI1LDYuNzU2WiIgc3R5bGU9ImZpbGw6I2UyZTFkYTsiLz48Y2lyY2xlIGN4PSI3LjQ1OCIgY3k9IjguODY0IiByPSI3LjQ1OCIgc3R5bGU9ImZpbGw6I2ZkZmFmMDsiLz48cGF0aCBkPSJNNy40NTgsNy45ODFsMi4wOTIsLTIuMDkyYzAuMjQ0LC0wLjI0NCAwLjYzOSwtMC4yNDQgMC44ODMsMGMwLDAgMCwwIDAsMGMwLjI0NCwwLjI0NCAwLjI0NCwwLjYzOSAwLDAuODgybC0yLjA5MiwyLjA5M2wyLjA5MiwyLjA5MmMwLjI0NCwwLjI0MyAwLjI0NCwwLjYzOSAwLDAuODgyYzAsMCAwLDAuMDAxIDAsMC4wMDFjLTAuMjQ0LDAuMjQzIC0wLjYzOSwwLjI0MyAtMC44ODMsMGwtMi4wOTIsLTIuMDkybC0yLjA5MiwyLjA5MmMtMC4yNDQsMC4yNDMgLTAuNjM5LDAuMjQzIC0wLjg4MiwwYy0wLjAwMSwwIC0wLjAwMSwtMC4wMDEgLTAuMDAxLC0wLjAwMWMtMC4yNDQsLTAuMjQzIC0wLjI0NCwtMC42MzkgMCwtMC44ODJsMi4wOTIsLTIuMDkybC0yLjA5MiwtMi4wOTNjLTAuMjQ0LC0wLjI0MyAtMC4yNDQsLTAuNjM4IDAsLTAuODgyYzAsMCAwLDAgMC4wMDEsMGMwLjI0MywtMC4yNDQgMC42MzgsLTAuMjQ0IDAuODgyLDBsMi4wOTIsMi4wOTJaIiBzdHlsZT0iZmlsbDojZTJlMWRhOyIvPjwvc3ZnPg==")
 	.night &
@@ -38,6 +43,9 @@
 	justify-content: flex-start
 	position: relative
 	padding: .9rem 0 1.4rem 0
+	.day &
+		padding-left: 3rem
+		padding-right: 2.7rem
 
 .time, .timeInput
 	@extend .type-color
@@ -83,7 +91,7 @@
 	padding-top: 6px
 	margin-bottom: -7px
 	.day &
-		width: 11.6rem
+		width: 11.2rem
 	&:focus
 		border: none
 		box-sizing: none
@@ -113,8 +121,13 @@
 		.night &
 			width: 2.4rem
 			height: 1.6rem
-	.switch
+	button.switch
 		@include theme(background-color, $cd-choice, $cn-choice)
+		width: 2.5rem
+		height: 1.4rem
+		background-size: 73%
+		background-position: center
+		border-radius: .3rem
 
 .timeTravelMeta
 	background-size: contain
@@ -130,17 +143,23 @@
 // Location field
 .local
 	@extend .choice-color
-	@include selection
-		background-color: $cd-choice
-		color: $cd-clock
 	@include theme(font-size, 1.6rem, 1.7rem)
+	.day &
+		padding: 0 3rem 0 2.7rem
+		@include selection
+			background-color: $cd-choice
+			color: $cd-clock
+	.night &
+		@include selection
+			background-color: darken($cn-ground, 10%)
+			color: $cn-type
 	font-family: $font-text
 	font-weight: 500
 	font-style: italic
 	background: none
 	border: none
 	width: 100%
-	padding-left: .2rem
+	box-sizing: border-box
 	&:focus
 		border: none
 		outline: none
@@ -153,24 +172,19 @@
 	justify-content: space-between
 	align-items: flex-end
 	flex-wrap: nowrap
-	margin-top: 0.3rem
-	padding-left: 0.2rem
+	margin-bottom: .3rem
+	@extend .choice-color
 	.date
-		@extend .choice-color
 		font-family: $font-numbers
 		font-weight: 400
 		font-size: 1rem
 		background: none
 		display: inline
-		margin-right: 0.9rem
 	.gmt
-		@extend .choice-background-color
-		border-radius: 0.4rem
 	.rawOffset
-		@include theme(color, $cd-clock, $cd-ground)
+		@extend .choice-color
 		font-size: 0.8rem
 		cursor: pointer
-		padding: 0.2rem 0.6rem
 		background: transparent
 		border: none
 		-webkit-user-select: none
@@ -180,10 +194,15 @@
 		-webkit-appearance: none
 		-moz-appearance: radio-container
 		appearance: none
+	.day &
+		padding: 0 3rem 0 2.7rem
+
+
 .dstMeta
 	color: rgba( $cn-type, .1 )
 	width: 1.28rem
 	height: 1.06rem
+	margin-bottom: .1rem
 	svg
 		width: 100%
 
@@ -193,4 +212,6 @@
 	border-top-width: 2px
 	border-top-style: solid
 	height: 0
-	margin: 0 0 .6rem 0
+	margin: 0 0 0.8rem 0
+	.day &
+		margin: 0 3rem .8rem 2.7rem

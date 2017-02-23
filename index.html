@@ -4,53 +4,70 @@
 		<meta charset="utf-8">
 		<title>Synchronous Time Zones</title>
 		<link rel="stylesheet" href="./css/app.css">
+		<meta name="viewport" content="width=device-width">
 	</head>
 	<body>
 		<div id="app">
 			<div id="menu">
 				<div class="background">
+					<div class="menu-button-wrapper close"><button id="menuButtonClose" type="button" style=""><span>close</span></button></div>
 					<section id="preamble">
-						<h1>Even a stopped Clock</h1>
-						<p>Clockblock.me is a small javascript application that helps you keep time on your friends, relations, or collegues around the world. It's open source, and the code is free to use for non comercial, with attribution projects. Please check out the code on github <a href="https://github.com/kidconcept/clockulous">clockulous</a>. Copyright <a href="">Creative Commons.</a>
-					</section>
-					<section id="settings">
+						<h1>Even a stopped clock</h1>
+						<p>Sweetclocks.party helps you keep time on your friends, relations, or collegues around the world. I wrote it after getting tired of guessing what time zones my friends and family were in. Sweetclocks lets you search for locations, predict times, and remembers what clocks you had opened last. Thanks for checking it out!</p>
+						<p>Sweetclocks is new and still has some bugs. If you'd like to report a bug, please send mail to <a href="mailto:whoops@sweetclocks.party">whoops@sweetclocks.party</a></p>
+						<p>You can check out the code for sweetclocks on <a href="https://github.com/kidconcept/clockulous">github</a></p>
 						<h1>Settings</h1>
-						<div class="daynight-wrapper">
-						  <label><span>12 Hour Clock</span><input id="amPmSetting" type="checkbox"><span>24 Hour Clock</span></label>
-						  <hr>
-						  <label><span>Day Theme</span><input id="themeSetting" type="checkbox"><span>Night Theme</span></label>
+						<div id="settings">
+							<div>
+								<h2>Clock Format</h2>
+								<span class="left">12 Hour</span>
+								<label class="checkboxwrapper">
+									<input id="amPmSetting" type="checkbox">
+									<span></span>
+								</label>
+								<span class="right">24 Hour</span>
+							</div>
+							<div>
+								<h2>Theme</h2>
+								<span class="left">Day</span>
+								<label class="checkboxwrapper">
+									<input id="themeSetting" type="checkbox">
+									<span></span>
+								</label>
+								<span class="right">Night</span>
+							</div>
 						</div>
 					</section>
 					<section id="features">
-						<h1>How to Use Clockblock</h1>
+						<h1>How to use Sweetclocks</h1>
 						<table>
 						  <tr>
-						    <th>Feature</th>
-						    <th>Description</th>
-						  </tr>
-						  <tr>
 						    <td>Add Clock</td>
-						    <td>To add a new clock, click the Add Button. <img src=""></td>
+						    <td>To add a new clock, click <span class="icon-label">Add Button <span class="icon add"></span></span></td>
 						  </tr>
 						  <tr>
 						    <td>Remove Clock</td>
-						    <td>To remove a clock, click the Remove Button. <img src=""></td>
+						    <td>To remove a clock, click <span class="icon-label">Remove Button <span class="icon remove"></span></span></td>
 						  </tr>
 						  <tr>
 						    <td>Time Travel</td>
-						    <td>To check what time it will be click on a clock time, or on a time travel icon <img src="">. Then type the time and press <span class="keycommand">Return</span> or click the submit time-travel icon  <img src=""> To return to the current time, press <span class="keycommand">Esc</span> or click on the cancel time-travel icon. <img src=""></td>
+						    <td>To predict a time click on the clock or on the <span class="icon-label">Time Travel Icon <span class="icon tt"></span></span> Type the time and press <span class="keycommand">Return</span> or click the <span class="icon-label"> Start Time Travel Icon <span class="icon tts"></span></span> To return to the current time, press <span class="keycommand">Esc</span> or click on the <span class="icon-label">Cancel Time Travel Icon <span class="icon ttc"></span></span></td>
 						  </tr>
 						  <tr>
 						    <td>Search Time Zones</td>
 						    <td>To search for a time zone type in the search field above the clock time. Select your time zone from the results list, and the clock should show the time for that region. Keep in mind countries may have more than one time zone.</td>
-						  </tr>
+						  <!-- </tr> -->
 						  <tr>
 						    <td>Rename Time Zones</td>
-						    <td>To rename a time zone, type in the search field above the clock time and press <span class="keycommand">Enter</span>. Don't select a time zone from the drop down.</td>
+						    <td>To rename a time zone, edit the name and press <span class="keycommand">Enter</span> without selecting a time zone from the list.</td>
+						  </tr>
+						  <tr>
+						    <td>Change UTC/GMT</td>
+						    <td>To manually change the UTC/GMT of a zone, click the UTC time offset and select a UTC from the dropdown</td>
 						  </tr>
 						  <tr>
 						    <td>Daylight Savings Time</td>
-						    <td>If a time zone is currently within Daylight Savings Time (DST), the <img src=""> icon will light. Please note that currently the app only checks for DST when you first search for a time zone. If you pass into or out of DST after searching it won't update. To manually enable DST click the <img src=""></td>
+						    <td>If a time zone is currently within Daylight Savings Time (DST), the <span class="icon-label"> DST Icon <span class="icon dst"></span></span> will light. Please note that currently Sweetclocks only checks for DST when you first search for a time zone. If you pass into or out of DST after searching it won't update. To manually enable/disable DST simply click the <span class="icon-label">DST Icon <span class="icon dst"></span></span></td>
 						  </tr>
 						  <tr>
 						    <td>Save</td>
@@ -59,81 +76,89 @@
 						</table>
 					</section>
 				</div>
-				<div class="menu-button-wrapper"><button id="menu-button" type="button" style=""><span>about</span></button></div>
+				<div class="menu-button-wrapper open"><button id="menuButtonOpen" type="button" style=""><span>about</span></button></div>
 			</div>
 			<div id="wrapper"><div id="clocksBox"></div></div>
 			<div class="addclock-button-wrapper"><button id="addClockElement" type="button" style=""><svg viewBox="0 0 31 31" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M12.48 12.48V2.4c0-.637.253-1.247.703-1.697.45-.45 1.06-.703 1.697-.703h1.08c.637 0 1.247.253 1.697.703.45.45.703 1.06.703 1.697v10.08h10.08c.637 0 1.247.253 1.697.703.45.45.703 1.06.703 1.697v1.08c0 .637-.253 1.247-.703 1.697-.45.45-1.06.703-1.697.703H18.36v10.08c0 .637-.253 1.247-.703 1.697-.45.45-1.06.703-1.697.703h-1.08c-.637 0-1.247-.253-1.697-.703-.45-.45-.703-1.06-.703-1.697V18.36H2.4c-.637 0-1.247-.253-1.697-.703-.45-.45-.703-1.06-.703-1.697v-1.08c0-.637.253-1.247.703-1.697.45-.45 1.06-.703 1.697-.703h10.08z" fill="#fff5c4"/></svg></button></div>
 		</div>
 
 		<div class="clock" id="template">
-		 <div class="inner">
-		   <button class="removeBtn"></button>
-		   <div class="clockFace">
-		     <div class="time" data-tip="Click and type to see different times"></div>
-		     <input class="timeInput hidden" type="text" placeholder="00:00" minlength="4" maxlength="5" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" name="ChangeTime" title="eg 12:42">
-		     <div class="timeMeta">
-		       <div class="amPmMeta">
+			<div class="inner">
+				<button class="removeBtn"></button>
+				<div class="clockFace">
+					<div class="time" data-tip="You can change the time here to see when it will be or when it was across all of your clocks"></div>
+					<input class="timeInput hidden" type="text" placeholder="00:00" minlength="4" maxlength="5" pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" name="ChangeTime" title="eg 12:42">
+					<div class="timeMeta">
+				<div class="amPmMeta">
 				   <div class="display"></div>
 				   <button class="switch hidden"></button>
-			   </div>
-		       <button class="timeTravelMeta"></button>
-		     </div>
-		   </div>
-		   <hr>
+				</div>
+				<button class="timeTravelMeta"></button>
+				</div>
+				</div>
+				<hr>
+				<div class="zoneMeta">
+					<span class="date"></span>
+					<button class="dstMeta"><svg viewBox="0 0 12 10" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M6.666 8.6c.062-.42-.8-.298-1.324-.536-.332-.15-.426-.368-.438-.512-.013-.144.003-.42.163-.676.165-.262.466-.372.642-.422.127-.037.462-.103.743-.103.23 0 .44.025.625.072.185.047.33.107.438.18.106.07.16.146.16.223 0 .063-.02.142-.062.237-.04.095-.09.177-.15.247-.058.07-.112.104-.162.104-.018 0-.067-.017-.146-.05-.08-.034-.167-.063-.265-.085-.096-.024-.21-.035-.342-.035-.235 0-.484.034-.557.173-.07.14.12.248.363.27.136.014.58.067.888.192.243.1.356.238.468.46.075.15.093.45-.046.67-.11.174-.353.35-.592.443-.523.207-1.067.202-1.52.045-.48-.167-.805-.42-.82-.52-.004-.03-.016-.13.016-.22.047-.13.134-.247.245-.318.05-.03.195-.076.237-.055.257.125.476.24.595.283.252.09.806.192.844-.068zm3.14.835H9.57c-.272 0-.408-.072-.408-.217v-1.81h-1.08c-.072 0-.124-.027-.156-.08-.032-.056-.048-.14-.048-.26v-.21c0-.116.016-.202.048-.256.032-.054.084-.082.156-.082h3.212c.072 0 .125.028.156.082.032.054.048.14.048.257v.21c0 .117-.016.202-.048.257-.03.054-.084.08-.156.08h-1.08v1.81c0 .146-.135.218-.407.218zM2.55 9.427H1.027c-.095 0-.164-.022-.207-.064C.78 9.32.757 9.25.757 9.156V6.764c0-.095.022-.164.065-.207.044-.043.113-.064.208-.064h1.52c.35 0 1 .137 1.455.427.46.293.503.74.503 1.124 0 .38-.062.827-.514 1.077-.457.254-1.09.307-1.443.307zM1.81 7.38v1.16h.74c.36 0 .883-.013.883-.496S2.91 7.38 2.55 7.38h-.74zm.338-1.808s6.287.027 7.72 0c-.034-1.012-1.114-3.29-3.817-3.29-2.7 0-3.934 2.126-3.902 3.29zm8.254-.172s1.607-.51 1.586-.68c-.023-.19-1.71-.514-1.71-.514s-.325.31-.302.61c.026.346.426.584.426.584zm-8.816-.017S-.02 4.873 0 4.703c.024-.19 1.71-.514 1.71-.514s.325.31.302.61c-.026.345-.426.583-.426.583zm.554-1.817s-.91-1.42-.786-1.537c.14-.132 1.643.696 1.643.696s.053.447-.157.663c-.24.248-.7.176-.7.176zm7.605-.038s.91-1.42.785-1.537c-.14-.13-1.642.698-1.642.698s-.053.447.156.663c.242.25.7.178.7.178zM3.473 2.27S3.143.616 3.303.552C3.48.482 4.576 1.8 4.576 1.8s-.114.436-.388.56c-.316.145-.717-.09-.717-.09zm4.905-.03s.33-1.653.17-1.717C8.37.453 7.274 1.77 7.274 1.77s.113.437.387.562c.317.144.718-.09.718-.09zm-1.962-.63S5.966-.015 5.794 0c-.19.017-.575 1.69-.575 1.69s.297.336.598.324c.346-.013.598-.404.598-.404z" fill="#fdae00"/></svg></button>
+					<span class="gmt">
+						<select class="rawOffset">
+							<option value="-43200">UTC−12:00</option>
+							<option value="-39600">UTC−11:00</option>
+							<option value="-36000">UTC−10:00</option>
+							<option value="-34200">UTC−09:30</option>
+							<option value="-32400">UTC−09:00</option>
+							<option value="-28800">UTC−08:00</option>
+							<option value="-25200">UTC−07:00</option>
+							<option value="-21600">UTC−06:00</option>
+							<option value="-18000">UTC−05:00</option>
+							<option value="-14400">UTC−04:00</option>
+							<option value="-12600">UTC−03:30</option>
+							<option value="-10800">UTC−03:00</option>
+							<option value="-7200">UTC−02:00</option>
+							<option value="-3600">UTC−01:00</option>
+							<option value="0">UTC±00:00</option>
+							<option value="3600">UTC+01:00</option>
+							<option value="7200">UTC+02:00</option>
+							<option value="10800">UTC+03:00</option>
+							<option value="12600">UTC+03:30</option>
+							<option value="14400">UTC+04:00</option>
+							<option value="16200">UTC+04:30</option>
+							<option value="18000">UTC+05:00</option>
+							<option value="19800">UTC+05:30</option>
+							<option value="20700">UTC+05:45</option>
+							<option value="21600">UTC+06:00</option>
+							<option value="23400">UTC+06:30</option>
+							<option value="25200">UTC+07:00</option>
+							<option value="28800">UTC+08:00</option>
+							<option value="30600">UTC+08:30</option>
+							<option value="31500">UTC+08:45</option>
+							<option value="32400">UTC+09:00</option>
+							<option value="34200">UTC+09:30</option>
+							<option value="36000">UTC+10:00</option>
+							<option value="37800">UTC+10:30</option>
+							<option value="39600">UTC+11:00</option>
+							<option value="43200">UTC+12:00</option>
+							<option value="45900">UTC+12:45</option>
+							<option value="46800">UTC+13:00</option>
+							<option value="49500">UTC+13:45</option>
+							<option value="50400">UTC+14:00</option>
+						</select>
+					</span>
+				</div>
 		   <input class="local" name='local' placeholder="Search for Location" data-tip="Search for a timezone by City, Country, or Region.">
-		   <div class="zoneMeta">
-		     <span class="gmt">
-		       <select class="rawOffset">
-		         <option value="-43200">UTC−12:00</option>
-		         <option value="-39600">UTC−11:00</option>
-		         <option value="-36000">UTC−10:00</option>
-		         <option value="-34200">UTC−09:30</option>
-		         <option value="-32400">UTC−09:00</option>
-		         <option value="-28800">UTC−08:00</option>
-		         <option value="-25200">UTC−07:00</option>
-		         <option value="-21600">UTC−06:00</option>
-		         <option value="-18000">UTC−05:00</option>
-		         <option value="-14400">UTC−04:00</option>
-		         <option value="-12600">UTC−03:30</option>
-		         <option value="-10800">UTC−03:00</option>
-		         <option value="-7200">UTC−02:00</option>
-		         <option value="-3600">UTC−01:00</option>
-		         <option value="0">UTC±00:00</option>
-		         <option value="3600">UTC+01:00</option>
-		         <option value="7200">UTC+02:00</option>
-		         <option value="10800">UTC+03:00</option>
-		         <option value="12600">UTC+03:30</option>
-		         <option value="14400">UTC+04:00</option>
-		         <option value="16200">UTC+04:30</option>
-		         <option value="18000">UTC+05:00</option>
-		         <option value="19800">UTC+05:30</option>
-		         <option value="20700">UTC+05:45</option>
-		         <option value="21600">UTC+06:00</option>
-		         <option value="23400">UTC+06:30</option>
-		         <option value="25200">UTC+07:00</option>
-		         <option value="28800">UTC+08:00</option>
-		         <option value="30600">UTC+08:30</option>
-		         <option value="31500">UTC+08:45</option>
-		         <option value="32400">UTC+09:00</option>
-		         <option value="34200">UTC+09:30</option>
-		         <option value="36000">UTC+10:00</option>
-		         <option value="37800">UTC+10:30</option>
-		         <option value="39600">UTC+11:00</option>
-		         <option value="43200">UTC+12:00</option>
-		         <option value="45900">UTC+12:45</option>
-		         <option value="46800">UTC+13:00</option>
-		         <option value="49500">UTC+13:45</option>
-		         <option value="50400">UTC+14:00</option>
-		        </select>
-		     </span>
-			 <button class="dstMeta"><svg viewBox="0 0 12 10" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414"><path d="M6.666 8.6c.062-.42-.8-.298-1.324-.536-.332-.15-.426-.368-.438-.512-.013-.144.003-.42.163-.676.165-.262.466-.372.642-.422.127-.037.462-.103.743-.103.23 0 .44.025.625.072.185.047.33.107.438.18.106.07.16.146.16.223 0 .063-.02.142-.062.237-.04.095-.09.177-.15.247-.058.07-.112.104-.162.104-.018 0-.067-.017-.146-.05-.08-.034-.167-.063-.265-.085-.096-.024-.21-.035-.342-.035-.235 0-.484.034-.557.173-.07.14.12.248.363.27.136.014.58.067.888.192.243.1.356.238.468.46.075.15.093.45-.046.67-.11.174-.353.35-.592.443-.523.207-1.067.202-1.52.045-.48-.167-.805-.42-.82-.52-.004-.03-.016-.13.016-.22.047-.13.134-.247.245-.318.05-.03.195-.076.237-.055.257.125.476.24.595.283.252.09.806.192.844-.068zm3.14.835H9.57c-.272 0-.408-.072-.408-.217v-1.81h-1.08c-.072 0-.124-.027-.156-.08-.032-.056-.048-.14-.048-.26v-.21c0-.116.016-.202.048-.256.032-.054.084-.082.156-.082h3.212c.072 0 .125.028.156.082.032.054.048.14.048.257v.21c0 .117-.016.202-.048.257-.03.054-.084.08-.156.08h-1.08v1.81c0 .146-.135.218-.407.218zM2.55 9.427H1.027c-.095 0-.164-.022-.207-.064C.78 9.32.757 9.25.757 9.156V6.764c0-.095.022-.164.065-.207.044-.043.113-.064.208-.064h1.52c.35 0 1 .137 1.455.427.46.293.503.74.503 1.124 0 .38-.062.827-.514 1.077-.457.254-1.09.307-1.443.307zM1.81 7.38v1.16h.74c.36 0 .883-.013.883-.496S2.91 7.38 2.55 7.38h-.74zm.338-1.808s6.287.027 7.72 0c-.034-1.012-1.114-3.29-3.817-3.29-2.7 0-3.934 2.126-3.902 3.29zm8.254-.172s1.607-.51 1.586-.68c-.023-.19-1.71-.514-1.71-.514s-.325.31-.302.61c.026.346.426.584.426.584zm-8.816-.017S-.02 4.873 0 4.703c.024-.19 1.71-.514 1.71-.514s.325.31.302.61c-.026.345-.426.583-.426.583zm.554-1.817s-.91-1.42-.786-1.537c.14-.132 1.643.696 1.643.696s.053.447-.157.663c-.24.248-.7.176-.7.176zm7.605-.038s.91-1.42.785-1.537c-.14-.13-1.642.698-1.642.698s-.053.447.156.663c.242.25.7.178.7.178zM3.473 2.27S3.143.616 3.303.552C3.48.482 4.576 1.8 4.576 1.8s-.114.436-.388.56c-.316.145-.717-.09-.717-.09zm4.905-.03s.33-1.653.17-1.717C8.37.453 7.274 1.77 7.274 1.77s.113.437.387.562c.317.144.718-.09.718-.09zm-1.962-.63S5.966-.015 5.794 0c-.19.017-.575 1.69-.575 1.69s.297.336.598.324c.346-.013.598-.404.598-.404z" fill="#fdae00"/></svg></button>
-		     <span class="date"></span>
-		   </div>
 		 </div>
 		</div>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSKOzSS4QIenGIAeMpYMecNUn9pyDUb54&libraries=places"></script>
 		<script type="text/javascript" src="./dataservice.js"></script>
 		<script type="text/javascript" src="./timeFilter.js"></script>
 		<script type="text/javascript" src="./app.js"></script>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-16532523-8', 'auto');
+			ga('send', 'pageview');
+		</script>
 	</body>
 </html>

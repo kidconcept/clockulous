@@ -65,7 +65,7 @@ var clockulous = (function() {
 		ct.removeBtn[index].addEventListener('click', removeClock);
 		ct.rawOffset[index].addEventListener('input', editGmt);
 		ct.time[index].addEventListener('mousedown', timeTravel);
-		ct.local[index].addEventListener('click', function() { this.select(); })
+		ct.local[index].addEventListener('click', touchLocal);
 		ct.local[index].addEventListener('keydown', saveLocal);
 		//ct.time[index].addEventListener('mousedown', timeTravelMouse);
 		ct.timeTravelMeta[index].addEventListener('click', timeTravelMeta);
@@ -99,6 +99,7 @@ var clockulous = (function() {
 		  ct.dstMeta[i].setAttribute('data-index', i);
 		  ct.amPmMeta[i].setAttribute('data-index', i);
 		  ct.switch[i].setAttribute('data-index', i);
+		  ct.local[i].setAttribute('data-index', i);
 		}
 		//check if their are too many clocks
 		ZONES.length >= 9 ? addClockElement.classList.add("hidden") : addClockElement.classList.remove("hidden");
@@ -164,7 +165,7 @@ var clockulous = (function() {
 		else { addClock(); }
 		if(localStorage.SETTINGS) SETTINGS = JSON.parse(localStorage.SETTINGS);
 		swapTheme();
-		if(!SETTINGS.firstTimeSearch) initTutorial();
+		if(SETTINGS.firstTimeSearch) initTutorial();
 		showHideAmPmMeta();
 		updateMeta();
 		initMenu();
@@ -178,7 +179,8 @@ var clockulous = (function() {
 	//Elements
 	let amPMSetting = document.getElementById("amPmSetting");
 	let menu = document.getElementById("menu");
-	let menuButton = document.getElementById("menu-button");
+	let menuButtonOpen = document.getElementById("menuButtonOpen");
+	let menuButtonClose = document.getElementById("menuButtonClose");
 	let themeSetting = document.getElementById("themeSetting")
 
 	//Settings
@@ -187,7 +189,8 @@ var clockulous = (function() {
 
 	//Homepage buttons
 	addClockElement.addEventListener('click', addClock);
-	menuButton.addEventListener('click', openCloseMenu);
+	menuButtonOpen.addEventListener('click', openCloseMenu);
+	menuButtonClose.addEventListener('click', openCloseMenu);
 
 	function captureMenu() {
 		SETTINGS.amPm = !amPmSetting.checked;
@@ -252,10 +255,11 @@ var clockulous = (function() {
 	}
 
 // ===================================
-// SCALING FOR CLOCKS
+// SCALING FOR CLOCKS AND AUTOCOMPLETE
 // ===================================
 
 	wrapper = document.getElementById('wrapper');
+	let pacContainers = document.getElementsByClassName('pac-container');
 
 	function initScaling() {
 		window.addEventListener("resize", scaleClocksBox);
@@ -263,11 +267,19 @@ var clockulous = (function() {
 		scaleClocksBox();
 	}
 
-	function scaleClocksBox() {
+	function getScale() {
 		let scale = Math.min(
 			wrapper.clientWidth / clocksBox.clientWidth,
 			wrapper.clientHeight / clocksBox.clientHeight );
-		clocksBox.style.transform = "translate(-50%, -50%) " + "scale(" + scale + ")";
+		return scale;
+	}
+
+	function scaleClocksBox() {
+		clocksBox.style.transform = "translate(-50%, -50%) " + "scale(" + getScale() + ")";
+	}
+
+	function scaleAutoComplete(index) {
+		pacContainers[index].style.transform = "scale(" + getScale() + ")";
 	}
 
 	let clockClasses = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
@@ -277,6 +289,12 @@ var clockulous = (function() {
 		removeClasses(clockClasses, app);
 		app.classList.remove(clockClasses.toString());
 		app.classList.add(clockClasses[n]);
+	}
+
+	function touchLocal() {
+		this.select();
+		index = this.getAttribute('data-index');
+		scaleAutoComplete(index);
 	}
 
 // ===================================
@@ -309,8 +327,8 @@ var clockulous = (function() {
 
 	function dstMeta(mode, index) {
 		if(mode.type === 'click') {
-			index = event.target.getAttribute('data-index');
-			editDst(); }
+			index = this.getAttribute('data-index');
+			editDst(index); }
 		else if (mode === "display") { }
 		ZONES[index].dstOffset ? ct.dstMeta[index].classList.add('isDayLightSavings') : ct.dstMeta[index].classList.remove('isDayLightSavings');
 	}
@@ -382,6 +400,7 @@ var clockulous = (function() {
 		let index = this.getAttribute('data-index');
 		ZONES.splice( index, 1 );
 		clocksBox.removeChild(clocksBox.childNodes[index]);
+		document.body.removeChild(pacContainers[index]);
 		setIndex();
 		scaleClocksBox();
 		wrapperClasses();
@@ -408,8 +427,7 @@ var clockulous = (function() {
 		save();
 	}
 
-	function editDst() {
-		let index = event.target.getAttribute('data-index');
+	function editDst(index) {
 		if(ZONES[index].dstOffset == "0"){
 			ZONES[index].dstOffset = 3600;}
 		else {
@@ -535,7 +553,7 @@ var clockulous = (function() {
 		toolTips.submitError.classList.add("error", "tool-tip");
 		ele.insertAdjacentElement('beforebegin', toolTips.submitError);
 		if(e) {toolTips.submitError.innerHTML = "Sorry, something is wrong. <span class='emessage'>"+e+"</span>"}
-		else {toolTips.submitError.innerHTML = "Sorry, didn't recognize that time. Please use clock-time format <span class='examples'>1:53 12:30 19:25 05:25</span>"}
+		else {toolTips.submitError.innerHTML = "Sorry, I didn't recognize that time.<br/>Please use clock-time format: <span class='examples'>1:53 &nbsp; 12:30 &nbsp; 19:25 &nbsp; 05:25</span>"}
 		toolTips.submitError.addEventListener('click', function() {
 			toolTips.submitError.parentNode.removeChild(toolTips.submitError);
 			toolTips.errorOpen = false;
