@@ -617,9 +617,10 @@ var clockulous = (function() {
 //==================================
 // ITS ALIVE!!!!!!
 //==================================
-
-	initialize();
-	heartBeat();
-	return global;
+	window.onload = function() {
+		initialize();
+		heartBeat();
+		return global;
+	}
 
 })();
