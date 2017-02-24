@@ -620,7 +620,8 @@ var clockulous = (function() {
 	window.onload = function() {
 		initialize();
 		heartBeat();
-		return global;
 	}
+	
+	return global;
 
 })();
