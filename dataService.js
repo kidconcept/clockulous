@@ -1,3 +1,4 @@
+
 var gmaps = (function() {
 
   var global = {};
@@ -37,45 +38,36 @@ var gmaps = (function() {
   }
   gmapOption();
 
+  // Update Dst and GMT
+  global.getZone = function(latLng, index) {
+	  var timestamp = Math.floor(Date.now()/1000)
+	  var zoneRequestURL = "https://maps.googleapis.com/maps/api/timezone/json?location="+latLng+"&timestamp="+timestamp+"&key="
+	  var timeZone = get(zoneRequestURL);
+	  return timeZone;
+  }
 
   global.addAutoCompletes = function(index) {
     nthChild = index+1;
     var input = document.querySelector('.clock:nth-child('+nthChild+') .local');
-
-    /// On Init of New clock
+    /// Init of New Autocomplete attached to the last added clock
     var autocomplete = new google.maps.places.Autocomplete(input, options);
 
-    /// On User Search
+    /// Attaches an event listener to get and apply the search results.
     if(autocomplete) {
-      autocomplete.addListener('place_changed', function() {
-        /// Request new Google TimezoneId
-        var place = autocomplete.getPlace();
-
-        if(place.geometry) {
-          // Request TimeZone
-          var latLng = place.geometry.location.lat() + "," + place.geometry.location.lng();
-          var timestamp = Math.floor(Date.now()/1000)
-          var zoneRequestURL = "https://maps.googleapis.com/maps/api/timezone/json?location="+latLng+"&timestamp="+timestamp+"&key=AIzaSyBSKOzSS4QIenGIAeMpYMecNUn9pyDUb54"
-          var timeZone = get(zoneRequestURL);
-
-          timeZone.then(function(zoneString){
-            zoneObject = JSON.parse(zoneString);
-            if(zoneObject.status ="OK") {
-              clockulous.editGmtGmaps(zoneObject.rawOffset, zoneObject.dstOffset, index)
-            }
-            else clockulous.editGmtGmaps(index);
-          }).catch(function(error){
-            clockulous.editGmtGmaps(index);
-            console.log(error)
-          })
-        }
-
-        // Save Name
-        clockulous.editLocal(place.name, index);
-        
-      });
+		autocomplete.addListener('place_changed', function() {
+			/// Request new Google TimezoneId
+			var place = autocomplete.getPlace();
+			if(place.geometry) {
+				var latLng = place.geometry.location.lat() + "," + place.geometry.location.lng();
+				clockulous.editLatLngGmaps(latLng, index);
+				clockulous.updateZoneData(index);
+			}
+	        // Save Name
+	        clockulous.editLocal(place.name, index);
+    	});
     } else {
-      clockulous.editGmtGmaps(index);
+    	// we were not able to init an autocomplete object.
+		console.log("orelse!")
     };
     return autocomplete;
   };

@@ -21,7 +21,6 @@ var clockulous = (function() {
 	let isMenuOpen = false;
 	let modes = {};
 	modes.timeTravelAmPm = "AM";
-	modes.dstMeta = "display";
 	modes.timeTravelMeta = "off";
 	let daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -33,9 +32,11 @@ var clockulous = (function() {
 
 	//Key Commands
 	window.addEventListener('keydown', keyCommands);
-	function keyCommands() {
+	function keyCommands(event) {
 		key = event.key;
-		if (key === "Escape") clockulous.noTimeTravel();
+		if (key === "Escape" || key === "Esc") {
+			global.noTimeTravel();
+		}
 		//if (key === "c") addClock();
 		//if (key === "x") removeClock();
 	}
@@ -69,7 +70,7 @@ var clockulous = (function() {
 		ct.local[index].addEventListener('keydown', saveLocal);
 		//ct.time[index].addEventListener('mousedown', timeTravelMouse);
 		ct.timeTravelMeta[index].addEventListener('click', timeTravelMeta);
-		ct.dstMeta[index].addEventListener('click', dstMeta);
+		ct.dstMeta[index].addEventListener('click', editDst);
 	}
 
 	//Defines template object and recursivly applys classes to Template
@@ -110,11 +111,12 @@ var clockulous = (function() {
 // ===================================
 
 	// A class to create new Zone Objects
-	function LocalizeZones(local, timeZoneId, rawOffset, dstOffset) {
+	function LocalizeZones(local, timeZoneId, rawOffset, dstOffset, latLng) {
 		this.local = local;
 		this.timeZoneId = timeZoneId;
 		this.rawOffset = rawOffset;
 		this.dstOffset = dstOffset;
+		this.latLng = latLng;
 	}
 
 	//format the clock time, AMPM, and date
@@ -156,20 +158,19 @@ var clockulous = (function() {
 
 	//Initilize the Zone Objects from local Storage
 	function initialize() {
-
 		if(localStorage.ZONES) {
 			let SAVE = JSON.parse(localStorage.ZONES)
 			SAVE.forEach( function(e) {
-		 		ZONES.push( new LocalizeZones(e.local, e.timeZoneId, e.rawOffset, e.dstOffset) );
+		 		ZONES.push( new LocalizeZones(e.local, e.timeZoneId, e.rawOffset, e.dstOffset, e.latLng) );
 		 		drawClock(); })}
 		else { addClock(); }
 		if(localStorage.SETTINGS) SETTINGS = JSON.parse(localStorage.SETTINGS);
-		swapTheme();
 		if(SETTINGS.firstTimeSearch) initTutorial();
+		swapTheme();
 		showHideAmPmMeta();
-		updateMeta();
 		initMenu();
 		initScaling();
+		checkZoneUpdates();
 	}
 
 // ===================================
@@ -220,7 +221,7 @@ var clockulous = (function() {
 		ct.local.item(0).addEventListener('click', searchToolTip);
 	}
 
-	function searchToolTip() {
+	function searchToolTip(event) {
 		toolTips.search = document.createElement('span');
 		addClasses(["tool-tip", "locations"], toolTips.search);
 		event.target.insertAdjacentElement('beforebegin', toolTips.search);
@@ -301,7 +302,7 @@ var clockulous = (function() {
 // TIME META BUTTON FUNCTIONS (timeTravel, DST, AM/PM)
 // ===================================
 
-	var timeTravelMeta = function() {
+	var timeTravelMeta = function(event) {
 		index = event.target.getAttribute('data-index');
 		ele = ct.timeInput[index];
 		if(modes.timeTravelMeta === "off") {
@@ -325,11 +326,7 @@ var clockulous = (function() {
 		ttMeta.classList.add(modes.timeTravelMeta);
 	}
 
-	function dstMeta(mode, index) {
-		if(mode.type === 'click') {
-			index = this.getAttribute('data-index');
-			editDst(index); }
-		else if (mode === "display") { }
+	function dstMeta(index) {
 		ZONES[index].dstOffset ? ct.dstMeta[index].classList.add('isDayLightSavings') : ct.dstMeta[index].classList.remove('isDayLightSavings');
 	}
 
@@ -388,8 +385,10 @@ var clockulous = (function() {
 		clocksBox.appendChild( newClock );
 		try { gmaps.addAutoCompletes(index) }
 		catch (e) { offLine(); console.log(e) };
-		addEventListeners(index);
 		setIndex();
+		updateMeta(index);
+		showHideAmPmMeta();
+		addEventListeners(index);
 	}
 
 	function offLine() {
@@ -407,43 +406,54 @@ var clockulous = (function() {
 		save();
 	}
 
-	global.editGmtGmaps = function(rawOffset, dstOffset, index) {
-		if(arguments.length == 3) {
-			// gmaps autocomplete came through
-			ZONES[index].rawOffset = rawOffset;
-			ZONES[index].dstOffset = dstOffset;}
-		else if(arguments.length == 1){
-			// gmaps autocomplete shit itself along the way
-			ZONES[arguments[0]].local = "oops! Choose UTC";}
-		stoppedClock();
-		updateMeta();
-		save();
+	global.editLatLngGmaps = function(latLng, index) {
+		ZONES[index].latLng = latLng;
 	}
 
 	function editGmt() {
 		let index = this.getAttribute('data-index');
 		ZONES[index].rawOffset = parseInt(this.value);
+		ZONES[index].latLng = null;
 		stoppedClock();
 		save();
 	}
 
-	function editDst(index) {
-		if(ZONES[index].dstOffset == "0"){
-			ZONES[index].dstOffset = 3600;}
-		else {
-			ZONES[index].dstOffset = 0;}
+	function editDst(event) {
+		let index = this.getAttribute("data-index");
+		ZONES[index].dstOffset ? ZONES[index].dstOffset = 0 : ZONES[index].dstOffset = 3600;
+		dstMeta(index);
 		stoppedClock();
 		save();
+	}
+
+	global.updateZoneData = function(index) {
+		if (ZONES[index].latLng) {
+			timeZone = gmaps.getZone(ZONES[index].latLng, index);
+			timeZone.then(function(zoneString){
+				zoneObject = JSON.parse(zoneString);
+				if(zoneObject.status ="OK") {
+					ZONES[index].rawOffset = zoneObject.rawOffset;
+					ZONES[index].dstOffset = zoneObject.dstOffset;
+					updateMeta(index);
+				}
+				else clockulous.editGmtGmaps(index);
+			}).catch(function(error){
+				ZONES[index].local = "oops, somethings wrong!";
+				console.log(error)
+			});
+			stoppedClock();
+			save();
+		}
 	}
 
 	global.editLocal = function(local, index) {
 		ZONES[index].local = local;
-		updateMeta();
+		updateMeta(index);
 		ct.local[index].blur();
 		save();
 	}
 
-	function saveLocal() {
+	function saveLocal(event) {
 		key = event.key;
 		if (key === "Enter") global.editLocal;
 	}
@@ -476,7 +486,7 @@ var clockulous = (function() {
 		window.addEventListener('mouseup', releaseTimeTravelMouse);
 	}
 
-	function trackTimeMouse() {
+	function trackTimeMouse(event) {
 		dy = event.clientY - originY;
 		v = Math.floor(dy*100);
 		SETTINGS.timeTravelOffset = -v;
@@ -506,7 +516,7 @@ var clockulous = (function() {
 			ct.timeInput[index].focus(); }, 1);
 	}
 
-	global.clickOffClock = function() {
+	global.clickOffClock = function(event) {
 		let index = global.clickOffClock.index;
 		let current = event.target
 		while (current) {
@@ -530,8 +540,9 @@ var clockulous = (function() {
 			let date = new Date();
 			let gmt = date.getUTCHours()*60*60 + date.getUTCMinutes()*60 + date.getUTCSeconds();
 			let zone = ZONES[index].rawOffset;
+			let dst = ZONES[index].dstOffset
 			let travel = timeFilter.submitInput(ele, SETTINGS.amPm, modes.timeTravelAmPm);
-			let offset = travel - (gmt + zone);
+			let offset = travel - (gmt + dst + zone);
 			SETTINGS.timeTravelOffset = offset;
 			modes.timeTravelMeta = "cancel";
 			timeTravelMeta.updateClasses(index, true);
@@ -578,6 +589,7 @@ var clockulous = (function() {
 			window.removeEventListener('click', global.clickOffClock);
 			//Show Input Hide clock
 			time.classList.remove('hidden');
+			input.blur();
 			input.classList.add('hidden');
 			input.value = "";
 			if(SETTINGS.amPm) amPmTimeTravel("stop", i)
@@ -592,7 +604,7 @@ var clockulous = (function() {
 	//Heart Beat updates all Time and Dates
 	function heartBeat() {
 		stoppedClock();
-		setTimeout(heartBeat, 1000);
+		setTimeout(heartBeat, 500);
 	}
 
 	// Update the Times and Dates to the beat;
@@ -606,12 +618,16 @@ var clockulous = (function() {
 	}
 
 	//Fill metadata to the templates
-	function updateMeta() {
-		for(let i=0;i<clocksBox.children.length;i++) {
-			ct.local[i].value = ZONES[i].local; //update clock name
-			ct.rawOffset[i].value = ZONES[i].rawOffset; //update GMT value
-			dstMeta(modes.dstMeta, i);
-		}
+	function updateMeta(index) {
+		ct.local[index].value = ZONES[index].local; //display clock name
+		ct.rawOffset[index].value = ZONES[index].rawOffset; //display GMT value
+		dstMeta(index);
+	}
+
+	// Check for updates to DST & GMT
+	function checkZoneUpdates() {
+		for(let i=0;i<ZONES.length;i++) global.updateZoneData(i);
+		setTimeout(checkZoneUpdates, 3600000);
 	}
 
 //==================================
@@ -621,7 +637,7 @@ var clockulous = (function() {
 		initialize();
 		heartBeat();
 	}
-	
+
 	return global;
 
 })();
