@@ -90,7 +90,7 @@ var clockulous = (function() {
 
 	//Adds data-index to template elements that need it.
 	function setIndex() {
-		for(let i=0,len=ct.inner.length;i<len;i++) {
+		for(let i=0,len=clocksBox.children.length;i<len;i++) {
 			ct.inner[i].setAttribute('data-index', i);
 			ct.removeBtn[i].setAttribute('data-index', i);
 			ct.rawOffset[i].setAttribute('data-index', i);
@@ -335,7 +335,6 @@ var clockulous = (function() {
 		ttMeta = ct.timeTravelMeta[index];
 		for(let i=0;i<ct.timeTravelMeta.length;i++) {
 			ct.timeTravelMeta[i].classList.remove("cancel","off","submit");
-			console.log(modes.timeTravelMeta)
 			if(all) ct.timeTravelMeta[i].classList.add(modes.timeTravelMeta);}
 		ttMeta.classList.add(modes.timeTravelMeta);
 	}
@@ -413,16 +412,16 @@ var clockulous = (function() {
 	function removeClock() {
 		let index = this.getAttribute('data-index');
 		ZONES.splice( index, 1 );
-		console.log(ZONES, ct.inner)
 		let deletedClock = clocksBox.childNodes[index];
-		Velocity(deletedClock, { opacity: [0, 1], scale: [.96, 1] }, function(){
+		Velocity(deletedClock, { opacity: 0, scale: .96 })
+		.then( function() {
 			clocksBox.removeChild(deletedClock);
-		});
+			setIndex();
+			scaleClocksBox();
+			wrapperClasses();
+			save();
+		} );
 		document.body.removeChild(pacContainers[index]);
-		setIndex();
-		scaleClocksBox();
-		wrapperClasses();
-		save();
 	}
 
 	global.editLatLngGmaps = function(latLng, index) {
@@ -595,7 +594,7 @@ var clockulous = (function() {
 		SETTINGS.timeTravel = false;
 		SETTINGS.timeTravelOffset = 0;
 		modes.timeTravelMeta = "off";
-		timeTravelMeta.updateClasses(0, true);		
+		timeTravelMeta.updateClasses(0, true);
 		hideInputClock();
 		stoppedClock();
 		for(let i=0;i<ct.time.length;i++) {
@@ -622,12 +621,10 @@ var clockulous = (function() {
 // Update Display: Run the clocksBox TIME COUNT THE TIME
 //==================================
 
-	var heartTime;
-
 	//Heart Beat updates all Time and Dates
 	function heartBeat() {
 		stoppedClock();
-		heartTime = setTimeout(heartBeat, 1000);
+		setTimeout(heartBeat, 500);
 	}
 
 	// Update the Times and Dates to the beat;
@@ -665,8 +662,8 @@ var clockulous = (function() {
 // ITS ALIVE!!!!!!
 //==================================
 	window.onload = function() {
-		heartBeat();
 		initialize();
+		heartBeat();
 	}
 
 	return global;
