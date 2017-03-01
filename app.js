@@ -90,17 +90,17 @@ var clockulous = (function() {
 
 	//Adds data-index to template elements that need it.
 	function setIndex() {
-		for(let i=0,len=clocksBox.children.length;i<len;i++) {
-		  ct.inner[i].setAttribute('data-index', i);
-		  ct.removeBtn[i].setAttribute('data-index', i);
-		  ct.rawOffset[i].setAttribute('data-index', i);
-		  ct.time[i].setAttribute('data-index', i);
-		  ct.timeInput[i].setAttribute('data-index', i)
-		  ct.timeTravelMeta[i].setAttribute('data-index', i);
-		  ct.dstMeta[i].setAttribute('data-index', i);
-		  ct.amPmMeta[i].setAttribute('data-index', i);
-		  ct.switch[i].setAttribute('data-index', i);
-		  ct.local[i].setAttribute('data-index', i);
+		for(let i=0,len=ct.inner.length;i<len;i++) {
+			ct.inner[i].setAttribute('data-index', i);
+			ct.removeBtn[i].setAttribute('data-index', i);
+			ct.rawOffset[i].setAttribute('data-index', i);
+			ct.time[i].setAttribute('data-index', i);
+			ct.timeInput[i].setAttribute('data-index', i)
+			ct.timeTravelMeta[i].setAttribute('data-index', i);
+			ct.dstMeta[i].setAttribute('data-index', i);
+			ct.amPmMeta[i].setAttribute('data-index', i);
+			ct.switch[i].setAttribute('data-index', i);
+			ct.local[i].setAttribute('data-index', i);
 		}
 		//check if their are too many clocks
 		ZONES.length >= 9 ? addClockElement.classList.add("hidden") : addClockElement.classList.remove("hidden");
@@ -180,6 +180,7 @@ var clockulous = (function() {
 	//Elements
 	let amPMSetting = document.getElementById("amPmSetting");
 	let menu = document.getElementById("menu");
+	let menuBg = document.getElementById("menuBg");
 	let menuButtonOpen = document.getElementById("menuButtonOpen");
 	let menuButtonClose = document.getElementById("menuButtonClose");
 	let themeSetting = document.getElementById("themeSetting")
@@ -208,8 +209,20 @@ var clockulous = (function() {
 	}
 
 	function openCloseMenu() {
-		isMenuOpen ? isMenuOpen = false : isMenuOpen = true;
-		isMenuOpen ? menu.classList.add("open") : menu.classList.remove("open");
+		let h = menuBg.offsetHeight;
+		if (isMenuOpen) {
+			isMenuOpen = false;
+			Velocity(menu, { top: -h }, 200, function() {
+				menu.setAttribute("style", "");
+				menu.classList.remove("open");
+			});
+		} else {
+			isMenuOpen = true;
+			Velocity(menu, { top: 0 }, 200, function() {
+				menu.setAttribute("style", "");
+				menu.classList.add("open");
+			});
+		}
 	}
 
 // ===================================
@@ -322,6 +335,7 @@ var clockulous = (function() {
 		ttMeta = ct.timeTravelMeta[index];
 		for(let i=0;i<ct.timeTravelMeta.length;i++) {
 			ct.timeTravelMeta[i].classList.remove("cancel","off","submit");
+			console.log(modes.timeTravelMeta)
 			if(all) ct.timeTravelMeta[i].classList.add(modes.timeTravelMeta);}
 		ttMeta.classList.add(modes.timeTravelMeta);
 	}
@@ -389,6 +403,7 @@ var clockulous = (function() {
 		updateMeta(index);
 		showHideAmPmMeta();
 		addEventListeners(index);
+		Velocity(newClock, { scale: [1, .1] }, { duration: 750, easing: [500,25] } )
 	}
 
 	function offLine() {
@@ -398,7 +413,11 @@ var clockulous = (function() {
 	function removeClock() {
 		let index = this.getAttribute('data-index');
 		ZONES.splice( index, 1 );
-		clocksBox.removeChild(clocksBox.childNodes[index]);
+		console.log(ZONES, ct.inner)
+		let deletedClock = clocksBox.childNodes[index];
+		Velocity(deletedClock, { opacity: [0, 1], scale: [.96, 1] }, function(){
+			clocksBox.removeChild(deletedClock);
+		});
 		document.body.removeChild(pacContainers[index]);
 		setIndex();
 		scaleClocksBox();
@@ -437,11 +456,12 @@ var clockulous = (function() {
 					updateMeta(index);
 				}
 				else clockulous.editGmtGmaps(index);
+			}).then(function(){
+				animateTimeShift(index);
 			}).catch(function(error){
 				ZONES[index].local = "oops, somethings wrong!";
 				console.log(error)
 			});
-			stoppedClock();
 			save();
 		}
 	}
@@ -546,8 +566,8 @@ var clockulous = (function() {
 			SETTINGS.timeTravelOffset = offset;
 			modes.timeTravelMeta = "cancel";
 			timeTravelMeta.updateClasses(index, true);
-			stoppedClock();
 			hideInputClock(index);
+			for(let i=0;i<ct.inner.length;i++) animateTimeShift(i);
 			if(toolTips.errorOpen) {
 				toolTips.submitError.parentNode.removeChild(toolTips.submitError); toolTips.errorOpen = false; }
 			return true;}
@@ -575,6 +595,7 @@ var clockulous = (function() {
 		SETTINGS.timeTravel = false;
 		SETTINGS.timeTravelOffset = 0;
 		modes.timeTravelMeta = "off";
+		timeTravelMeta.updateClasses(0, true);		
 		hideInputClock();
 		stoppedClock();
 		for(let i=0;i<ct.time.length;i++) {
@@ -601,10 +622,12 @@ var clockulous = (function() {
 // Update Display: Run the clocksBox TIME COUNT THE TIME
 //==================================
 
+	var heartTime;
+
 	//Heart Beat updates all Time and Dates
 	function heartBeat() {
 		stoppedClock();
-		setTimeout(heartBeat, 500);
+		heartTime = setTimeout(heartBeat, 1000);
 	}
 
 	// Update the Times and Dates to the beat;
@@ -630,12 +653,20 @@ var clockulous = (function() {
 		setTimeout(checkZoneUpdates, 3600000);
 	}
 
+	// Animate time shifts
+	function animateTimeShift(index) {
+		Velocity(ct.time[index], { rotateX: [450, 720]}, { duration: 200, easing: "linear" } )
+		.then(function() {
+			stoppedClock();
+			Velocity(ct.time[index], { rotateX: [0, 450]}, { duration: 400, easing: [100,20] } );})
+	}
+
 //==================================
 // ITS ALIVE!!!!!!
 //==================================
 	window.onload = function() {
-		initialize();
 		heartBeat();
+		initialize();
 	}
 
 	return global;

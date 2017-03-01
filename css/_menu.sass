@@ -3,7 +3,7 @@
 	bottom: 100%
 	z-index: 10
 	margin-bottom: -3.8rem
-	.background
+	#menuBg
 		@include theme(background-color, $cd-clock, lighten($cn-ground, 5%))
 		@include theme(color, $cd-type, darken($cn-type, 31%))
 		@include theme(border-color, lighten($cd-clock, 5%), darken($cn-ground, 3%))
@@ -22,7 +22,7 @@
 		@media #{$sml}
 			padding: 0rem 1vw 3rem 1vw
 	&.open
-		bottom: auto
+		top: 0
 
 #menu section
 	@include theme(border-color, $cd-ground, $cn-type)

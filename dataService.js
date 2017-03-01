@@ -41,7 +41,7 @@ var gmaps = (function() {
   // Update Dst and GMT
   global.getZone = function(latLng, index) {
 	  var timestamp = Math.floor(Date.now()/1000)
-	  var zoneRequestURL = "https://maps.googleapis.com/maps/api/timezone/json?location="+latLng+"&timestamp="+timestamp+"&key="
+	  var zoneRequestURL = "https://maps.googleapis.com/maps/api/timezone/json?location="+latLng+"&timestamp="+timestamp+"&key=AIzaSyDIepuNMvaVLhkR7ezNCTR_eZuYKuLtG9U"
 	  var timeZone = get(zoneRequestURL);
 	  return timeZone;
   }

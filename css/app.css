@@ -138,6 +138,13 @@ button {
   .noSelect * .time {
     pointer-events: all; }
 
+@keyframes pulse {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.5; }
+  100% {
+    opacity: 1; } }
 #app {
   display: flex;
   align-content: center;
@@ -337,6 +344,8 @@ button {
       height: 1.6rem; }
     .night .timeMeta .timeTravelMeta {
       height: 1.8rem; }
+    .timeMeta .timeTravelMeta.cancel {
+      animation: pulse 2s infinite; }
 
 .local {
   font-family: "Asap", serif;
@@ -422,7 +431,7 @@ button {
   bottom: 100%;
   z-index: 10;
   margin-bottom: -3.8rem; }
-  #menu .background {
+  #menu #menuBg {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -433,26 +442,26 @@ button {
     border-bottom-width: 0.5rem;
     border-bottom-left-radius: 2rem;
     border-bottom-right-radius: 2rem; }
-    .day #menu .background {
+    .day #menu #menuBg {
       background-color: #fffdf6; }
-    .night #menu .background {
+    .night #menu #menuBg {
       background-color: #2f2f2f; }
-    .day #menu .background {
+    .day #menu #menuBg {
       color: #403d2d; }
-    .night #menu .background {
+    .night #menu #menuBg {
       color: #a6a6a6; }
-    .day #menu .background {
+    .day #menu #menuBg {
       border-color: white; }
-    .night #menu .background {
+    .night #menu #menuBg {
       border-color: #1a1a1a; }
     @media (max-width: 1280px) {
-      #menu .background {
+      #menu #menuBg {
         padding: 0rem 5.5vw 3rem 5.5vw; } }
     @media (max-width: 667px) {
-      #menu .background {
+      #menu #menuBg {
         padding: 0rem 1vw 3rem 1vw; } }
   #menu.open {
-    bottom: auto; }
+    top: 0; }
 
 #menu section {
   width: 40%;
