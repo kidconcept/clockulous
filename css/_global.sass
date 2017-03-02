@@ -8,15 +8,20 @@ body
 	font-weight: $font-weight-text
 	color: $cn-type
 	box-sizing: border-box
-	padding: 0 10vw
+	padding-left: 10vw
+	padding-right: 10vw
 	&.day
 		background-color: $cd-ground
 		@media #{$sml}
-			padding: 0
+			background-color: $cd-clock
 	&.night
 		background-color: $cn-ground
 	@media #{$med}
-		padding: 0 6.4vw
+		padding-left: 6.4vw
+		padding-right: 6.4vw
+	@media #{$sml}
+		padding-left: 0
+		padding-right: 0
 
 #app
 	@extend .type-color
@@ -41,6 +46,7 @@ button
 
 .hidden
 	display: none
+	visibility: hidden
 
 .keycommand
 	@include theme(background-color, $cd-disabled, lighten($cn-disabled, 10%))

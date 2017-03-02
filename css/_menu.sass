@@ -2,7 +2,7 @@
 	position: absolute
 	bottom: 100%
 	z-index: 10
-	margin-bottom: -3.8rem
+	margin-bottom: -#{$menu-height}
 	#menuBg
 		@include theme(background-color, $cd-clock, lighten($cn-ground, 5%))
 		@include theme(color, $cd-type, darken($cn-type, 31%))
@@ -149,10 +149,9 @@
 		border-top-width: 0
 		margin: 0 auto
 		display: block
-		height: 4rem
-		padding: 2rem 2.8rem 1.8rem
+		padding: 1.4rem 2rem 1rem
 		line-height: 0
-		font-size: 1.3rem
+		font-size: 1rem
 
 #features
 	.icon
