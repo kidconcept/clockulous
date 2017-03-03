@@ -153,10 +153,6 @@ button {
   100% {
     opacity: 1; } }
 #app {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  flex-wrap: wrap;
   height: 100%;
   position: relative;
   padding-top: 2.4rem; }
@@ -166,7 +162,7 @@ button {
 
 #wrapper {
   width: 100%;
-  height: 87%;
+  height: 84%;
   z-index: 0; }
   @media (max-width: 1280px) and (orientation: portrait) {
     #wrapper {
@@ -219,17 +215,25 @@ button {
     .clock {
       padding: 0;
       width: 24rem;
-      height: 10rem; } }
+      height: 9.5rem;
+      margin-top: 0.5rem; } }
 
 .inner {
   height: 100%;
   position: relative; }
+  @media (max-width: 667px) and (orientation: portrait) {
+    .inner {
+      border-bottom-width: 0.5rem;
+      border-bottom-style: solid;
+      background-color: transparent;
+      border-radius: 0 !important; }
+      .day .inner {
+        border-color: #fefbf0; }
+      .night .inner {
+        border-color: #1e1e1e; } }
   .day .inner {
     background-color: #fffdf6;
     border-radius: 2rem; }
-    @media (max-width: 667px) and (orientation: portrait) {
-      .day .inner {
-        background-color: transparent; } }
 
 .removeBtn {
   border: none;
@@ -245,26 +249,31 @@ button {
     margin-left: -2.7rem;
     background-color: transparent;
     background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj48c3ZnIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxNSAxNyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWw6c3BhY2U9InByZXNlcnZlIiBzdHlsZT0iZmlsbC1ydWxlOmV2ZW5vZGQ7Y2xpcC1ydWxlOmV2ZW5vZGQ7c3Ryb2tlLWxpbmVqb2luOnJvdW5kO3N0cm9rZS1taXRlcmxpbWl0OjEuNDE0MjE7Ij48cGF0aCBkPSJNMC4wMzMsOC4xNjFjLTAuMDIyLC0wLjIzMSAtMC4wMzMsLTAuNDY2IC0wLjAzMywtMC43MDNjMCwtNC4xMTYgMy4zNDIsLTcuNDU4IDcuNDU4LC03LjQ1OGM0LjExNiwwIDcuNDU4LDMuMzQyIDcuNDU4LDcuNDU4YzAsMC4yMzcgLTAuMDExLDAuNDcyIC0wLjAzMiwwLjcwM2MtMC4zNTUsLTMuNzg3IC0zLjU0NiwtNi43NTYgLTcuNDI2LC02Ljc1NmMtMy44NzksMCAtNy4wNzEsMi45NjkgLTcuNDI1LDYuNzU2WiIgc3R5bGU9ImZpbGw6I2UyZTFkYTsiLz48Y2lyY2xlIGN4PSI3LjQ1OCIgY3k9IjguODY0IiByPSI3LjQ1OCIgc3R5bGU9ImZpbGw6I2ZkZmFmMDsiLz48cGF0aCBkPSJNNy40NTgsNy45ODFsMi4wOTIsLTIuMDkyYzAuMjQ0LC0wLjI0NCAwLjYzOSwtMC4yNDQgMC44ODMsMGMwLDAgMCwwIDAsMGMwLjI0NCwwLjI0NCAwLjI0NCwwLjYzOSAwLDAuODgybC0yLjA5MiwyLjA5M2wyLjA5MiwyLjA5MmMwLjI0NCwwLjI0MyAwLjI0NCwwLjYzOSAwLDAuODgyYzAsMCAwLDAuMDAxIDAsMC4wMDFjLTAuMjQ0LDAuMjQzIC0wLjYzOSwwLjI0MyAtMC44ODMsMGwtMi4wOTIsLTIuMDkybC0yLjA5MiwyLjA5MmMtMC4yNDQsMC4yNDMgLTAuNjM5LDAuMjQzIC0wLjg4MiwwYy0wLjAwMSwwIC0wLjAwMSwtMC4wMDEgLTAuMDAxLC0wLjAwMWMtMC4yNDQsLTAuMjQzIC0wLjI0NCwtMC42MzkgMCwtMC44ODJsMi4wOTIsLTIuMDkybC0yLjA5MiwtMi4wOTNjLTAuMjQ0LC0wLjI0MyAtMC4yNDQsLTAuNjM4IDAsLTAuODgyYzAsMCAwLDAgMC4wMDEsMGMwLjI0MywtMC4yNDQgMC42MzgsLTAuMjQ0IDAuODgyLDBsMi4wOTIsMi4wOTJaIiBzdHlsZT0iZmlsbDojZTJlMWRhOyIvPjwvc3ZnPg=="); }
+    @media (max-width: 667px) and (orientation: portrait) {
+      .day .removeBtn {
+        top: 2.1rem; } }
   .night .removeBtn {
-    top: 7.27rem;
-    margin-left: -2.4rem;
+    top: 6.87rem;
+    margin-left: -3.1rem;
     left: 100%;
     background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3C%21DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2015%2015%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xml%3Aspace%3D%22preserve%22%20style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A1.41421%3B%22%3E%3Cpath%20d%3D%22M13.943%2C12.791c-0.134%2C0.498%20-0.464%2C0.922%20-0.914%2C1.175c-1.081%2C0.604%20-2.326%2C0.95%20-3.651%2C0.95c-4.116%2C0%20-9.378%2C-6.92%20-9.378%2C-7.458c0%2C-0.538%205.262%2C-7.458%209.378%2C-7.458c1.351%2C0%202.619%2C0.36%203.712%2C0.989c0.415%2C0.239%200.726%2C0.625%200.871%2C1.081c1.034%2C3.318%201%2C6.899%20-0.018%2C10.721Zm-5.319%2C-6.216l2.092%2C-2.092c0.244%2C-0.244%200.639%2C-0.244%200.883%2C0c0%2C0%200%2C0%200%2C0.001c0.244%2C0.243%200.244%2C0.638%200%2C0.882l-2.092%2C2.092l2.092%2C2.092c0.244%2C0.244%200.244%2C0.639%200%2C0.883c0%2C0%200%2C0%200%2C0c-0.244%2C0.244%20-0.639%2C0.244%20-0.883%2C0l-2.092%2C-2.092l-2.092%2C2.092c-0.244%2C0.244%20-0.639%2C0.244%20-0.882%2C0c0%2C0%20-0.001%2C0%20-0.001%2C0c-0.243%2C-0.244%20-0.243%2C-0.639%200%2C-0.883l2.092%2C-2.092l-2.092%2C-2.092c-0.243%2C-0.244%20-0.243%2C-0.639%200%2C-0.882c0%2C-0.001%200.001%2C-0.001%200.001%2C-0.001c0.243%2C-0.244%200.638%2C-0.244%200.882%2C0l2.092%2C2.092Z%22%20style%3D%22fill%3A%2300bcd4%3B%22%2F%3E%3C%2Fsvg%3E"); }
+    @media (max-width: 667px) and (orientation: portrait) {
+      .night .removeBtn {
+        top: 2.27rem;
+        width: 1.2rem;
+        height: 1.2rem; } }
 
 .clockFace {
   padding: 2.7rem 2.7rem 0.5rem 3rem; }
-  .day .clockFace {
-    padding-left: 3rem;
-    padding-right: 2.7rem; }
   @media (max-width: 667px) and (orientation: portrait) {
     .clockFace {
       display: inline-block;
-      padding-left: 0 !important;
-      padding-right: 0 !important; } }
+      padding: 1.3rem 0 0 1.9rem; } }
 
 .time,
 .time span,
 .timeInput {
+  font-size: 4.3rem;
   display: inline-block;
   position: relative;
   margin: 0;
@@ -275,74 +284,60 @@ button {
   font-family: Comfortaa, sans;
   font-weight: 400;
   z-index: 10; }
-  .day .time, .day
-  .time span, .day
-  .timeInput {
-    font-size: 4.3rem; }
-  .night .time, .night
-  .time span, .night
-  .timeInput {
-    font-size: 5rem; }
   @media (max-width: 667px) and (orientation: portrait) {
     .time,
     .time span,
     .timeInput {
-      font-size: 4rem !important; } }
+      font-size: 3.1rem; } }
   .time.hidden,
   .time span.hidden,
   .timeInput.hidden {
+    width: 11.5rem;
     z-index: 0;
     visibility: hidden;
-    margin-right: 0; }
-    .day .time.hidden, .day
-    .time span.hidden, .day
-    .timeInput.hidden {
-      width: 11.5rem; }
-    .night .time.hidden, .night
-    .time span.hidden, .night
-    .timeInput.hidden {
-      width: 13.6rem; }
+    margin-right: -11.5rem; }
     @media (max-width: 667px) and (orientation: portrait) {
       .time.hidden,
       .time span.hidden,
       .timeInput.hidden {
-        width: 10.8rem !important; } }
+        width: 8.7rem;
+        margin-right: -8.7rem; } }
 
 .time {
   margin-right: 0.4rem; }
 
-.day .timeInput {
-  width: 11.5rem; }
-.night .timeInput {
-  width: 13.6rem; }
-.day .timeInput {
-  margin-right: -11.5rem; }
-.night .timeInput {
-  margin-right: -13.6rem; }
-@media (max-width: 667px) and (orientation: portrait) {
-  .timeInput {
-    width: 10.8rem !important;
-    margin-right: -10.8rem !important; } }
-.timeInput:focus {
-  border: none;
-  box-sizing: none;
-  outline: none; }
+.timeInput {
+  width: 11.5rem;
+  margin-right: 0; }
+  @media (max-width: 667px) and (orientation: portrait) {
+    .timeInput {
+      width: 8.7rem; } }
+  .timeInput:focus {
+    border: none;
+    box-sizing: none;
+    outline: none; }
 
 .timeMeta {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
   font-family: "Asap", serif;
-  vertical-align: text-bottom; }
+  vertical-align: text-bottom;
+  height: 3.6rem; }
+  @media (max-width: 667px) and (orientation: portrait) {
+    .timeMeta {
+      height: 2.7rem; } }
+  .timeMeta > * {
+    height: 45%;
+    width: 2.5rem; }
+  @media (max-width: 667px) and (orientation: portrait) {
+    .timeMeta .amPmMeta {
+      height: 35%; } }
   .timeMeta .amPmMeta div, .timeMeta .amPmMeta button {
+    width: 100%;
+    height: 100%;
     background-size: contain;
     background-repeat: no-repeat; }
-    .day .timeMeta .amPmMeta div, .day .timeMeta .amPmMeta button {
-      width: 2.2rem; }
-    .night .timeMeta .amPmMeta div, .night .timeMeta .amPmMeta button {
-      width: 2.4rem; }
-    .day .timeMeta .amPmMeta div, .day .timeMeta .amPmMeta button {
-      height: 1.2rem; }
-    .night .timeMeta .amPmMeta div, .night .timeMeta .amPmMeta button {
-      height: 1.6rem; }
   .timeMeta .amPmMeta button.switch {
     margin-bottom: 0.1rem;
     width: 2.5rem;
@@ -355,22 +350,15 @@ button {
     .night .timeMeta .amPmMeta button.switch {
       background-color: #00bcd4; }
   .timeMeta .timeTravelMeta {
-    margin-top: 0.6rem;
     background-size: contain;
     background-repeat: no-repeat;
     background-position-y: bottom; }
-    .day .timeMeta .timeTravelMeta {
-      width: 2.58rem; }
-    .night .timeMeta .timeTravelMeta {
-      width: 2.88rem; }
-    .day .timeMeta .timeTravelMeta {
-      height: 1.6rem; }
-    .night .timeMeta .timeTravelMeta {
-      height: 1.8rem; }
     .timeMeta .timeTravelMeta.cancel {
       animation: pulse 2s infinite; }
 
 .local {
+  font-size: 1.6rem;
+  padding: 0 2.7rem 0 3rem;
   font-family: "Asap", serif;
   font-weight: 500;
   font-style: italic;
@@ -378,18 +366,12 @@ button {
   border: none;
   width: 100%;
   box-sizing: border-box; }
-  .day .local {
-    font-size: 1.6rem; }
-  .night .local {
-    font-size: 1.7rem; }
-  .day .local {
-    padding: 0 3rem 0 2.7rem; }
-    .day .local::-moz-selection {
-      background-color: #2ca2d2;
-      color: #fffdf6; }
-    .day .local::selection {
-      background-color: #2ca2d2;
-      color: #fffdf6; }
+  .day .local::-moz-selection {
+    background-color: #2ca2d2;
+    color: #fffdf6; }
+  .day .local::selection {
+    background-color: #2ca2d2;
+    color: #fffdf6; }
   .night .local::-moz-selection {
     background-color: #090909;
     color: whitesmoke; }
@@ -398,7 +380,9 @@ button {
     color: whitesmoke; }
   @media (max-width: 667px) and (orientation: portrait) {
     .local {
-      font-size: 1.5rem !important; } }
+      font-size: 1.5rem !important;
+      padding-left: 0;
+      padding-left: 1.9rem; } }
   .local:focus {
     border: none;
     outline: none;
@@ -409,7 +393,8 @@ button {
   justify-content: space-between;
   align-items: flex-end;
   flex-wrap: nowrap;
-  margin-bottom: 0.3rem; }
+  margin-bottom: 0.3rem;
+  padding: 0 2.7rem 0 3rem; }
   .zoneMeta .date {
     font-family: Comfortaa, sans;
     font-weight: 400;
@@ -418,7 +403,8 @@ button {
     display: inline; }
     @media (max-width: 667px) and (orientation: portrait) {
       .zoneMeta .date {
-        display: block; } }
+        flex: 0 0 auto;
+        width: 100%; } }
   .zoneMeta .rawOffset {
     font-size: 0.8rem;
     cursor: pointer;
@@ -431,12 +417,16 @@ button {
     -webkit-appearance: none;
     -moz-appearance: radio-container;
     appearance: none; }
-  .day .zoneMeta {
-    padding: 0 3rem 0 2.7rem; }
   @media (max-width: 667px) and (orientation: portrait) {
     .zoneMeta {
-      display: inline-block;
-      padding: 0 !important; } }
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      vertical-align: top;
+      padding: 1.5rem 0 0 0;
+      height: 3.1rem;
+      margin-bottom: 0;
+      width: 8.5rem; } }
 
 .dstMeta {
   color: rgba(245, 245, 245, 0.1);
@@ -445,22 +435,29 @@ button {
   margin-bottom: 0.1rem; }
   .dstMeta svg {
     width: 100%; }
+  @media (max-width: 667px) and (orientation: portrait) {
+    .dstMeta {
+      order: 2;
+      margin-left: 0.6rem; } }
 
 .clock hr {
   border: none;
   border-top-width: 2px;
   border-top-style: solid;
   height: 0;
-  margin: 0 0 0.8rem 0; }
+  margin: 0 2.7rem 0.8rem 3rem; }
   .day .clock hr {
     border-color: #2ca2d2; }
   .night .clock hr {
     border-color: #00bcd4; }
-  .day .clock hr {
-    margin: 0 3rem 0.8rem 2.7rem; }
+  .clock hr.sml {
+    display: none; }
   @media (max-width: 667px) and (orientation: portrait) {
     .clock hr {
-      display: none; } }
+      display: none; }
+      .clock hr.sml {
+        margin: -0.3rem 2.7rem 0.4rem 1.9rem;
+        display: block; } }
 
 #menu {
   position: absolute;
@@ -620,6 +617,18 @@ button {
   #features table td:last-child {
     font-size: 0.9rem;
     line-height: 1.18rem; }
+  @media (max-width: 667px) and (orientation: portrait) {
+    #features table tr {
+      display: flex;
+      flex-direction: column; }
+    #features table td {
+      flex: 0 0 auto;
+      width: 100% !important;
+      padding: 0 0 1.4rem 0; }
+    #features table td:first-child {
+      padding: 1.3rem 0 0.5rem 0;
+      font-size: 1.1rem;
+      border-bottom: none; } }
 
 .menu-button-wrapper {
   width: 100%;
@@ -713,6 +722,9 @@ button {
 .addclock-button-wrapper {
   width: 100%;
   text-align: center; }
+  @media (max-width: 667px) and (orientation: portrait) {
+    .addclock-button-wrapper {
+      margin-top: 2rem; } }
   .addclock-button-wrapper button {
     margin: 0 auto;
     border: none;
@@ -732,7 +744,7 @@ button {
 
 .day .addclock-button-wrapper button {
   box-shadow: 0 0.25rem 0 0 #edd35c, inset 0 0.1rem 0 0 #faf2cf;
-  background-color: #f8edbd; }
+  background-color: #f2e4a4; }
   .day .addclock-button-wrapper button svg {
     filter: drop-shadow(0 0.1rem 0 #edd35c); }
   .day .addclock-button-wrapper button svg path {
@@ -765,22 +777,27 @@ button {
   border-top: none;
   margin-top: 0.5rem;
   overflow: visible;
+  padding: 0 3rem 0 2.7rem;
   transform-origin: top left; }
   .day .pac-container {
     background-color: #fffdf6; }
   .night .pac-container {
     background-color: #222; }
+  @media (max-width: 667px) and (orientation: portrait) {
+    .pac-container {
+      padding-left: 1.8rem; } }
   .day .pac-container {
     box-shadow: 0 0.2rem 0 0 rgba(0, 0, 0, 0.2);
-    padding: 0 3rem 0 2.7rem;
     border-bottom-right-radius: 1rem;
     border-bottom-left-radius: 1rem;
     border-bottom: 0.2rem solid white;
     border-right: 0.2rem solid white;
     border-left: 0.2rem solid white; }
   .night .pac-container {
+    border-right: 0.2rem solid #222;
+    border-left: 0.2rem solid #222;
     box-shadow: none;
-    padding: 0; }
+    padding-bottom: 2rem; }
 
 .pac-item {
   font-size: 0.6rem; }

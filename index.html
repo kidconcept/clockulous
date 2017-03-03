@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Sweetclocks!</title>
 		<link rel="stylesheet" href="./css/app.css">
-		<meta name="viewport" content="width=device-width">
+		<meta name="viewport" content="width=667, initial-scale=1">
 		<link rel="icon" type="image/png" href="./favicon.png">
 	</head>
 	<body>
@@ -13,7 +13,7 @@
 				<div id="menuBg">
 					<div class="menu-button-wrapper close"><button id="menuButtonClose" type="button" style=""><span>close</span></button></div>
 					<section id="preamble">
-						<h1>Even a stopped clock</h1>
+						<h1>Even a stopped&nbsp;clock</h1>
 						<p>Sweetclocks.party helps you keep time on your friends, relations, or collegues around the world. I wrote it after getting tired of guessing what time zones my friends and family were in. Sweetclocks lets you search for locations, predict times, and remembers what clocks you had opened last. Thanks for checking it out!</p>
 						<p>Sweetclocks is new and still has some bugs. If you'd like to report a bug, please send mail to <a href="mailto:whoops@sweetclocks.party">whoops@sweetclocks.party</a></p>
 						<p>You can check out the code for sweetclocks on <a href="https://github.com/kidconcept/clockulous">github</a></p>
@@ -146,12 +146,13 @@
 						</select>
 					</span>
 				</div>
-		   <input class="local" name='local' placeholder="Search for Location" data-tip="Search for a timezone by City, Country, or Region.">
-		 </div>
+				<hr class="sml">
+				<input class="local" name='local' placeholder="Search for Location" data-tip="Search for a timezone by City, Country, or Region.">
+			</div>
 		</div>
-		<!-- fix this <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSKOzSS4QIenGIAeMpYMecNUn9pyDUb54&libraries=places" async defer></script> -->
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-QdXRsGoed5uC3SEYuJQGPyk_b2J8tqg&libraries=places"></script>
 		<script type="text/javascript" src="./lib/promise.min.js"></script>
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIepuNMvaVLhkR7ezNCTR_eZuYKuLtG9U&libraries=places"></script>
+		<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIepuNMvaVLhkR7ezNCTR_eZuYKuLtG9U&libraries=places"></script> -->
 		<script type="text/javascript" src="./lib/velocity.min.js"></script>
 		<script type="text/javascript" src="./dataService.js"></script>
 		<script type="text/javascript" src="./timeFilter.js"></script>

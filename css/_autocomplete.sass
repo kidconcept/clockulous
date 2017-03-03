@@ -4,18 +4,22 @@
 	border-top: none
 	margin-top: .5rem
 	overflow: visible
+	padding: 0 3rem 0 2.7rem
 	transform-origin: top left
+	@media #{$sml}
+		padding-left: 1.8rem
 	.day &
 		box-shadow: 0 .2rem 0 0 rgba(0, 0, 0, 0.2)
-		padding: 0 3rem 0 2.7rem
 		border-bottom-right-radius: 01rem
 		border-bottom-left-radius: 1rem
 		border-bottom: .2rem solid lighten($cd-clock, 50%)
 		border-right: .2rem solid lighten($cd-clock, 50%)
 		border-left: .2rem solid lighten($cd-clock, 50%)
 	.night &
+		border-right: .2rem solid $cn-ground
+		border-left: .2rem solid $cn-ground
 		box-shadow: none
-		padding: 0
+		padding-bottom: 2rem
 
 .pac-item
 	@include theme(color, lighten($cd-type, 50%), darken($cn-type,25%))

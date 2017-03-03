@@ -4,6 +4,8 @@
 .addclock-button-wrapper
 	width: 100%
 	text-align: center
+	@media #{$sml}
+		margin-top: 2rem
 	button
 		margin: 0 auto
 		border: none
@@ -23,7 +25,7 @@
 
 .day .addclock-button-wrapper button
 	box-shadow: 0 .25rem 0 0 darken($cd-ground, 20%), inset 0 .1rem 0 0 lighten($cd-ground, 5%)
-	background-color: lighten($cd-ground, 1%)
+	background-color: desaturate(darken($cd-ground, 5%), 5%)
 	svg
 		filter: drop-shadow(0 .1rem 0 darken($cd-ground, 20%))
 	svg path
