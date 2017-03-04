@@ -289,7 +289,7 @@ var clockulous = (function() {
 	}
 
 	function scaleClocksBox() {
-		clocksBox.style.transform = "translate(-50%, -50%) " + "scale(" + getScale() + ")";
+		clocksBox.style.transform = "translate(-50%, -50%)" + "scale(" + getScale() + ")";
 	}
 
 	function scaleAutoComplete(index) {

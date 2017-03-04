@@ -202,7 +202,8 @@ button {
 @media (max-width: 667px) and (orientation: portrait) {
   #clocksBox {
     width: auto;
-    height: auto !important; } }
+    height: auto !important;
+    transform: translate(-50%, 0) !important; } }
 .clock {
   width: 24rem;
   height: 16.66667rem;
