@@ -442,14 +442,13 @@ var clockulous = (function() {
 			offlineErrorMessage();
 			loopSupport();
 			function loopSupport() {
-				console.log("fire", gmaps)
-				lifeSupport = gmaps.getURL("http://sweetclocks.party");
-				lifeSupport.then(function() {
-					modes.offline = false;
-					removeOfflineError();
-					initialize();
-				}).catch(function() {
-					setTimeout(loopSupport, 500)
+				canary = gmaps.getURL("http://sweetclocks.party/");
+				canary.then(function() {
+					console.log("then", canary)
+					if(toolTips.offlineError.parentNode) removeOfflineError();
+					}).catch(function(e) {
+					console.log("catch", e)
+					setTimeout(loopSupport, 5000)
 				})
 			}
 		}
