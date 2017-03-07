@@ -4,7 +4,7 @@ var gmaps = (function() {
   var global = {};
 
   /// Utility Function for getting XML Requests
-  function get(url){
+  global.getURL = function(url) {
     return new Promise(function(resolve, reject){
       var xhttp = new XMLHttpRequest();
       xhttp.open("GET", url, true);
@@ -26,15 +26,18 @@ var gmaps = (function() {
   var options = {};
 
   function gmapOption() {
-    var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(-90, -180),
-      new google.maps.LatLng(90, 180)
-    );
-
-    options = {
-      bounds: defaultBounds,
-      types: ['(regions)']
-    };
+    try {
+		var defaultBounds = new google.maps.LatLngBounds(
+	      new google.maps.LatLng(-90, -180),
+	      new google.maps.LatLng(90, 180)
+	    );
+		options = {
+			bounds: defaultBounds,
+			types: ['(regions)']
+		};
+	} catch (e) {
+		console.log(e);
+	}
   }
   gmapOption();
 
@@ -42,7 +45,7 @@ var gmaps = (function() {
   global.getZone = function(latLng, index) {
 	  var timestamp = Math.floor(Date.now()/1000)
 	  var zoneRequestURL = "https://maps.googleapis.com/maps/api/timezone/json?location="+latLng+"&timestamp="+timestamp+"&key=AIzaSyDIepuNMvaVLhkR7ezNCTR_eZuYKuLtG9U"
-	  var timeZone = get(zoneRequestURL);
+	  var timeZone = global.getURL(zoneRequestURL);
 	  return timeZone;
   }
 

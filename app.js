@@ -2,33 +2,32 @@ var clockulous = (function() {
 
 	var global = {}
 
-	//clockblock.party, clockblock.me, synchronous.global (reg $64 /year), synchronous.site, synchronous.space, clocktempo.com, clockwall.world, timebandet party
-
 // ===================================
 // INITIALIZE VARIABLES AND OBJECTS AND TEMPLATES AND EVENTS
 // ===================================
 
-	let userTime = new Date(); // For adding new clocks
-	let ZONES = []; // Holds Data Model
-	let SETTINGS = {};
+	var userTime = new Date(); // For adding new clocks
+	var ZONES = []; // Holds Data Model
+	var SETTINGS = {};
 	SETTINGS.firstTimeSearch = true; // run tutorial popup on search
 	SETTINGS.firstTimeTravel = true; // run tutorial popup on timetravel
 	SETTINGS.amPm = true; //12 Hour Clock by default
 	SETTINGS.timeTravel = false; // Display Time Travel Offset
 	SETTINGS.timeTravelOffset = 0;
 	SETTINGS.theme = "day";
-	let toolTips = {};
-	let isMenuOpen = false;
-	let modes = {};
+	var toolTips = {};
+	var isMenuOpen = false;
+	var modes = {};
 	modes.timeTravelAmPm = "AM";
 	modes.timeTravelMeta = "off";
-	let daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	modes.offline = false;
+	var daysOfTheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 	//The Clocks Blocks
-	let app = document.getElementById("app");
-	let clocksBox = document.getElementById("clocksBox");
-	let ct = document.getElementById("template");
-	let addClockElement = document.getElementById("addClockElement");
+	var app = document.getElementById("app");
+	var clocksBox = document.getElementById("clocksBox");
+	var ct = document.getElementById("template");
+	var addClockElement = document.getElementById("addClockElement");
 
 	//Key Commands
 	window.addEventListener('keydown', keyCommands);
@@ -66,7 +65,6 @@ var clockulous = (function() {
 		ct.removeBtn[index].addEventListener('click', removeClock);
 		ct.rawOffset[index].addEventListener('input', editGmt);
 		ct.time[index].addEventListener('mousedown', timeTravel);
-		ct.local[index].addEventListener('click', touchLocal);
 		ct.local[index].addEventListener('keydown', saveLocal);
 		//ct.time[index].addEventListener('mousedown', timeTravelMouse);
 		ct.timeTravelMeta[index].addEventListener('click', timeTravelMeta);
@@ -158,8 +156,9 @@ var clockulous = (function() {
 
 	//Initilize the Zone Objects from local Storage
 	function initialize() {
-		if(localStorage.ZONES) {
-			let SAVE = JSON.parse(localStorage.ZONES)
+		if(localStorage.ZONES.length > 2) {
+			let SAVE = JSON.parse(localStorage.ZONES);
+			ZONES = [];
 			SAVE.forEach( function(e) {
 		 		ZONES.push( new LocalizeZones(e.local, e.timeZoneId, e.rawOffset, e.dstOffset, e.latLng) );
 		 		drawClock(); })}
@@ -243,19 +242,19 @@ var clockulous = (function() {
 		SETTINGS.firstTimeSearch = false;
 		toolTips.search.addEventListener('click', function() {
 			toolTips.search.parentNode.removeChild(toolTips.search)});
-		}
+	}
 
-		function timeTravelToolTip() {
-			toolTips.timeTravel = document.createElement('span');
-			addClasses(["tool-tip", "time-travel"], toolTips.timeTravel);
-			ct.time.item(1).insertAdjacentElement('beforebegin', toolTips.timeTravel);
-			toolTips.timeTravel.innerHTML = ct.time.item(1).getAttribute("data-tip");
+	function timeTravelToolTip() {
+		toolTips.timeTravel = document.createElement('span');
+		addClasses(["tool-tip", "time-travel"], toolTips.timeTravel);
+		ct.time.item(1).insertAdjacentElement('beforebegin', toolTips.timeTravel);
+		toolTips.timeTravel.innerHTML = ct.time.item(1).getAttribute("data-tip");
 
-			addClockElement.removeEventListener('click', timeTravelToolTip);
-			SETTINGS.firstTimeTravel = false;
-			toolTips.timeTravel.addEventListener('click', function() {
-				toolTips.timeTravel.parentNode.removeChild(toolTips.timeTravel)});
-			}
+		addClockElement.removeEventListener('click', timeTravelToolTip);
+		SETTINGS.firstTimeTravel = false;
+		toolTips.timeTravel.addEventListener('click', function() {
+			toolTips.timeTravel.parentNode.removeChild(toolTips.timeTravel)});
+	}
 
 // ===================================
 // Theme
@@ -266,6 +265,37 @@ var clockulous = (function() {
 	function swapTheme() {
 		removeClasses(THEMES, document.body);
 		document.body.classList.add(SETTINGS.theme);
+	}
+
+// ===================================
+// Easter Egg
+// ===================================
+
+	var quotes = [
+		'“It is often said that before you die your life passes before your eyes. This is in fact true. It\'s called living.” <span>Terry Pratchett</span>',
+		'“and so do all who live to see such times. But that is not for them to decide. All we have to decide is what to do with the time that is given us.” <span>J.R.R. Tolkien</span>',
+		'“Let the Colorado River erode its bed by 1/100th of an inch each year (about the thickness of one of your fingernails.) Multiply it by six million years, and you’ve carved the Grand Canyon.” <span>Keith Meldahl</span>',
+		'“Everything alive today sits on the tip of the billions of years of life that came before us” <span>el lobzo</span>',
+		'“It is not enough to be busy. So are the ants. The question is: What are we busy about?” <span>Henry David Thoreau</span>',
+		'“In the presence of eternity, the mountains are as transient as the clouds” <span>Ralph Ingersoll</span>',
+		'“We are the legacy of 15 billion years of cosmic evolution. We have a choice. We can enhance life and come to know the universe that made us. Or we can squander our 15 billion year heritage in meaningless self destruction.” <span>Carl Sagan</span>'
+	]
+
+	eggCase = document.getElementById("egg");
+
+	function printQuote() {
+		let date = new Date();
+		let today = date.getUTCDay();
+		todaysQuote = quotes[today%quotes.length];
+		eggCase.innerHTML = todaysQuote;
+		eggCase.classList.remove('hidden');
+		clocksBox.classList.add('hidden');
+	}
+
+	function clearQuote() {
+		eggCase.innerHTML = '';
+		eggCase.classList.add('hidden');
+		clocksBox.classList.remove('hidden');
 	}
 
 // ===================================
@@ -290,10 +320,10 @@ var clockulous = (function() {
 
 	function scaleClocksBox() {
 		clocksBox.style.transform = "translate(-50%, -50%)" + "scale(" + getScale() + ")";
+		for (let i = 0;i<pacContainers.length;i++) pacContainers[i].style.transform = "scale(" + getScale() + ")";
 	}
 
 	function scaleAutoComplete(index) {
-		pacContainers[index].style.transform = "scale(" + getScale() + ")";
 	}
 
 	let clockClasses = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
@@ -382,7 +412,7 @@ var clockulous = (function() {
 	function addClock() {
 		if (ZONES.length < 9) {
 			index = ZONES.length;
-			ZONES.push( new LocalizeZones('Search for Location', 'XX', userTime.getTimezoneOffset()*60, 0) );
+			ZONES.push( new LocalizeZones('', 'XX', userTime.getTimezoneOffset()*60, 0) );
 			drawClock();
 			stoppedClock();
 			setTimeout( function(){ ct.local[index].focus() }, 1);}
@@ -395,9 +425,10 @@ var clockulous = (function() {
 		let index = clocksBox.children.length;
 		let newClock = ct.cloneNode(true);
 		newClock.id = '';
+		clearQuote();
 		clocksBox.appendChild( newClock );
 		try { gmaps.addAutoCompletes(index) }
-		catch (e) { offLine(); console.log(e) };
+		catch (e) { global.offLine(); console.log(e) };
 		setIndex();
 		updateMeta(index);
 		showHideAmPmMeta();
@@ -405,8 +436,38 @@ var clockulous = (function() {
 		Velocity(newClock, { scale: [1, .1] }, { duration: 750, easing: [500,25] } )
 	}
 
-	function offLine() {
-		console.log('ClockBlock.me is working in offline mode. Searching for locations won\'t work')
+	global.offLine = function() {
+		if(!modes.offline) {
+			modes.offline = true;
+			offlineErrorMessage();
+			loopSupport();
+			function loopSupport() {
+				console.log("fire", gmaps)
+				lifeSupport = gmaps.getURL("http://sweetclocks.party");
+				lifeSupport.then(function() {
+					modes.offline = false;
+					removeOfflineError();
+					initialize();
+				}).catch(function() {
+					setTimeout(loopSupport, 500)
+				})
+			}
+		}
+		else {
+			return;
+		}
+	}
+
+	function offlineErrorMessage() {
+		toolTips.offlineError = document.createElement('span');
+		toolTips.offlineError.classList.add("error", "tool-tip", "offline");
+		clocksBox.insertAdjacentElement('beforebegin', toolTips.offlineError);
+		toolTips.offlineError.innerHTML = "Sweetclocks is working in offline mode. Searching for locations won't work."
+		toolTips.offlineError.addEventListener('click', removeOfflineError);
+	}
+
+	function removeOfflineError() {
+		toolTips.offlineError.parentNode.removeChild(toolTips.offlineError);
 	}
 
 	function removeClock() {
@@ -419,9 +480,10 @@ var clockulous = (function() {
 			setIndex();
 			scaleClocksBox();
 			wrapperClasses();
+			if (clocksBox.childNodes.length === 0) printQuote();
 			save();
 		} );
-		document.body.removeChild(pacContainers[index]);
+		if(pacContainers[index]) document.body.removeChild(pacContainers[index]);
 	}
 
 	global.editLatLngGmaps = function(latLng, index) {

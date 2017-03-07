@@ -2,9 +2,8 @@
 	@include theme(background-color, $cd-clock, $cn-ground)
 	font-family: $font-text
 	border-top: none
-	margin-top: .5rem
 	overflow: visible
-	padding: 0 3rem 0 2.7rem
+	padding: 0 3rem .5rem 2.7rem
 	transform-origin: top left
 	@media #{$sml}
 		padding-left: 1.8rem
@@ -24,6 +23,8 @@
 .pac-item
 	@include theme(color, lighten($cd-type, 50%), darken($cn-type,25%))
 	font-size: .6rem
+	&:last-child
+		margin-bottom: .5rem
 	.day &
 		border-top: none
 		padding: .1rem 0

@@ -10,7 +10,7 @@
 	background-repeat: no-repeat
 	background-position: 98% 10%
 	background-size: 1rem
-	box-shadow: 0rem 0.1rem 0.2rem 0.25rem rgba(44, 37, 5, 0.1)
+	box-shadow: 0rem 0.1rem 0.2rem 0.25rem rgba(44, 37, 5, 0.02)
 	border-radius: 0.5rem
 	border: 0.4rem solid #ffffff
 	padding: 1.2rem 1.7rem
@@ -27,7 +27,7 @@
 		background: $cd-choice
 		border-right: 0.4rem solid #ffffff
 		border-bottom: 0.4rem solid #ffffff
-		box-shadow: 0.3rem 0.4rem 0.2rem -0.05rem rgba(44, 37, 5, 0.1)
+		box-shadow: 0.3rem 0.4rem 0.2rem -0.05rem rgba(44, 37, 5, 0.02)
 		position: absolute
 		top: 100%
 		margin-top: -0.8rem
@@ -41,6 +41,18 @@
 	color: $cn-type
 	bottom: 100%
 	width: 18rem
+	&.offline
+		position: absolute
+		top: 73%
+		bottom: auto
+		left: 50%
+		transform: translateX(-50%)
+		height: auto
+		display: block
+		&::after
+			background-color: $cn-error
+			border: none
+			display: none
 	.examples
 		margin-top: 1rem
 		display: block
