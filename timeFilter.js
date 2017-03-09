@@ -1,6 +1,6 @@
 var timeFilter = (function() {
 
-  let global = {};
+  var global = {};
   global.submitInput = function(ele, clockType, amPm) {
     let minutes = 0, hours = 0;
     if (ele.value === "") {
@@ -26,7 +26,7 @@ var timeFilter = (function() {
     let key; key = evt.key;
     index = ele.getAttribute('data-index');
     if (key === "Enter") { clockulous.submitTimeFilter(ele, index) }
-    
+
     /////// Exclude non number characteres. I avoided a [^] match to leave operational keys enabled. //////
     if (key.length === 1) {
       if(key.match(/[A-Za-z\s\.\\\+\*\?\^\$\[\]\{\}\(\)\|\/\-&~!@#%`="><_',;]|Decimal|Multiply|Add|Divide|Subtract|Seperator/)) evt.preventDefault();

@@ -1,5 +1,5 @@
 .pac-container
-	@include theme(background-color, $cd-clock, $cn-ground)
+	@include theme(background-color, $cd-clock, $cn-ground, $ca-clock, $ce-ground)
 	font-family: $font-text
 	border-top: none
 	overflow: visible
@@ -7,25 +7,25 @@
 	transform-origin: top left
 	@media #{$sml}
 		padding-left: 1.8rem
-	.day &
-		box-shadow: 0 .2rem 0 0 rgba(0, 0, 0, 0.2)
+	.day &, .arctic &
+		box-shadow: 0 .4rem 0 -.1rem rgba(0, 0, 0, 0.2)
 		border-bottom-right-radius: 01rem
 		border-bottom-left-radius: 1rem
 		border-bottom: .2rem solid lighten($cd-clock, 50%)
 		border-right: .2rem solid lighten($cd-clock, 50%)
 		border-left: .2rem solid lighten($cd-clock, 50%)
-	.night &
+	.night &, .neon &
 		border-right: .2rem solid $cn-ground
 		border-left: .2rem solid $cn-ground
 		box-shadow: none
 		padding-bottom: 2rem
 
 .pac-item
-	@include theme(color, lighten($cd-type, 50%), darken($cn-type,25%))
+	@include theme(color, lighten($cd-type, 50%), darken($cn-type,25%), lighten($ca-type, 50%), darken($ce-type,25%))
 	font-size: .6rem
 	&:last-child
 		margin-bottom: .5rem
-	.day &
+	.day &, .arctic &
 		border-top: none
 		padding: .1rem 0
 		border-bottom-width: .06rem
@@ -34,7 +34,12 @@
 			background-color: darken($cd-clock, 2.5%)
 		&.pac-item-selected
 			background-color: darken($cd-clock, 4%)
-	.night &
+	.arctic &
+		&:hover
+			background-color: darken($ca-clock, 2.5%)
+		&.pac-item-selected
+			background-color: darken($ca-clock, 4%)
+	.night &, .neon &
 		padding: 0
 		border-top: .06rem solid $cn-ground
 		border-bottom: .06rem solid $cn-ground
@@ -61,16 +66,23 @@
 				margin-top: -.15rem
 				top: 50%
 			background-color: transparent
+	.neon &
+		&:hover
+			border-top: .06rem solid $ce-choice
+			border-bottom: .06rem solid $ce-choice
+		&.pac-item-selected
+			&::before
+				background-color: $ce-choice
 
 .pac-item-query
 	font-size: .8rem
 	//font-weight: bold
-	@include theme(color, desaturate(lighten($cd-type, 50%), 20%), darken($cn-type,25%))
+	@include theme(color, desaturate(lighten($cd-type, 50%), 20%), darken($cn-type,25%), desaturate(lighten($ca-type, 50%), 20%), darken($ce-type,25%))
 
 .pac-matched
 	font-size: .8rem
 	//font-weight: bold
-	@include theme(color, darken($cd-type, 50%), $cn-choice)
+	@include theme(color, darken($cd-type, 50%), $cn-choice, darken($ca-type, 50%), $ce-choice)
 
 .pac-icon
 	display: none

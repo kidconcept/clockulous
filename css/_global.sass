@@ -12,8 +12,12 @@ body
 	padding-right: 10vw
 	&.day
 		background-color: $cd-ground
+	&.arctic
+		background-color: $ca-ground
 	&.night
 		background-color: $cn-ground
+	&.neon
+		background-color: $ce-ground
 	@media #{$med}
 		padding-left: 6.4vw
 		padding-right: 6.4vw
@@ -47,7 +51,8 @@ button
 	visibility: hidden
 
 .keycommand
-	@include theme(background-color, $cd-disabled, lighten($cn-disabled, 10%))
+	@include theme(background-color, $cd-disabled, lighten($cn-disabled, 10%), $ca-disabled, lighten($ce-disabled, 10%))
+	@include theme(color, $cd-type, $cn-type, $ca-type, $ce-type)
 	border-radius: 0.3rem
 	padding: 0.2rem 0.6rem
 	margin: 0.2rem
