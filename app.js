@@ -432,7 +432,6 @@
 	}
 
 	timeTravelMeta.updateClasses = function(index, all) {
-		theThing = index
 		ttMeta = ct.timeTravelMeta[index];
 		for(let i=0;i<ct.timeTravelMeta.length;i++) {
 			ct.timeTravelMeta[i].classList.remove("cancel","off","submit");
@@ -483,10 +482,11 @@
 	function addClock() {
 		if (ZONES.length < 9) {
 			index = ZONES.length;
-			ZONES.push( new LocalizeZones('', 'XX', userTime.getTimezoneOffset()*60, 0) );
+			ZONES.push( new LocalizeZones('', 'XX', userTime.getTimezoneOffset()*-60, 0) );
 			drawClock();
 			stoppedClock();
 			setTimeout( function(){ ct.local[index].focus() }, 1);}
+		if (SETTINGS.timeTravel) engage();
 		wrapperClasses();
 		scaleClocksBox();
 		save();
@@ -515,7 +515,6 @@
 			function loopSupport() {
 				canary = gmaps.getURL("http://sweetclocks.party/");
 				canary.then(function() {
-					console.log("then", canary)
 					if(toolTips.offlineError.parentNode) removeOfflineError();
 					}).catch(function(e) {
 					console.log("catch", e)
@@ -627,6 +626,11 @@
 		showInputClock(index);
 	}
 
+	function engage() {
+		timeTravelMeta.updateClasses(0, true);
+		for(let i=0;i<ct.time.length;i++) ct.time.item(i).parentNode.classList.add("traveling");
+	}
+
 	function timeTravelMouse() {
 		SETTINGS.timeTravel = true;
 		for(let i=0;i<ct.time.length;i++) ct.time.item(i).parentNode.classList.add("traveling");
@@ -657,11 +661,13 @@
 		for(let i=0;i<ct.time.length;i++) {
 		  ct.time.item(i).removeEventListener('mousedown', timeTravel)}
 		input.addEventListener('keydown', initTimeFilter);
+		input.addEventListener('keyup', timeFilter.postFilter);
 		if(SETTINGS.amPm) amPmTimeTravel("start", index)
 		input.classList.remove('hidden');
 		time.classList.add('hidden');
 		window.addEventListener('click', global.clickOffClock);
 		global.clickOffClock.index = index;
+		helpAndroid(input, index);
 		setTimeout(function() {
 			//uhgly hack to allow time for focus to take hold
 			ct.timeInput[index].focus(); }, 1);
@@ -684,7 +690,7 @@
 		timeFilter.filter(e, this, SETTINGS.amPm)
 	}
 
-	var timeRegExp = /^(([0-1]?[0-9]|2[0-3]):[0-5][0-9]$)|^$/
+	var timeRegExp = /^(([0-1]?[0-9]|2[0-3]):?([0-5][0-9])?$)/
 
 	global.submitTimeFilter = function(ele, index) {
 		if (!ele.value.match(timeRegExp)) {
@@ -719,7 +725,8 @@
 		if(e) {toolTips.submitError.innerHTML = "Sorry, something is wrong. <span class='emessage'>"+e+"</span>"}
 		else {toolTips.submitError.innerHTML = "Sorry, I didn't recognize that time.<br/>Please use clock-time format: <span class='examples'>1:53 &nbsp; 12:30 &nbsp; 19:25 &nbsp; 05:25</span>"}
 		toolTips.submitError.addEventListener('click', function() {
-			toolTips.submitError.parentNode.removeChild(toolTips.submitError);
+			submissionErrors = document.querySelectorAll('.error.tool-tip');
+			for(let i=0;i < submissionErrors.length;i++) submissionErrors[i].parentNode.removeChild(submissionErrors[i]);
 			toolTips.errorOpen = false;
 		});
 	}
@@ -748,6 +755,28 @@
 			input.value = "";
 			if(SETTINGS.amPm) amPmTimeTravel("stop", i)
 			ct.time.item(i).addEventListener('mousedown', timeTravel);
+		}
+	}
+
+	function helpAndroid(input, index) {
+		var ua = navigator.userAgent.toLowerCase();
+		var isAndroid = ua.indexOf("android") > -1;
+		if (isAndroid) {
+			//insert hidden element to catch next-input focus of android tel keyboard
+			hiddenInput = document.createElement('input');
+			hiddenInput.style.cssText = "visibility: none; width: 0; height: 0; border: none; position: absolute";
+			hiddenInput.addEventListener('focus', fireSubmission);
+			input.addEventListener('blur', removeHidden);
+			input.insertAdjacentElement('afterend', hiddenInput);
+			//submit clock on focus of hidden element
+			function fireSubmission() {
+				global.submitTimeFilter(input, index);
+				hiddenInput.blur();
+			}
+			function removeHidden() {
+				hiddenInput.parentNode.removeChild(hiddenInput);
+				input.removeEventListener('blur', removeHidden);
+			}
 		}
 	}
 

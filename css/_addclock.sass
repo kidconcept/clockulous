@@ -17,7 +17,7 @@
 		z-index: 10
 		position: relative
 		svg
-			width: 53%
+			width: 34%
 		@media #{$med}
 			.eight &
 				display: none
@@ -26,10 +26,8 @@
 				display: block
 
 .day .addclock-button-wrapper button
-	box-shadow: 0 .25rem 0 0 darken($cd-ground, 20%), inset 0 .1rem 0 0 lighten($cd-ground, 5%)
+	box-shadow: 0 .1rem 0 0 darken($cd-ground, 10%), inset 0 .1rem 0 0 lighten($cd-ground, 5%)
 	background-color: desaturate(darken($cd-ground, 5%), 5%)
-	svg
-		filter: drop-shadow(0 .1rem 0 darken($cd-ground, 20%))
 	svg path
 		fill: lighten($cd-ground, 20%)
 	&:active
@@ -41,10 +39,8 @@
 			fill: lighten($cd-ground, 5%)
 
 .night .addclock-button-wrapper button
-	box-shadow: 0 .2rem 0 0 darken($cn-ground, 30%), inset 0 .1rem 0 0 lighten($cn-ground, 5%)
+	box-shadow: 0 .06rem 0 0 darken($cn-ground, 5%), inset 0 .08rem 0 0 lighten($cn-ground, 5%)
 	background-color: lighten($cn-ground, 1%)
-	svg
-		filter: drop-shadow(0 .2rem 0 darken($cn-ground, 50%))
 	svg path
 		fill: lighten($cn-ground, 20%)
 	&:active
@@ -56,10 +52,8 @@
 			fill: lighten($cn-ground, 30%)
 
 .arctic .addclock-button-wrapper button
-	box-shadow: 0 .25rem 0 0 darken($ca-ground, 20%), inset 0 .1rem 0 0 lighten($ca-ground, 5%)
+	box-shadow: 0 .1rem 0 0 darken($ca-ground, 10%), inset 0 .1rem 0 0 lighten($ca-ground, 5%)
 	background-color: desaturate(darken($ca-ground, 5%), 5%)
-	svg
-		filter: drop-shadow(0 .1rem 0 darken($ca-ground, 20%))
 	svg path
 		fill: lighten($ca-ground, 20%)
 	&:active
@@ -73,8 +67,6 @@
 .neon .addclock-button-wrapper button
 	box-shadow: 0 .2rem 0 0 darken($ce-ground, 30%), inset 0 .1rem 0 0 lighten($ce-ground, 5%)
 	background-color: lighten($ce-ground, 1%)
-	svg
-		filter: drop-shadow(0 .2rem 0 darken($ce-ground, 50%))
 	svg path
 		fill: lighten($ce-ground, 20%)
 	&:active

@@ -3,6 +3,7 @@
 	bottom: 100%
 	z-index: 100
 	margin-bottom: -#{$menu-height}
+	box-sizing: border-box
 	#menuBg
 		@include theme(background-color, $cd-clock, lighten($cn-ground, 5%), $ca-clock, lighten($ce-ground, 5%))
 		@include theme(color, $cd-type, darken($cn-type, 31%), $ca-type, darken($ce-type, 31%))
@@ -140,7 +141,7 @@
 	z-index: 100
 	margin-top: -0.5rem
 	&.open button
-		@include theme(color, $cd-type, darken($cn-type, 45%), $ca-type, darken($ce-type, 45%))
+		@include theme(color, rgba($cd-type, .7), darken($cn-type, 45%), rgba($ca-type, .9), darken($ce-type, 45%))
 		@include theme(background-color, lighten($cd-ground, 15%), darken($cn-ground, 3%), lighten($ca-ground, 5%), darken($ce-ground, 3%))
 		.open &
 			margin-bottom: 2rem

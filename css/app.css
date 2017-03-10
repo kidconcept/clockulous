@@ -207,8 +207,8 @@ button {
   @media (max-width: 667px) {
     #app {
       height: auto;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem; } }
+      margin-left: 0.5rem;
+      margin-right: 0.5rem; } }
 
 #wrapper {
   width: 100%;
@@ -539,7 +539,7 @@ button {
   .zoneMeta .date {
     font-family: Comfortaa, sans;
     font-weight: 400;
-    font-size: 1.1rem;
+    font-size: 1rem;
     background: none;
     display: inline; }
     @media (max-width: 667px) {
@@ -548,7 +548,7 @@ button {
         width: 100%;
         font-size: 0.8rem; } }
   .zoneMeta .rawOffset {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     cursor: pointer;
     background: transparent;
     border: none;
@@ -613,7 +613,8 @@ button {
   position: absolute;
   bottom: 100%;
   z-index: 100;
-  margin-bottom: -1.9rem; }
+  margin-bottom: -1.9rem;
+  box-sizing: border-box; }
   #menu #menuBg {
     display: flex;
     flex-wrap: wrap;
@@ -834,11 +835,11 @@ button {
   z-index: 100;
   margin-top: -0.5rem; }
   .day .menu-button-wrapper.open button {
-    color: #403d2d; }
+    color: rgba(64, 61, 45, 0.7); }
   .night .menu-button-wrapper.open button {
     color: #828282; }
   .arctic .menu-button-wrapper.open button {
-    color: #4c5863; }
+    color: rgba(76, 88, 99, 0.9); }
   .neon .menu-button-wrapper.open button {
     color: #828282; }
   .day .menu-button-wrapper.open button {
@@ -945,7 +946,7 @@ button {
     z-index: 10;
     position: relative; }
     .addclock-button-wrapper button svg {
-      width: 53%; }
+      width: 34%; }
     @media (max-width: 1280px) and (orientation: portrait) {
       .eight .addclock-button-wrapper button {
         display: none; } }
@@ -954,10 +955,8 @@ button {
         display: block; } }
 
 .day .addclock-button-wrapper button {
-  box-shadow: 0 0.25rem 0 0 #dfc029, inset 0 0.1rem 0 0 #efe198;
+  box-shadow: 0 0.1rem 0 0 #e5cd56, inset 0 0.1rem 0 0 #efe198;
   background-color: #e4d170; }
-  .day .addclock-button-wrapper button svg {
-    filter: drop-shadow(0 0.1rem 0 #dfc029); }
   .day .addclock-button-wrapper button svg path {
     fill: #f9f4db; }
   .day .addclock-button-wrapper button:active {
@@ -969,10 +968,8 @@ button {
       fill: #efe198; }
 
 .night .addclock-button-wrapper button {
-  box-shadow: 0 0.2rem 0 0 black, inset 0 0.1rem 0 0 #2f2f2f;
+  box-shadow: 0 0.06rem 0 0 #151515, inset 0 0.08rem 0 0 #2f2f2f;
   background-color: #252525; }
-  .night .addclock-button-wrapper button svg {
-    filter: drop-shadow(0 0.2rem 0 black); }
   .night .addclock-button-wrapper button svg path {
     fill: #555555; }
   .night .addclock-button-wrapper button:active {
@@ -984,10 +981,8 @@ button {
       fill: #6f6f6f; }
 
 .arctic .addclock-button-wrapper button {
-  box-shadow: 0 0.25rem 0 0 #9fa9b3, inset 0 0.1rem 0 0 #e6e9eb;
+  box-shadow: 0 0.1rem 0 0 #bcc3c9, inset 0 0.1rem 0 0 #e6e9eb;
   background-color: #cccfd2; }
-  .arctic .addclock-button-wrapper button svg {
-    filter: drop-shadow(0 0.1rem 0 #9fa9b3); }
   .arctic .addclock-button-wrapper button svg path {
     fill: white; }
   .arctic .addclock-button-wrapper button:active {
@@ -1001,8 +996,6 @@ button {
 .neon .addclock-button-wrapper button {
   box-shadow: 0 0.2rem 0 0 black, inset 0 0.1rem 0 0 #2f2f2f;
   background-color: #252525; }
-  .neon .addclock-button-wrapper button svg {
-    filter: drop-shadow(0 0.2rem 0 black); }
   .neon .addclock-button-wrapper button svg path {
     fill: #555555; }
   .neon .addclock-button-wrapper button:active {
@@ -1150,8 +1143,8 @@ button {
   .neon .tool-tip {
     background-color: #8BC34A; }
   .tool-tip.error {
-    background-color: #EB6222;
-    color: whitesmoke;
+    background-color: #EAD119;
+    color: #403d2d;
     z-index: 10; }
     .tool-tip.error .examples {
       margin-top: 1rem;
