@@ -7,14 +7,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" type="image/png" href="./favicon.png">
 	</head>
-	<body>
+	<body class="day">
 		<div id="app">
 			<div id="menu">
 				<div id="menuBg">
 					<div class="menu-button-wrapper close"><button id="menuButtonClose" type="button" style=""><span>close</span></button></div>
 					<section id="preamble">
 						<h1>Even a stopped&nbsp;clock</h1>
-						<p>Sweetclocks.party helps you keep time on your friends, relations, or collegues around the world. I wrote it after getting tired of guessing what time zones my friends and family were in. Sweetclocks lets you search for locations, predict times, and remembers what clocks you had opened last. Thanks for checking it out!</p>
+						<p>Sweetclocks.party helps you keep time on your friends, relations, or collegues around the world. Sweetclocks lets you search for locations, predict times, and remembers what clocks you had opened last. Thanks for checking it out!</p>
 						<p>Sweetclocks is new and still has some bugs. If you'd like to report a bug, please send mail to <a href="mailto:whoops@sweetclocks.party">whoops@sweetclocks.party</a></p>
 						<p>You can check out the code for sweetclocks on <a href="https://github.com/kidconcept/clockulous">github</a></p>
 						<h1>Settings</h1>
@@ -35,6 +35,15 @@
 								<label><input type="radio" name="theme" value="night"> Night</label>
 								<label><input type="radio" name="theme" value="neon"> Neon</label>
 							</div>
+							<div>
+								<h2>Time Travel Notification</h2>
+								<span class="left">On</span>
+								<label class="checkboxwrapper">
+									<input id="ttNotification" type="checkbox">
+									<span></span>
+								</label>
+								<span class="right">Off</span>
+							</div>
 						</div>
 					</section>
 					<section id="features">
@@ -50,27 +59,27 @@
 						  </tr>
 						  <tr>
 						    <td>Time Travel</td>
-						    <td>To predict a time click on the clock or on the <span class="icon-label">Time Travel Icon <span class="icon tt"></span></span> Type the time and press <span class="keycommand">Return</span> or click the <span class="icon-label"> Start Time Travel Icon <span class="icon tts"></span></span> To return to the current time, press <span class="keycommand">Esc</span> or click on the <span class="icon-label">Cancel Time Travel Icon <span class="icon ttc"></span></span></td>
+						    <td>To see a future or past time, click the time or the <span class="icon-label">Time Travel Icon <span class="icon tt"></span></span>. Type a new time and press <span class="keycommand">Return</span> or click the <span class="icon-label"> Start Time Travel Icon <span class="icon tts"></span></span> To return to the current time, press <span class="keycommand">Esc</span> or click on the <span class="icon-label">Cancel Time Travel Icon <span class="icon ttc"></span></span></td>
 						  </tr>
 						  <tr>
 						    <td>Search Time Zones</td>
-						    <td>To search for a time zone type in the search field above the clock time. Select your time zone from the results list, and the clock should show the time for that region. Keep in mind countries may have more than one time zone.</td>
+						    <td>To search for a time zone type in the search field below the clock time. Select a region from the results list and a GPS coordinate will be assoicated with that clock. Keep in mind the region you selected may have more than one timezone associated with it, so if you aren't sure pick something specific like a city.</td>
 						  <!-- </tr> -->
 						  <tr>
 						    <td>Rename Time Zones</td>
-						    <td>To rename a time zone, edit the name and press <span class="keycommand">Enter</span> without selecting a time zone from the list.</td>
+						    <td>To rename a time zone, click the <span class="icon-label">Edit Name Icon <span class="icon editlocal"></span></span>and type a new name.</td>
 						  </tr>
 						  <tr>
 						    <td>Change UTC/GMT</td>
-						    <td>To manually change the UTC/GMT of a zone, click the UTC time offset and select a UTC from the dropdown</td>
+						    <td>To manually change the UTC/GMT of a zone, click the UTC time offset and select a UTC from the dropdown. Manually changing the UTC of a clock will de-link the clock from it's GPS coordinates and it won't be able tp predict Daylight Savings Time.</td>
 						  </tr>
 						  <tr>
 						    <td>Daylight Savings Time</td>
-						    <td>If a time zone is currently within Daylight Savings Time (DST), the <span class="icon-label"> DST Icon <span class="icon dst"></span></span> will light. Please note that currently Sweetclocks only checks for DST when you first search for a time zone. If you pass into or out of DST after searching it won't update. To manually enable/disable DST simply click the <span class="icon-label">DST Icon <span class="icon dst"></span></span></td>
+						    <td>If a time zone is currently within Daylight Savings Time (DST), the <span class="icon-label"> DST Icon <span class="icon dst"></span></span> will light. If your clock is showing DST incorrectly, try refreshing the page. To manually enable/disable DST simply click the <span class="icon-label">DST Icon <span class="icon dst"></span></span></td>
 						  </tr>
 						  <tr>
 						    <td>Save</td>
-						    <td>Clock Block me should save to your browsers Local Storage automatically. If you aren't seeing the same settings when you come back to Clock Block using the same Browser, check to see if you have Local Storage disabled.</td>
+						    <td>Sweetclocks saves to your browsers Local Storage automatically. If you aren't seeing the same settings when you come back to Sweetclocks using the same Browser, check to see if you have Local Storage disabled.</td>
 						  </tr>
 						</table>
 					</section>
@@ -148,7 +157,10 @@
 					</span>
 				</div>
 				<hr class="sml">
-				<input class="local" name='local' placeholder="Search for Location" data-tip="Search for a timezone by City, Country, or Region.">
+				<div class="localcontrols"><span class="latlng"></span><span class="editlocal"></span><span class="savelocal hidden"></span></div>
+				<input type="text" class="local" name='local' placeholder="Search for Location">
+				<input type="text" class="localname hidden" name='localname'>
+				<span type="text" class="locallatlng hidden" name='locallatlng'></span>
 			</div>
 		</div>
 		<script type="text/javascript" src="./lib/promise.min.js"></script>

@@ -1,7 +1,7 @@
 .inner
+	@include theme(background-color, $cd-clock, transparent, $ca-clock, transparent)
 	height: 100%
 	position: relative
-	@include theme(background-color, $cd-clock, transparent, $ca-clock, transparent)
 	.day &, .arctic &
 		border-radius: 2rem
 		@media #{$sml}
@@ -22,7 +22,7 @@
 		top: 1.1rem
 		margin-left: -2.7rem
 		background-color: transparent
-		background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%0A%3C%21DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%0A%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2063%2069%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xml%3Aspace%3D%22preserve%22%20style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A1.41421%3B%22%3E%0A%20%20%20%20%3Cg%20transform%3D%22matrix%281%2C0%2C0%2C1%2C-242.066%2C-694.965%29%22%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22matrix%281%2C0%2C0%2C1%2C1.75%2C6.75%29%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22matrix%281%2C0%2C0%2C1%2C55.8564%2C-6.75%29%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M184.596%2C728.968C184.506%2C728.004%20184.46%2C727.028%20184.46%2C726.04C184.46%2C708.889%20198.384%2C694.965%20215.535%2C694.965C232.687%2C694.965%20246.611%2C708.889%20246.611%2C726.04C246.611%2C727.028%20246.565%2C728.004%20246.475%2C728.968C244.997%2C713.188%20231.699%2C700.821%20215.535%2C700.821C199.372%2C700.821%20186.074%2C713.188%20184.596%2C728.968Z%22%20style%3D%22fill%3Argb%28231%2C230%2C223%29%3B%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22matrix%281%2C0%2C0%2C1%2C1.75%2C6.75%29%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22matrix%281.11112%2C0%2C0%2C1.11112%2C-112.852%2C-61.2885%29%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Ccircle%20cx%3D%22345.817%22%20cy%3D%22707.787%22%20r%3D%2227.968%22%20style%3D%22fill-opacity%3A0.0196078%3B%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22matrix%281%2C0%2C0%2C1%2C1.75%2C6.75%29%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cg%20transform%3D%22matrix%280.647301%2C0.647301%2C-0.647301%2C0.647301%2C566.408%2C75.0627%29%22%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%3Cpath%20d%3D%22M271.427%2C727.19L271.427%2C713.723C271.427%2C712.154%20272.698%2C710.883%20274.267%2C710.883C274.268%2C710.883%20274.269%2C710.883%20274.27%2C710.883C275.838%2C710.883%20277.11%2C712.154%20277.11%2C713.723L277.11%2C727.19L290.577%2C727.19C292.146%2C727.19%20293.417%2C728.461%20293.417%2C730.03C293.417%2C730.031%20293.417%2C730.032%20293.417%2C730.033C293.417%2C731.602%20292.146%2C732.873%20290.577%2C732.873L277.11%2C732.873L277.11%2C746.34C277.11%2C747.909%20275.838%2C749.18%20274.27%2C749.18C274.269%2C749.18%20274.268%2C749.18%20274.267%2C749.18C272.698%2C749.18%20271.427%2C747.909%20271.427%2C746.34L271.427%2C732.873L257.959%2C732.873C256.391%2C732.873%20255.119%2C731.602%20255.119%2C730.033C255.119%2C730.032%20255.119%2C730.031%20255.119%2C730.03C255.119%2C728.461%20256.391%2C727.19%20257.959%2C727.19L271.427%2C727.19Z%22%20style%3D%22fill-opacity%3A0.0745098%3B%22%2F%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A")
+		@extend .day-remove-icon
 		@media #{$sml}
 			top: .5rem
 			margin-left: -1.8rem
@@ -32,13 +32,14 @@
 		top: 6.87rem
 		margin-left: -3.1rem
 		left: 100%
-		background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3C%21DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2015%2015%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xml%3Aspace%3D%22preserve%22%20style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A1.41421%3B%22%3E%3Cpath%20d%3D%22M13.943%2C12.791c-0.134%2C0.498%20-0.464%2C0.922%20-0.914%2C1.175c-1.081%2C0.604%20-2.326%2C0.95%20-3.651%2C0.95c-4.116%2C0%20-9.378%2C-6.92%20-9.378%2C-7.458c0%2C-0.538%205.262%2C-7.458%209.378%2C-7.458c1.351%2C0%202.619%2C0.36%203.712%2C0.989c0.415%2C0.239%200.726%2C0.625%200.871%2C1.081c1.034%2C3.318%201%2C6.899%20-0.018%2C10.721Zm-5.319%2C-6.216l2.092%2C-2.092c0.244%2C-0.244%200.639%2C-0.244%200.883%2C0c0%2C0%200%2C0%200%2C0.001c0.244%2C0.243%200.244%2C0.638%200%2C0.882l-2.092%2C2.092l2.092%2C2.092c0.244%2C0.244%200.244%2C0.639%200%2C0.883c0%2C0%200%2C0%200%2C0c-0.244%2C0.244%20-0.639%2C0.244%20-0.883%2C0l-2.092%2C-2.092l-2.092%2C2.092c-0.244%2C0.244%20-0.639%2C0.244%20-0.882%2C0c0%2C0%20-0.001%2C0%20-0.001%2C0c-0.243%2C-0.244%20-0.243%2C-0.639%200%2C-0.883l2.092%2C-2.092l-2.092%2C-2.092c-0.243%2C-0.244%20-0.243%2C-0.639%200%2C-0.882c0%2C-0.001%200.001%2C-0.001%200.001%2C-0.001c0.243%2C-0.244%200.638%2C-0.244%200.882%2C0l2.092%2C2.092Z%22%20style%3D%22fill%3A%2300bcd4%3B%22%2F%3E%3C%2Fsvg%3E")
+		@extend .night-remove-icon
 		@media #{$sml}
 			top: 2.78rem
 			width: 1.2rem
 			height: 1.2rem
+			margin-left: -1.8rem
 	.neon &
-		background-image: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%20standalone%3D%22no%22%3F%3E%3C%21DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20width%3D%22100%25%22%20height%3D%22100%25%22%20viewBox%3D%220%200%2015%2015%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20xml%3Aspace%3D%22preserve%22%20style%3D%22fill-rule%3Aevenodd%3Bclip-rule%3Aevenodd%3Bstroke-linejoin%3Around%3Bstroke-miterlimit%3A1.41421%3B%22%3E%3Cpath%20d%3D%22M13.943%2C12.791c-0.134%2C0.498%20-0.464%2C0.922%20-0.914%2C1.175c-1.081%2C0.604%20-2.326%2C0.95%20-3.651%2C0.95c-4.116%2C0%20-9.378%2C-6.92%20-9.378%2C-7.458c0%2C-0.538%205.262%2C-7.458%209.378%2C-7.458c1.351%2C0%202.619%2C0.36%203.712%2C0.989c0.415%2C0.239%200.726%2C0.625%200.871%2C1.081c1.034%2C3.318%201%2C6.899%20-0.018%2C10.721Zm-5.319%2C-6.216l2.092%2C-2.092c0.244%2C-0.244%200.639%2C-0.244%200.883%2C0c0%2C0%200%2C0%200%2C0.001c0.244%2C0.243%200.244%2C0.638%200%2C0.882l-2.092%2C2.092l2.092%2C2.092c0.244%2C0.244%200.244%2C0.639%200%2C0.883c0%2C0%200%2C0%200%2C0c-0.244%2C0.244%20-0.639%2C0.244%20-0.883%2C0l-2.092%2C-2.092l-2.092%2C2.092c-0.244%2C0.244%20-0.639%2C0.244%20-0.882%2C0c0%2C0%20-0.001%2C0%20-0.001%2C0c-0.243%2C-0.244%20-0.243%2C-0.639%200%2C-0.883l2.092%2C-2.092l-2.092%2C-2.092c-0.243%2C-0.244%20-0.243%2C-0.639%200%2C-0.882c0%2C-0.001%200.001%2C-0.001%200.001%2C-0.001c0.243%2C-0.244%200.638%2C-0.244%200.882%2C0l2.092%2C2.092Z%22%20style%3D%22fill%3A%23f54ca0%3B%22%2F%3E%3C%2Fsvg%3E")
+		@extend .neon-remove-icon
 
 ///////////////////////////////////////////////////////////////////////////
 // The time display
@@ -138,11 +139,29 @@ $cpr-s: 0
 		background-size: contain
 		background-repeat: no-repeat
 		background-position-y: bottom
+// Icons
+.day, .arctic
+	.timeTravelMeta
+		@extend .day-tt-icon
+	.timeTravelMeta.submit
+		@extend .day-tts-icon
+	.timeTravelMeta.cancel
+		@extend .day-ttc-icon
+	.traveling .timeTravelMeta
+		@extend .day-tttraveling-icon
+
+.night, .neon
+	.timeTravelMeta
+		@extend .night-tt-icon
+	.traveling .timeTravelMeta
+		@extend .night-tttraveling-icon
+
 
 ///////////////////////////////////////////////////////////////////////////
 // Location field
-.local
-	@extend .choice-color
+.local,
+.localname
+	@include theme(color, $cd-choice, $cn-choice, $ca-choice, $ce-choice)
 	font-size: 1.6rem
 	padding: 0 $cpr 0 $cpl
 	.day &
@@ -165,7 +184,7 @@ $cpr-s: 0
 			color: $ca-clock
 	.neon &
 		@include placeholder
-			color: $ce-disabled
+			color: $ce-disabled asdf
 		@include selection
 			background-color: darken($ce-ground, 10%)
 			color: $ce-type
@@ -184,6 +203,62 @@ $cpr-s: 0
 		border: none
 		outline: none
 		box-shadow: none
+
+.localOpen .local
+	@include theme(color, $cd-type, $cn-type, $ca-type, $ce-type)
+
+///////////////////////////////////////////////////////////////////////////
+// Local Controls, edit local and display latlng
+.localcontrols
+	height: 1rem
+	position: absolute
+	width: 100%
+	pointer-events: none
+	.latlng.has, .editlocal, .savelocal
+		background-repeat: no-repeat
+		background-size: 49.1%
+		background-position: center center
+		height: 2rem
+		width: 2rem
+		display: inline-block
+		pointer-events: auto
+		position: relative
+	.editlocal, .savelocal
+		@include theme(background-color, rgba($cd-clock, .7 ), $cn-ground, rgba($ca-clock, .9), $ce-ground)
+		float: right
+		cursor: pointer
+		right: 1.8rem
+		top: 0.1rem
+		background-size: 45.2%
+		@media #{$sml}
+			right: 2.1rem
+			top: -0.2rem
+			background-size: 37.1%
+	.latlng
+		cursor: pointer
+		display: none
+		left: 1.2rem
+	.latlng.has
+		@media #{$sml}
+			height: 1.8rem
+			width: 1.8rem
+			top: -0.2rem
+			left: 0.7rem
+	.latlng, .editlocal, .savelocal
+		&.hidden
+			display: none
+
+.locallatlng
+	@include theme(color, $cd-choice, $cn-choice, $ca-choice, $ce-choice)
+	font-style: normal
+	font-size: 1rem
+	position: relative
+	left: 3rem
+	top: 0.55rem
+	@media #{$sml}
+		font-size: 0.9rem
+		left: 2.8rem
+		top: 0.1rem
 
 ///////////////////////////////////////////////////////////////////////////
 // Below the Location search input
@@ -255,5 +330,5 @@ $cpr-s: 0
 	@media #{$sml}
 		display: none
 		&.sml
-			margin: 0 2.7rem 0.2rem 2.4rem
+			margin: 0 1.6rem 0.2rem 2.4rem
 			display: block

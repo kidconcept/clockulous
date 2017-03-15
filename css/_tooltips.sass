@@ -2,7 +2,7 @@
 // Global Selectors
 .tool-tip
 	position: absolute
-	top: 73%
+	top: 70%
 	left: 50%
 	transform: translateX(-50%) !important
 	width: 95%
@@ -16,13 +16,57 @@
 	background-position: 98% center
 	background-size: 1rem
 	border-radius: 0.5rem
+	z-index: 10
+	font-size: 1rem
 	&.error
 		background-color: $cn-error
 		color: $cd-type
-		z-index: 10
+		z-index: 100
 		.examples
 			margin-top: 1rem
 			display: block
 			font-family: $font-numbers
 			font-size: 1.1rem
 			letter-spacing: .1rem
+	&.timetravel
+		text-align: center
+		.button
+			background-color: lighten($cd-tutorial, 10%)
+			color: darken($cd-tutorial, 10%)
+			border-radius: 0.5rem
+			padding: 0.4rem 1.2rem
+			display: inline-block
+			margin-top: 0.6rem
+			margin-bottom: 0.4rem
+			font-weight: 500
+			font-style: italic
+			cursor: pointer
+		.keycommand
+			background-color: lighten($cd-tutorial, 10%)
+			color: $cd-clock
+		.icon
+			background-color: lighten($cd-tutorial, 10%)
+			background-position: center
+			border-radius: 0.3rem
+			width: 1.6rem
+			background-size: 80%
+			position: relative
+			top: 0.2rem
+		.smaller
+			font-size: .7em
+
+///////////////////////////////////////////////////////////////////////////
+// tutorial
+.tutorial-glow
+	animation: throb 3s infinite
+	border-radius: .5rem
+	&.timeTravelMeta
+		background-color: rgba($cd-tutorial, 0.46)
+
+@keyframes throb
+	0%
+		box-shadow: 0 0 0 .7rem rgba($cd-tutorial, 0.46)
+	50%
+		box-shadow: 0 0 0 1.1rem rgba($cd-tutorial, 0.46)
+	100%
+		box-shadow: 0 0 0 .7rem rgba($cd-tutorial, 0.46)

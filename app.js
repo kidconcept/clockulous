@@ -1,4 +1,4 @@
- var clockulous = (function() {
+var clockulous = (function() {
 
 	var global = {}
 
@@ -14,6 +14,7 @@
 	SETTINGS.amPm = true; //12 Hour Clock by default
 	SETTINGS.timeTravel = false; // Display Time Travel Offset
 	SETTINGS.timeTravelOffset = 0;
+	SETTINGS.timeTravelNotification = true;
 	SETTINGS.theme = "day";
 	var toolTips = {};
 	var isMenuOpen = false;
@@ -33,7 +34,7 @@
 	window.addEventListener('keydown', keyCommands);
 	function keyCommands(event) {
 		key = event.key;
-		if (key === "Escape" || key === "Esc") {
+		if ((key === "Escape" || key === "Esc") && (SETTINGS.timeTravel)) {
 			global.noTimeTravel();
 		}
 		//if (key === "c") addClock();
@@ -65,9 +66,9 @@
 		ct.removeBtn[index].addEventListener('click', removeClock);
 		ct.rawOffset[index].addEventListener('input', editGmt);
 		ct.time[index].addEventListener('mousedown', timeTravel);
-		ct.local[index].addEventListener('focus', tweekAutoComplete);
-		ct.local[index].addEventListener('keydown', saveLocal);
-		//ct.time[index].addEventListener('mousedown', timeTravelMouse);
+		ct.local[index].addEventListener('focus', newSearch);
+		ct.editlocal[index].addEventListener('click', editLocal);
+		ct.latlng[index].addEventListener('click', showLatLng);
 		ct.timeTravelMeta[index].addEventListener('click', timeTravelMeta);
 		ct.dstMeta[index].addEventListener('click', editDst);
 	}
@@ -81,7 +82,7 @@
 					let className = children[i].classList[0];
 					if(className) ct[className] = clocksBox.getElementsByClassName(className);
 				}
-			  readTemplate(children[i]);
+				readTemplate(children[i]);
 			}
 		}
 	}
@@ -99,6 +100,8 @@
 			ct.dstMeta[i].setAttribute('data-index', i);
 			ct.amPmMeta[i].setAttribute('data-index', i);
 			ct.switch[i].setAttribute('data-index', i);
+			ct.latlng[i].setAttribute('data-index', i);
+			ct.editlocal[i].setAttribute('data-index', i);
 			ct.local[i].setAttribute('data-index', i);
 		}
 		//check if their are too many clocks
@@ -124,11 +127,11 @@
 		let dateTime = [];
 		// Offset Hours for Time Travel
 		if(SETTINGS.timeTravel) {
-		  zoneTime.setUTCSeconds( zoneTime.getUTCSeconds() + rawOffset + dstOffset + SETTINGS.timeTravelOffset);
+			zoneTime.setUTCSeconds( zoneTime.getUTCSeconds() + rawOffset + dstOffset + SETTINGS.timeTravelOffset);
 		} else zoneTime.setUTCSeconds( zoneTime.getUTCSeconds() + rawOffset + dstOffset);
 		let time = {
-		  hours: zoneTime.getUTCHours(),
-		  minutes: String( "0" + zoneTime.getUTCMinutes() ).slice(-2)
+			hours: zoneTime.getUTCHours(),
+			minutes: String( "0" + zoneTime.getUTCMinutes() ).slice(-2)
 		};
 		// Day and Date
 		rd = zoneTime.getUTCDate();
@@ -147,8 +150,8 @@
 		let clockAmPm;
 		time.hours < 12 ? clockAmPm = "AM" : clockAmPm = "PM";
 		if(SETTINGS.amPm) { // 12 Hour
-		  time.hours = time.hours % 12;
-		  if (time.hours == 0) time.hours = 12;
+			time.hours = time.hours % 12;
+			if (time.hours == 0) time.hours = 12;
 		}
 		dateTime.push('<span>'+time.hours+'</span>'+'<span>:</span>'+'<span>'+time.minutes+'</span>');
 		dateTime.push(clockAmPm);
@@ -157,14 +160,15 @@
 
 	//Initilize the Zone Objects and Settings from local Storage
 	function initialize() {
-		if(localStorage.SETTINGS) SETTINGS = JSON.parse(localStorage.SETTINGS);
-		if(localStorage.ZONES.length > 2) {
-			let SAVE = JSON.parse(localStorage.ZONES);
-			ZONES = [];
-			SAVE.forEach( function(e) {
-		 		ZONES.push( new LocalizeZones(e.local, e.timeZoneId, e.rawOffset, e.dstOffset, e.latLng) );
-		 		drawClock(); })}
-		else { addClock(); }
+		// if(localStorage.SETTINGS) SETTINGS = JSON.parse(localStorage.SETTINGS);
+		// if(localStorage.ZONES) {
+		// 	let SAVE = JSON.parse(localStorage.ZONES);
+		// 	ZONES = [];
+		// 	SAVE.forEach( function(e) {
+		// 		ZONES.push( new LocalizeZones(e.local, e.timeZoneId, e.rawOffset, e.dstOffset, e.latLng) );
+		// 		drawClock(); })}
+		// else { addClock(); }
+		addClock();
 		if(SETTINGS.tutorial) initTutorial();
 		swapTheme();
 		showHideAmPmMeta();
@@ -184,12 +188,14 @@
 	var menuButtonOpen = document.getElementById("menuButtonOpen");
 	var menuButtonClose = document.getElementById("menuButtonClose");
 	var themeSettings = document.querySelectorAll("input[name=theme]");
+	var ttNotification = document.getElementById("ttNotification");
 
 	//Settings
 	amPmSetting.addEventListener('click', captureMenu);
 	for(let i=0;i<themeSettings.length;i++) {
 		themeSettings[i].addEventListener('click', captureMenu);
 	}
+	ttNotification.addEventListener('click', captureMenu);
 
 	//Homepage buttons
 	addClockElement.addEventListener('click', addClock);
@@ -199,6 +205,7 @@
 	function captureMenu() {
 		SETTINGS.amPm = !amPmSetting.checked;
 		SETTINGS.theme = document.querySelector('input[name=theme]:checked').value;
+		SETTINGS.timeTravelNotification = !ttNotification.checked;
 		showHideAmPmMeta();
 		stoppedClock();
 		swapTheme();
@@ -208,6 +215,7 @@
 	function initMenu() {
 		amPmSetting.checked = !SETTINGS.amPm;
 		document.querySelector('input[value='+SETTINGS.theme+']').checked = true;
+		ttNotification.checked = !SETTINGS.timeTravelNotification;
 	}
 
 	function openCloseMenu() {
@@ -231,104 +239,101 @@
 // TUTORIAL
 // ===================================
 
-	var tipSteps = [0,1,2,3,4];
-	var tips = [
-		"Search for a location, go ahead and just start typing.",
-		"Now add another clock by clicking on the add button below.",
-		"Search for another location on the new clock.",
-		"<p>Now change the time in <i>one place</i> to see the new time in <i>both places</i>.</p><p>Just tap the time, type a new time, and press enter</p>",
-		"To go back to the current time just click the pulsing clock icon, or hit <span class='keycommand'>Esc</span>."
-	]
+	//Init and utility functions
+	var observer;
+	var hiddenControls = [];
+	function glow(element) { element.classList.add("tutorial-glow") };
+	function noGlow(element) { element.classList.remove("tutorial-glow") };
+
+	function hideControls() {
+		for(let i=0;i<arguments.length;i++) {
+			arguments[i].style.cssText = "display: none";
+			hiddenControls.push(arguments[i]);
+		};
+	}
+
+	function showControls(element) {
+		if (element === 'all') {
+			hiddenControls.forEach(function(e) { e.style.cssText = ""; });
+		} else {
+			element.style.cssText = "";
+		}
+	}
 
 	function initTutorial() {
-		toolTips.tutorial = document.createElement('span');
-		toolTips.tutorial.classList.add("tutorial", "tool-tip");
-		toolTips.tutorial.addEventListener('click', dismissTip);
-		toolTips.tutorial.style.opacity = 0;
-		app.insertAdjacentElement('afterend', toolTips.tutorial);
-		toolTips.tutorial.innerHTML = tips[tipSteps[0]];
-		Velocity(toolTips.tutorial, {opacity:1}, {duration:150,delay:500});
-		//First tip :: Search for a location, go ahead and just start typing.
-		autocomplete.addListener('place_changed', firstTip);
+		firstTip();
+	}
+
+	//Tutorial Steps one through five
+	function firstTip() { // Search for first place
+		let firstTip = false;
+		hideControls(ct.removeBtn[0], ct.editlocal[0])
+		autocomplete.addListener('place_changed', clearTip);
+		glow(ct.local[0]);
 		SETTINGS.tutorial = false;
-		function firstTip() {
-			if (tipSteps.includes(0)) {
-				clearTip(0);
-			}
-		}
-		//Second tip :: Now add another clock by clicking on the add button below.
-		addClockElement.addEventListener('click', secondTip);
-		function secondTip() {
-			if (tipSteps.includes(1)) {
-				clearTip(1);
-				autocomplete.addListener('place_changed', thirdTip);
-				addClockElement.removeEventListener('click', secondTip);
-			}
-		};
-		//Third tip :: Try searching for another location on the second clock.
-		function thirdTip() {
-			if (tipSteps.includes(2)) {
-				clearTip(2);
-				window.addEventListener('keydown', fourthTip);
-				for(let i=0;i<ct.timeTravelMeta.length;i++) ct.timeTravelMeta[i].addEventListener('click', fourthTip);
-			}
-		}
-		//Fourth tip :: ...Just tap the time, type a new time, and press enter
-		function fourthTip(e) {
-			if (tipSteps.includes(3)) {
-				let key = e.key;
-				if ( (key === 'Enter') || (e.type === 'click') ) {
-					clearTip(3);
-					window.removeEventListener('keydown', fourthTip);
-					for(let i=0;i<ct.timeTravelMeta.length;i++) ct.timeTravelMeta[i].removeEventListener('click', fourthTip);
-					window.addEventListener('keydown', fifthTip);
-					for(let i=0;i<ct.timeTravelMeta.length;i++) ct.timeTravelMeta[i].addEventListener('click', fifthTip);
-				}
-			}
-		}
-		//Fifth Tip
-		function fifthTip(e) {
-			let key = e.key;
-			if ( (key === 'Escape') || (key === 'Esc') || (e.type === 'click') ) {
-				clearTip(4);
-				window.removeEventListener('keydown', fifthTip);
-				for(let i=0;i<ct.timeTravelMeta.length;i++) ct.timeTravelMeta[i].removeEventListener('click', fifthTip);
+		addClockElement.style.cssText = "opacity: 0; pointer-events: none";
+		function clearTip() {
+			if (!firstTip) {
+				firstTip = true;
+				noGlow(ct.local[0]);
+				secondTip();
 			}
 		}
 	}
 
-	function clearTip(index) {
-		tipSteps.splice( tipSteps.indexOf(index), 1 );
-		if(tipSteps.length === 0) {
-			Velocity(toolTips.tutorial, {opacity:0}, {duration:150,complete:finalMessage})
-			function finalMessage() {
-				toolTips.tutorial.innerHTML = "That was fast. If you forget how to do anything, check in the <i>about</i> menu. Enjoy!"
-				Velocity(toolTips.tutorial, {opacity: 1}, 150)
-				Velocity(toolTips.tutorial, {opacity: 0}, {duration:450, delay:5000,complete:finishTutorial}); }
-			function finishTutorial() {
-				toolTips.tutorial.classList.add("hidden");
-				toolTips.tutorial.parentNode.removeChild( toolTips.tutorial ); }
+	function secondTip() { // Click new clock button
+		addClockElement.style.cssText = "opacity: 0";
+		Velocity(addClockElement, {opacity: 1}, {duration:1000, delay:1000});
+		glow(addClockElement);
+		addClockElement.addEventListener('click', clearTip);
+		function clearTip() {
+			addClockElement.removeEventListener('click', clearTip);
+			noGlow(addClockElement);
+			thirdTip();
 		}
-		else {
-			Velocity(toolTips.tutorial, {opacity:0}, 150)
-			.then(function() {
-				toolTips.tutorial.innerHTML = tips[tipSteps[0]];
-				toolTips.tutorial.classList.remove("hidden"); })
-			.then(function() {
-				Velocity(toolTips.tutorial, {opacity:1}, 150)
-			})
-		}
-		save();
 	}
 
-	function dismissTip() {
-		Velocity(toolTips.tutorial, {opacity: 0}, 150)
-		.then( function() {
-			toolTips.tutorial.classList.add("hidden");
+	function thirdTip() { // Search for second place
+		let thirdTip = false;
+		hideControls(ct.removeBtn[1], ct.editlocal[1])
+		autocomplete.addListener('place_changed', clearTip);
+		glow(ct.local[1]);
+		function clearTip() {
+			if (!thirdTip) {
+				thirdTip = true;
+				noGlow(ct.local[1]);
+				fourthTip();
+			}
+		}
+	}
+
+	function fourthTip() { // Make a time Travel
+		glow(ct.time[1]);
+		global.message("Change the time to see the <em>future</em> or <em>past</em> time in both places", 'tutorial');
+		observer = new MutationObserver(function(mutations) {
+			if (mutations[0].target.classList.contains('cancel')) clearTip();
 		});
+		observer.observe(ct.timeTravelMeta[1], {attributes: true});
+		function clearTip() {
+			noGlow(ct.time[1]);
+			observer.disconnect();
+			fifthTip();
+		}
 	}
 
-
+	function fifthTip() { // Cancel a time Travel
+		glow(ct.timeTravelMeta[1]); glow(ct.timeTravelMeta[0]);
+		observer = new MutationObserver(function(mutations) {
+			if (mutations[0].target.classList.contains('off')) clearTip();
+		});
+		observer.observe(ct.timeTravelMeta[1], {attributes: true});
+		function clearTip() {
+			noGlow(ct.timeTravelMeta[1]); noGlow(ct.timeTravelMeta[0]);
+			observer.disconnect();
+			showControls('all');
+			global.message("That was fast. If you forget how to do anything, check in the <i>about</i> menu. Enjoy!", 'tutorial');
+		}
+	}
 
 // ===================================
 // Theme
@@ -385,6 +390,7 @@
 		window.addEventListener("resize", scaleClocksBox);
 		wrapperClasses();
 		scaleClocksBox();
+		catchPacContainer();
 	}
 
 	function getScale() {
@@ -399,8 +405,15 @@
 		for (let i = 0;i<pacContainers.length;i++) pacContainers[i].style.transform = "scale(" + getScale() + ")";
 	}
 
-	function tweekAutoComplete() {
-		scaleClocksBox();
+	function catchPacContainer() {
+		let target = document.body;
+		let i = 0;
+		var observer = new MutationObserver(function(mutations) {
+			scaleClocksBox();
+			i++; if (i === 2) observer.disconnect()
+		});
+		var config = { childList: true };
+		observer.observe(target, config);
 	}
 
 	var clockClasses = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
@@ -416,286 +429,347 @@
 // TIME META BUTTON FUNCTIONS (timeTravel, DST, AM/PM)
 // ===================================
 
-	var timeTravelMeta = function(event) {
-		index = event.target.getAttribute('data-index');
-		ele = ct.timeInput[index];
-		if(modes.timeTravelMeta === "off") {
-			modes.timeTravelMeta = "submit";
-			timeTravel(ele, "element");}
-		else if (modes.timeTravelMeta === "submit") {
-			success = global.submitTimeFilter(ele, index);
-			if(success) modes.timeTravelMeta = "cancel";}
-		else if (modes.timeTravelMeta === "cancel") {
-			modes.timeTravelMeta = "off";
-			global.noTimeTravel();
-		}
-	}
+   var timeTravelMeta = function(event) {
+	   index = event.target.getAttribute('data-index');
+	   ele = ct.timeInput[index];
+	   if(modes.timeTravelMeta === "off") {
+		   modes.timeTravelMeta = "submit";
+		   timeTravel(ele, "element");}
+	   else if (modes.timeTravelMeta === "submit") {
+		   success = global.submitTimeFilter(ele, index);
+		   if(success) modes.timeTravelMeta = "cancel";}
+	   else if (modes.timeTravelMeta === "cancel") {
+		   modes.timeTravelMeta = "off";
+		   global.noTimeTravel();
+	   }
+   }
 
-	timeTravelMeta.updateClasses = function(index, all) {
-		ttMeta = ct.timeTravelMeta[index];
-		for(let i=0;i<ct.timeTravelMeta.length;i++) {
-			ct.timeTravelMeta[i].classList.remove("cancel","off","submit");
-			if(all) ct.timeTravelMeta[i].classList.add(modes.timeTravelMeta);}
-		ttMeta.classList.add(modes.timeTravelMeta);
-	}
+   timeTravelMeta.updateClasses = function(index, all) {
+	   ttMeta = ct.timeTravelMeta[index];
+	   for(let i=0;i<ct.timeTravelMeta.length;i++) {
+		   ct.timeTravelMeta[i].classList.remove("cancel","off","submit");
+		   if(all) ct.timeTravelMeta[i].classList.add(modes.timeTravelMeta);}
+	   ttMeta.classList.add(modes.timeTravelMeta);
+   }
 
-	function dstMeta(index) {
-		ZONES[index].dstOffset ? ct.dstMeta[index].classList.add('isDayLightSavings') : ct.dstMeta[index].classList.remove('isDayLightSavings');
-	}
+   function dstMeta(index) {
+	   ZONES[index].dstOffset ? ct.dstMeta[index].classList.add('isDayLightSavings') : ct.dstMeta[index].classList.remove('isDayLightSavings');
+   }
 
-	function amPmMeta(index, clockAmPm) {
-		clockAmPm === "AM" ? ct.display[index].classList.remove("pm") : ct.display[index].classList.add("pm")
-	}
+   function amPmMeta(index, clockAmPm) {
+	   clockAmPm === "AM" ? ct.display[index].classList.remove("pm") : ct.display[index].classList.add("pm")
+   }
 
-	// For switching between 12 and 24 hour clocks
-	function showHideAmPmMeta() {
-		for(let i=0;i<ct.amPmMeta.length;i++) {
-			SETTINGS.amPm ? ct.amPmMeta[i].classList.remove("hidden") : ct.amPmMeta[i].classList.add("hidden");
-		}
-	}
+   // For switching between 12 and 24 hour clocks
+   function showHideAmPmMeta() {
+	   for(let i=0;i<ct.amPmMeta.length;i++) {
+		   SETTINGS.amPm ? ct.amPmMeta[i].classList.remove("hidden") : ct.amPmMeta[i].classList.add("hidden");
+	   }
+   }
 
-	// For amPmTimeTravel
-	function amPmTimeTravel(mode, index) {
-		if (mode === "start") {
-			modes.timeTravelAmPm = "AM";
-			ct.switch[index].classList.remove("pm");
-			ct.switch[index].addEventListener('click', amPmTimeTravel);
-			ct.switch[index].classList.remove('hidden');
-			ct.display[index].classList.add('hidden'); }
-		else if (mode === "stop") {
-			ct.switch[index].removeEventListener('click', amPmTimeTravel);
-			ct.switch[index].classList.add('hidden');
-			ct.display[index].classList.remove('hidden'); }
-		else {
-			index = this.getAttribute('data-index');
-			modes.timeTravelAmPm === "AM" ? modes.timeTravelAmPm = "PM" : modes.timeTravelAmPm = "AM";
-			modes.timeTravelAmPm === "AM" ? ct.switch[index].classList.remove("pm") : ct.switch[index].classList.add("pm")
-			ct.timeInput[index].focus();
-		}
-	}
+   // For amPmTimeTravel
+   function amPmTimeTravel(mode, index) {
+	   if (mode === "start") {
+		   modes.timeTravelAmPm = "AM";
+		   ct.switch[index].classList.remove("pm");
+		   ct.switch[index].addEventListener('click', amPmTimeTravel);
+		   ct.switch[index].classList.remove('hidden');
+		   ct.display[index].classList.add('hidden'); }
+	   else if (mode === "stop") {
+		   ct.switch[index].removeEventListener('click', amPmTimeTravel);
+		   ct.switch[index].classList.add('hidden');
+		   ct.display[index].classList.remove('hidden'); }
+	   else {
+		   index = this.getAttribute('data-index');
+		   modes.timeTravelAmPm === "AM" ? modes.timeTravelAmPm = "PM" : modes.timeTravelAmPm = "AM";
+		   modes.timeTravelAmPm === "AM" ? ct.switch[index].classList.remove("pm") : ct.switch[index].classList.add("pm")
+		   ct.timeInput[index].focus();
+	   }
+   }
+
+   var latLngOpen = false;
+   function showLatLng() {
+	   index = this.getAttribute('data-index');
+	   if(latLngOpen === false) {
+		   ct.local[index].classList.add('hidden');
+		   ct.latlng[index].classList.add('on');
+		   ct.locallatlng[index].classList.remove('hidden'); }
+	   else {
+		   ct.local[index].classList.remove('hidden');
+		   ct.latlng[index].classList.remove('on');
+		   ct.locallatlng[index].classList.add('hidden'); }
+	   latLngOpen = !latLngOpen;
+   }
 
 
 // ===================================
 // Add, edit, remove data
 // ===================================
 
-	function addClock() {
-		if (ZONES.length < 9) {
-			index = ZONES.length;
-			ZONES.push( new LocalizeZones('', 'XX', userTime.getTimezoneOffset()*-60, 0) );
-			drawClock();
-			stoppedClock();
-			setTimeout( function(){ ct.local[index].focus() }, 1);}
-		if (SETTINGS.timeTravel) engage();
-		wrapperClasses();
-		scaleClocksBox();
-		save();
-	}
+   function addClock() {
+	   if (ZONES.length < 9) {
+		   index = ZONES.length;
+		   ZONES.push( new LocalizeZones('', 'XX', userTime.getTimezoneOffset()*-60, 0) );
+		   drawClock();
+		   stoppedClock();
+		   setTimeout( function(){ ct.local[index].focus() }, 1);}
+	   if (SETTINGS.timeTravel) engage();
+	   wrapperClasses();
+	   scaleClocksBox();
+	   save();
+   }
 
-	function drawClock() {
-		let index = clocksBox.children.length;
-		let newClock = ct.cloneNode(true);
-		newClock.id = '';
-		clearQuote();
-		clocksBox.appendChild( newClock );
-		try { autocomplete = gmaps.addAutoCompletes(index) }
-		catch (e) { global.offLine(); console.log(e) };
-		setIndex();
-		updateMeta(index);
-		showHideAmPmMeta();
-		addEventListeners(index);
-		Velocity(newClock, { scale: [1, .1] }, { duration: 750, easing: [500,25] } )
-	}
+   function drawClock() {
+	   let index = clocksBox.children.length;
+	   let newClock = ct.cloneNode(true);
+	   newClock.id = '';
+	   clearQuote();
+	   clocksBox.appendChild( newClock );
+	   try { autocomplete = gmaps.addAutoCompletes(index) }
+	   catch (e) { global.offLine(); console.log(e) };
+	   setIndex();
+	   updateMeta(index);
+	   showHideAmPmMeta();
+	   addEventListeners(index);
+	   Velocity(newClock, { scale: [1, .1] }, { duration: 750, easing: [500,25] } )
+   }
 
-	global.offLine = function() {
-		if(!modes.offline) {
-			modes.offline = true;
-			offlineErrorMessage();
-			loopSupport();
-			function loopSupport() {
-				canary = gmaps.getURL("http://sweetclocks.party/");
-				canary.then(function() {
-					if(toolTips.offlineError.parentNode) removeOfflineError();
-					}).catch(function(e) {
-					console.log("catch", e)
-					setTimeout(loopSupport, 5000)
-				})
-			}
-		}
-		else {
-			return;
-		}
-	}
+   global.offLine = function() {
+	   if(!modes.offline) {
+		   modes.offline = true;
+		   global.message("Sweetclocks is working in offline mode. Searching for locations won't work.", 'error');
+		   loopSupport();
+		   function loopSupport() {
+			   canary = gmaps.getURL("http://sweetclocks.party/");
+			   canary.then(function() {
+				   if(toolTips.errorMessage.parentNode) global.removeMessage();
+				   }).catch(function(e) {
+				   console.log("catch", e);
+				   setTimeout(loopSupport, 5000);
+			   })
+		   }
+	   }
+	   else {
+		   return;
+	   }
+   }
 
-	function offlineErrorMessage() {
-		toolTips.offlineError = document.createElement('span');
-		toolTips.offlineError.classList.add("error", "tool-tip", "offline");
-		clocksBox.insertAdjacentElement('beforebegin', toolTips.offlineError);
-		toolTips.offlineError.innerHTML = "Sweetclocks is working in offline mode. Searching for locations won't work."
-		toolTips.offlineError.addEventListener('click', removeOfflineError);
-	}
+   global.message = function(message, type) {
+	   if(toolTips.message) global.removeMessage();
+	   toolTips.message = document.createElement('span');
+	   toolTips.message.classList.add("tool-tip", type);
+	   toolTips.message.innerHTML = message;
+	   app.insertAdjacentElement('beforebegin', toolTips.message);
+	   Velocity(toolTips.message, {opacity:[1,0]}, 300);
+	   toolTips.message.addEventListener('click', global.removeMessage);
+   }
 
-	function removeOfflineError() {
-		toolTips.offlineError.parentNode.removeChild(toolTips.offlineError);
-	}
+   global.removeMessage = function() {
+	   if(toolTips.message.parentNode) {
+		   Velocity(toolTips.message, {opacity:0}, 150);
+		   toolTips.message.parentNode.removeChild(toolTips.message);
+		   if(SETTINGS.timeTravel && toolTips.message.classList.contains('timetravel')) global.noTimeTravel();
+	   }
+   }
 
-	function removeClock() {
-		let index = this.getAttribute('data-index');
-		ZONES.splice( index, 1 );
-		let deletedClock = clocksBox.childNodes[index];
-		Velocity(deletedClock, { opacity: 0, scale: .96 }, 200)
-		.then( function() {
-			clocksBox.removeChild(deletedClock);
-			setIndex();
-			scaleClocksBox();
-			wrapperClasses();
-			if (clocksBox.childNodes.length === 0) printQuote();
-			save();
-		} );
-		if(pacContainers[index]) document.body.removeChild(pacContainers[index]);
-	}
+   function removeClock() {
+	   let index = this.getAttribute('data-index');
+	   ZONES.splice( index, 1 );
+	   let deletedClock = clocksBox.childNodes[index];
+	   Velocity(deletedClock, { opacity: 0, scale: .96 }, 200)
+	   .then( function() {
+		   clocksBox.removeChild(deletedClock);
+		   setIndex();
+		   scaleClocksBox();
+		   wrapperClasses();
+		   if (clocksBox.childNodes.length === 0) printQuote();
+		   save();
+	   } );
+	   if(pacContainers[index]) document.body.removeChild(pacContainers[index]);
+   }
 
-	global.editLatLngGmaps = function(latLng, index) {
-		ZONES[index].latLng = latLng;
-	}
+   global.editLatLngGmaps = function(latLng, index) {
+	   ZONES[index].latLng = latLng;
+   }
 
-	function editGmt() {
-		let index = this.getAttribute('data-index');
-		ZONES[index].rawOffset = parseInt(this.value);
-		ZONES[index].latLng = null;
-		stoppedClock();
-		save();
-	}
+   function editGmt() {
+	   let index = this.getAttribute('data-index');
+	   ZONES[index].rawOffset = parseInt(this.value);
+	   ZONES[index].latLng = null;
+	   updateMeta(index);
+	   stoppedClock();
+	   save();
+   }
 
-	function editDst(event) {
-		let index = this.getAttribute("data-index");
-		ZONES[index].dstOffset ? ZONES[index].dstOffset = 0 : ZONES[index].dstOffset = 3600;
-		dstMeta(index);
-		stoppedClock();
-		save();
-	}
+   function editDst(event) {
+	   let index = this.getAttribute("data-index");
+	   ZONES[index].dstOffset ? ZONES[index].dstOffset = 0 : ZONES[index].dstOffset = 3600;
+	   dstMeta(index);
+	   stoppedClock();
+	   save();
+   }
 
-	global.updateZoneData = function(index) {
-		if (ZONES[index].latLng) {
-			timeZone = gmaps.getZone(ZONES[index].latLng, index);
-			timeZone.then(function(zoneString){
-				zoneObject = JSON.parse(zoneString);
-				if(zoneObject.status ="OK") {
-					ZONES[index].rawOffset = zoneObject.rawOffset;
-					ZONES[index].dstOffset = zoneObject.dstOffset;
-					updateMeta(index);
-				}
-				else clockulous.editGmtGmaps(index);
-			}).then(function(){
-				animateTimeShift(index);
-			}).catch(function(error){
-				ZONES[index].local = "oops, somethings wrong!";
-				console.log(error)
-			});
-			save();
-		}
-	}
+   global.updateZoneData = function(index) {
+	   if (ZONES[index].latLng) {
+		   timeZone = gmaps.getZone(ZONES[index].latLng, index);
+		   timeZone.then(function(zoneString){
+			   zoneObject = JSON.parse(zoneString);
+			   if(zoneObject.status ="OK") {
+				   ZONES[index].rawOffset = zoneObject.rawOffset;
+				   ZONES[index].dstOffset = zoneObject.dstOffset;
+				   updateMeta(index);
+			   }
+			   else clockulous.editGmtGmaps(index);
+		   }).then(function(){
+			   animateTimeShift(index);
+		   }).catch(function(error){
+			   global.message("Sorry, we weren't able to load new timezone data, check your connection and refresh sweetclocks.", 'error');
+			   console.log(error);
+		   });
+		   save();
+	   }
+   }
 
-	global.editLocal = function(local, index) {
-		ZONES[index].local = local;
-		updateMeta(index);
-		ct.local[index].blur();
-		save();
-	}
+   function newSearch() {
+	   index = this.getAttribute('data-index');
+	   ct.inner[index].classList.add("localOpen");
+	   this.value = "";
+	   this.addEventListener('blur', cancelSearch);
+	   function cancelSearch() {
+		   ct.inner[index].classList.remove("localOpen")
+		   this.removeEventListener('blur', cancelSearch);
+		   this.value = ZONES[index].local;
+	   }
+   }
 
-	function saveLocal(event) {
-		key = event.key;
-		if (key === "Enter") global.editLocal;
-	}
+   global.saveLocal = function(local, index) {
+	   ZONES[index].local = local;
+	   updateMeta(index);
+	   ct.local[index].blur();
+	   save();
+   }
 
-	function save() {
-		localStorage.SETTINGS = JSON.stringify(SETTINGS);
-		localStorage.ZONES = JSON.stringify(ZONES);
-	}
+   function editLocal() {
+	   index = this.getAttribute('data-index');
+	   input = ct.localname[index];
+	   input.value = ZONES[index].local;
+	   ct.editlocal[index].classList.add('hidden');
+	   ct.savelocal[index].classList.remove('hidden');
+	   ct.local[index].classList.add('hidden');
+	   ct.localname[index].classList.remove('hidden');
+	   input.focus();
+	   window.addEventListener('keyup', saveLocal);
+	   window.addEventListener('mousedown', exitLocal);
+	   function saveLocal(event) {
+		   global.saveLocal(input.value, index);
+		   key = event.key;
+		   if (key === 'Enter') {
+			   exitLocal();
+		   }
+	   }
+	   function exitLocal() {
+		   window.removeEventListener('keyup', saveLocal);
+		   window.removeEventListener('mousedown', exitLocal);
+		   ct.savelocal[index].classList.add('hidden');
+		   ct.editlocal[index].classList.remove('hidden');
+		   ct.localname[index].classList.add('hidden');
+		   ct.local[index].classList.remove('hidden');
+	   }
+   }
+
+   function save() {
+	   localStorage.SETTINGS = JSON.stringify(SETTINGS);
+	   localStorage.ZONES = JSON.stringify(ZONES);
+   }
 
 // ===================================
 // Time Travel Features
 // ===================================
 
-	function timeTravel(ele, source) {
-		source === "element" ? index = ele.getAttribute('data-index') : index = this.getAttribute('data-index');
-		SETTINGS.timeTravel = true;
-		modes.timeTravelMeta = "submit";
-		timeTravelMeta.updateClasses(index);
-		for(let i=0;i<ct.time.length;i++) ct.time.item(i).parentNode.classList.add("traveling");
-		showInputClock(index);
-	}
+   function timeTravel(ele, source) {
+	   source === "element" ? index = ele.getAttribute('data-index') : index = this.getAttribute('data-index');
+	   SETTINGS.timeTravel = true;
+	   modes.timeTravelMeta = "submit";
+	   timeTravelMeta.updateClasses(index);
+	   for(let i=0;i<ct.time.length;i++) ct.time.item(i).parentNode.classList.add("traveling");
+	   showInputClock(index);
+   }
 
-	function engage() {
-		timeTravelMeta.updateClasses(0, true);
-		for(let i=0;i<ct.time.length;i++) ct.time.item(i).parentNode.classList.add("traveling");
-	}
+   function engage() {
+	   timeTravelMeta.updateClasses(0, true);
+	   for(let i=0;i<ct.time.length;i++) ct.time.item(i).parentNode.classList.add("traveling");
+   }
 
-	function timeTravelMouse() {
-		SETTINGS.timeTravel = true;
-		for(let i=0;i<ct.time.length;i++) ct.time.item(i).parentNode.classList.add("traveling");
-		originX = event.clientX;
-		originY = event.clientY;
-		document.getElementsByTagName("body").item(0).classList.add("noSelect");
-		window.addEventListener('mousemove', trackTimeMouse);
-		window.addEventListener('mouseup', releaseTimeTravelMouse);
-	}
+   function timeTravelMouse() {
+	   SETTINGS.timeTravel = true;
+	   for(let i=0;i<ct.time.length;i++) ct.time.item(i).parentNode.classList.add("traveling");
+	   originX = event.clientX;
+	   originY = event.clientY;
+	   document.getElementsByTagName("body").item(0).classList.add("noSelect");
+	   window.addEventListener('mousemove', trackTimeMouse);
+	   window.addEventListener('mouseup', releaseTimeTravelMouse);
+   }
 
-	function trackTimeMouse(event) {
-		dy = event.clientY - originY;
-		v = Math.floor(dy*100);
-		SETTINGS.timeTravelOffset = -v;
-		stoppedClock();
-	}
+   function trackTimeMouse(event) {
+	   dy = event.clientY - originY;
+	   v = Math.floor(dy*100);
+	   SETTINGS.timeTravelOffset = -v;
+	   stoppedClock();
+   }
 
-	function releaseTimeTravelMouse() {
-		window.removeEventListener('mousemove', trackTimeMouse);
-		document.getElementsByTagName("body").item(0).classList.remove("noSelect");
-		modes.timeTravelMeta = "cancel";
-		timeTravelMeta.updateClasses(0, true);
-	};
+   function releaseTimeTravelMouse() {
+	   window.removeEventListener('mousemove', trackTimeMouse);
+	   document.getElementsByTagName("body").item(0).classList.remove("noSelect");
+	   modes.timeTravelMeta = "cancel";
+	   timeTravelMeta.updateClasses(0, true);
+   };
 
-	function showInputClock(index) {
-		let input = ct.timeInput[index];
-		let time = ct.time[index];
-		for(let i=0;i<ct.time.length;i++) {
-		  ct.time.item(i).removeEventListener('mousedown', timeTravel)}
-		input.addEventListener('keydown', initTimeFilter);
-		input.addEventListener('keyup', timeFilter.postFilter);
-		if(SETTINGS.amPm) amPmTimeTravel("start", index)
-		input.classList.remove('hidden');
-		time.classList.add('hidden');
-		window.addEventListener('click', global.clickOffClock);
-		global.clickOffClock.index = index;
-		helpAndroid(input, index);
-		setTimeout(function() {
-			//uhgly hack to allow time for focus to take hold
-			ct.timeInput[index].focus(); }, 1);
-	}
+   function showInputClock(index) {
+	   let input = ct.timeInput[index];
+	   let time = ct.time[index];
+	   for(let i=0;i<ct.time.length;i++) {
+		 ct.time.item(i).removeEventListener('mousedown', timeTravel)}
+	   input.addEventListener('keydown', initTimeFilter);
+	   input.addEventListener('keyup', timeFilter.postFilter);
+	   if(SETTINGS.amPm) amPmTimeTravel("start", index)
+	   input.classList.remove('hidden');
+	   time.classList.add('hidden');
+	   window.addEventListener('click', global.clickOffClock);
+	   global.clickOffClock.index = index;
+	   helpAndroid(input, index);
+	   setTimeout(function() {
+		   //uhgly hack to allow time for focus to take hold
+		   ct.timeInput[index].focus(); }, 1);
+   }
 
-	global.clickOffClock = function(event) {
-		let index = global.clickOffClock.index;
-		let current = event.target
-		while (current) {
-			try { if(current.getAttribute('data-index') === index) return false; }
-			catch (e) { console.log(e) }
-			current = current.parentElement;
-		}
-		global.noTimeTravel(index);
-		window.removeEventListener('click', global.clickOffClock);
-		return false;
-	}
+   global.clickOffClock = function(event) {
+	   let index = global.clickOffClock.index;
+	   let ele = ct.timeInput[index];
+	   let current = event.target;
+	   while (current) {
+		   try { if(current.getAttribute('data-index') === index) return false; }
+		   catch (e) { console.log(e) }
+		   current = current.parentElement;
+	   }
+	   if (ele.value) {
+		   global.submitTimeFilter(ele, index);
+	   } else {
+		   global.noTimeTravel();
+	   }
+	   window.removeEventListener('click', global.clickOffClock);
+	   return false;
+   }
 
-	function initTimeFilter(e) {
-		timeFilter.filter(e, this, SETTINGS.amPm)
-	}
+   function initTimeFilter(e) {
+	   timeFilter.filter(e, this, SETTINGS.amPm)
+   }
 
-	var timeRegExp = /^(([0-1]?[0-9]|2[0-3]):?([0-5][0-9])?$)/
+   var timeRegExp = /^(([0-1]?[0-9]|2[0-3]):?([0-5][0-9])?$)/
 
-	global.submitTimeFilter = function(ele, index) {
-		if (!ele.value.match(timeRegExp)) {
+   global.submitTimeFilter = function(ele, index) {
+ 		if (!ele.value.match(timeRegExp)) {
 			submitTimeFilterError(ele, index); return false; }
-		try {
+	   	try {
 			let date = new Date();
 			let gmt = date.getUTCHours()*60*60 + date.getUTCMinutes()*60 + date.getUTCSeconds();
 			let zone = ZONES[index].rawOffset;
@@ -707,128 +781,136 @@
 			timeTravelMeta.updateClasses(index, true);
 			hideInputClock(index);
 			for(let i=0;i<ct.inner.length;i++) animateTimeShift(i);
-			if(toolTips.errorOpen) {
-				toolTips.submitError.parentNode.removeChild(toolTips.submitError); toolTips.errorOpen = false; }
+			if (SETTINGS.timeTravelNotification) global.message("You are looking at a <em>future</em> or <em>past</em> time. <span class='button'>Return to current time</span> <p class='smaller'>Disable this message in the about menu and return to current time by<br>click <span class='icon ttc'></span> <em>or</em> press <span class='keycommand'>Esc</span></p>", 'timetravel');
 			return true;}
-		catch (e) {
-		 	console.log('ERROR: submitTimeFilter', e);
-		 	submitTimeFilter(ele, index, e);
-		 	return false;
-		}
-	}
+	   catch (e) {
+			console.log('ERROR: submitTimeFilter', e);
+			return false;
+	   }
+   }
 
 	function submitTimeFilterError(ele, index, e) {
-		toolTips.errorOpen = true;
-		toolTips.submitError = document.createElement('span');
-		toolTips.submitError.classList.add("error", "tool-tip");
-		app.insertAdjacentElement('afterend', toolTips.submitError);
-		if(e) {toolTips.submitError.innerHTML = "Sorry, something is wrong. <span class='emessage'>"+e+"</span>"}
-		else {toolTips.submitError.innerHTML = "Sorry, I didn't recognize that time.<br/>Please use clock-time format: <span class='examples'>1:53 &nbsp; 12:30 &nbsp; 19:25 &nbsp; 05:25</span>"}
-		toolTips.submitError.addEventListener('click', function() {
-			submissionErrors = document.querySelectorAll('.error.tool-tip');
-			for(let i=0;i < submissionErrors.length;i++) submissionErrors[i].parentNode.removeChild(submissionErrors[i]);
-			toolTips.errorOpen = false;
-		});
-	}
-
-	global.noTimeTravel = function() {
-		SETTINGS.timeTravel = false;
-		SETTINGS.timeTravelOffset = 0;
-		modes.timeTravelMeta = "off";
-		timeTravelMeta.updateClasses(0, true);
-		hideInputClock();
-		stoppedClock();
-		for(let i=0;i<ct.time.length;i++) {
-			ct.time.item(i).parentNode.classList.remove("traveling");} // don't move to hideInputClock breaks amPm flags.
-	}
-
-	function hideInputClock() {
-		for(let i=0;i<ct.time.length;i++) {
-			let input = ct.timeInput.item(i);
-			let time = ct.time.item(i);
-			input.removeEventListener('keydown', initTimeFilter);
-			window.removeEventListener('click', global.clickOffClock);
-			//Show Input Hide clock
-			time.classList.remove('hidden');
-			input.blur();
-			input.classList.add('hidden');
-			input.value = "";
-			if(SETTINGS.amPm) amPmTimeTravel("stop", i)
-			ct.time.item(i).addEventListener('mousedown', timeTravel);
+		if(e) {
+			global.message("Sorry, something is wrong. <span class='emessage'>"+e+"</span>", 'error')
+		} else {
+			global.message("Sorry, I didn't recognize that time.<br/>Please use clock-time format: <span class='examples'>1:53 &nbsp; 12:30 &nbsp; 19:25 &nbsp; 05:25</span>", 'error')
 		}
 	}
 
-	function helpAndroid(input, index) {
-		var ua = navigator.userAgent.toLowerCase();
-		var isAndroid = ua.indexOf("android") > -1;
-		if (isAndroid) {
-			//insert hidden element to catch next-input focus of android tel keyboard
-			hiddenInput = document.createElement('input');
-			hiddenInput.style.cssText = "visibility: none; width: 0; height: 0; border: none; position: absolute";
-			hiddenInput.addEventListener('focus', fireSubmission);
-			input.addEventListener('blur', removeHidden);
-			input.insertAdjacentElement('afterend', hiddenInput);
-			//submit clock on focus of hidden element
-			function fireSubmission() {
-				global.submitTimeFilter(input, index);
-				hiddenInput.blur();
-			}
-			function removeHidden() {
-				hiddenInput.parentNode.removeChild(hiddenInput);
-				input.removeEventListener('blur', removeHidden);
-			}
-		}
-	}
+   global.noTimeTravel = function() {
+	   SETTINGS.timeTravel = false;
+	   SETTINGS.timeTravelOffset = 0;
+	   modes.timeTravelMeta = "off";
+	   timeTravelMeta.updateClasses(0, true);
+	   hideInputClock();
+	   stoppedClock();
+	   global.removeMessage();
+	   for(let i=0;i<ct.time.length;i++) {
+		   ct.time.item(i).parentNode.classList.remove("traveling");} // don't move to hideInputClock breaks amPm flags.
+   }
+
+   function hideInputClock() {
+	   for(let i=0;i<ct.time.length;i++) {
+		   let input = ct.timeInput.item(i);
+		   let time = ct.time.item(i);
+		   input.removeEventListener('keydown', initTimeFilter);
+		   window.removeEventListener('click', global.clickOffClock);
+		   //Show Input Hide clock
+		   time.classList.remove('hidden');
+		   input.blur();
+		   input.classList.add('hidden');
+		   input.value = "";
+		   if(SETTINGS.amPm) amPmTimeTravel("stop", i)
+		   ct.time.item(i).addEventListener('mousedown', timeTravel);
+	   }
+   }
+
+   function helpAndroid(input, index) {
+	   var ua = navigator.userAgent.toLowerCase();
+	   var isAndroid = ua.indexOf("android") > -1;
+	   if (isAndroid) {
+		   //insert hidden element to catch next-input focus of android tel keyboard
+		   hiddenInput = document.createElement('input');
+		   hiddenInput.style.cssText = "visibility: none; width: 0; height: 0; border: none; position: absolute";
+		   hiddenInput.addEventListener('focus', fireSubmission);
+		   input.addEventListener('blur', removeHidden);
+		   input.insertAdjacentElement('afterend', hiddenInput);
+		   //submit clock on focus of hidden element
+		   function fireSubmission() {
+			   global.submitTimeFilter(input, index);
+			   hiddenInput.blur();
+		   }
+		   function removeHidden() {
+			   hiddenInput.parentNode.removeChild(hiddenInput);
+			   input.removeEventListener('blur', removeHidden);
+		   }
+	   }
+   }
 
 //==================================
 // Update Display: Run the clocksBox TIME COUNT THE TIME
 //==================================
 
-	//Heart Beat updates all Time and Dates
-	function heartBeat() {
-		stoppedClock();
-		setTimeout(heartBeat, 500);
-	}
+   //Heart Beat updates all Time and Dates
+   function heartBeat() {
+	   stoppedClock();
+	   setTimeout(heartBeat, 500);
+   }
 
-	// Update the Times and Dates to the beat;
-	function stoppedClock() {
-		for(let index=0; index < ZONES.length; index++){
-			let dateTime = displayTime(ZONES[index].rawOffset, ZONES[index].dstOffset, index);
-			ct.time[index].innerHTML = dateTime[1];
-			ct.date[index].innerHTML = dateTime[0];
-			if(SETTINGS.amPm) amPmMeta(index, dateTime[2]);
-		}
-	}
+   // Update the Times and Dates to the beat;
+   function stoppedClock() {
+	   for(let index=0; index < ZONES.length; index++){
+		   let dateTime = displayTime(ZONES[index].rawOffset, ZONES[index].dstOffset, index);
+		   ct.time[index].innerHTML = dateTime[1];
+		   ct.date[index].innerHTML = dateTime[0];
+		   if(SETTINGS.amPm) amPmMeta(index, dateTime[2]);
+	   }
+   }
 
-	//Fill metadata to the templates
-	function updateMeta(index) {
-		ct.local[index].value = ZONES[index].local; //display clock name
-		ct.rawOffset[index].value = ZONES[index].rawOffset; //display GMT value
-		dstMeta(index);
-	}
+   // Format Zone Lat latLng
+   function formatLatLng(index) {
+	   if(ZONES[index].latLng) {
+		   let latLng = ZONES[index].latLng;
+		   latLng = latLng.split(",");
+		   latLng.forEach( function(e, i, latLng) { latLng[i] = Number(e).toFixed(7); });
+		   ct.latlng[index].classList.add("has");
+		   return latLng.join(); }
+	   else {
+		   ct.latlng[index].classList.remove("has");
+		   return "";
+	   }
+   }
 
-	// Check for updates to DST & GMT
-	function checkZoneUpdates() {
-		for(let i=0;i<ZONES.length;i++) global.updateZoneData(i);
-		setTimeout(checkZoneUpdates, 3600000);
-	}
+   //Fill metadata to the templates
+   function updateMeta(index) {
+	   ct.local[index].value = ZONES[index].local; //display clock name
+	   ct.rawOffset[index].value = ZONES[index].rawOffset; //display GMT value
+	   ct.locallatlng[index].innerHTML = formatLatLng(index);
+	   dstMeta(index);
+   }
 
-	// Animate time shifts
-	function animateTimeShift(index) {
-		Velocity(ct.time[index], { rotateX: [450, 720]}, { duration: 200, easing: "linear" } )
-		.then(function() {
-			stoppedClock();
-			Velocity(ct.time[index], { rotateX: [0, 450]}, { duration: 400, easing: [100,20] } );})
-	}
+   // Check for updates to DST & GMT
+   function checkZoneUpdates() {
+	   for(let i=0;i<ZONES.length;i++) global.updateZoneData(i);
+	   setTimeout(checkZoneUpdates, 3600000);
+   }
+
+   // Animate time shifts
+   function animateTimeShift(index) {
+	   Velocity(ct.time[index], { rotateX: [450, 720]}, { duration: 200, easing: "linear" } )
+	   .then(function() {
+		   stoppedClock();
+		   Velocity(ct.time[index], { rotateX: [0, 450]}, { duration: 400, easing: [100,20] } );})
+   }
 
 //==================================
 // ITS ALIVE!!!!!!
 //==================================
-	window.onload = function() {
-		initialize();
-		heartBeat();
-	}
+   window.onload = function() {
+	   initialize();
+	   heartBeat();
+   }
 
-	return global;
+   return global;
 
 })();
