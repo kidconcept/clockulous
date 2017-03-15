@@ -160,15 +160,14 @@ var clockulous = (function() {
 
 	//Initilize the Zone Objects and Settings from local Storage
 	function initialize() {
-		// if(localStorage.SETTINGS) SETTINGS = JSON.parse(localStorage.SETTINGS);
-		// if(localStorage.ZONES) {
-		// 	let SAVE = JSON.parse(localStorage.ZONES);
-		// 	ZONES = [];
-		// 	SAVE.forEach( function(e) {
-		// 		ZONES.push( new LocalizeZones(e.local, e.timeZoneId, e.rawOffset, e.dstOffset, e.latLng) );
-		// 		drawClock(); })}
-		// else { addClock(); }
-		addClock();
+		if(localStorage.SETTINGS) SETTINGS = JSON.parse(localStorage.SETTINGS);
+		if(localStorage.ZONES) {
+			let SAVE = JSON.parse(localStorage.ZONES);
+			ZONES = [];
+			SAVE.forEach( function(e) {
+				ZONES.push( new LocalizeZones(e.local, e.timeZoneId, e.rawOffset, e.dstOffset, e.latLng) );
+				drawClock(); })}
+		else { addClock(); }
 		if(SETTINGS.tutorial) initTutorial();
 		swapTheme();
 		showHideAmPmMeta();
