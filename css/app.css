@@ -1297,7 +1297,7 @@ button {
   background-position: 98% center;
   background-size: 1rem;
   border-radius: 0.5rem;
-  z-index: 10;
+  z-index: 100;
   font-size: 1rem; }
   .day .tool-tip {
     background-color: #8BC34A; }
